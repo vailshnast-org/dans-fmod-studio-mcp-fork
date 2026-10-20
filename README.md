@@ -93,23 +93,25 @@ The scripting terminal is **disabled by default**, and opening the console with 
 
 ### Curated tool surface (not generated)
 
-Unlike auto-generated "one tool per API member" servers, every tool here is hand-shaped around the real authoring workflow. 90+ tools in 13 modules —
+Unlike auto-generated "one tool per API member" servers, every tool here is hand-shaped around the real authoring workflow. 135+ tools in 15 modules —
 
 | Module | Tools | Highlights |
 |--------|------:|------------|
-| **Project** | 5 | Get info, save, save-all, build banks (optionally scoped to specific banks/platforms), modified-check |
-| **Events** | 11 | Create/delete/list/lookup, rename, folders, group tracks, maxVoices, timeline scrub |
-| **Audition** | 6 | Play/stop/pause/keyoff, return-to-start, playback status — hear the result, don't just read the tree |
-| **Markers** | 11 | Marker tracks, named markers, loop regions, sustain points, transition markers/regions, list/rename/reposition/delete |
-| **Sounds** | 8 | Import audio assets, place Single/Multi/Programmer/Scatterer/Event instruments, wire audioFile + owners |
-| **Parameters** | 4 | Add game parameters (all 6 types), enumeration labels, initial values, list |
-| **Banks** | 8 | Create/rename/delete, assign/remove events, list membership |
-| **Automation** | 3 | Parameter/timeline-driven curves — the heart of evolving/interactive music |
-| **Snapshots** | 6 | Mixer state presets the game activates as blendable layers |
-| **Mixer** | 17 | Groups + routing, dB volume, effect chains (24 effects), master bus, VCAs, per-event sends/returns |
+| **Project** | 11 | Info, save, build (scoped), modified-check, **undo/redo**, safe menu actions, GUID export, plug-in list, version |
+| **Events** | 12 | Create (2D/3D)/delete/list/lookup, rename, folders, group tracks, maxVoices, timeline scrub, one-call `event_describe` |
+| **Audition** | 7 | Play/stop/pause/keyoff, return-to-start, playback status, 3D listener position — hear the result, don't just read the tree |
+| **Markers** | 12 | Marker tracks, named markers, loop regions, sustain points, transition markers/regions/timelines, list/rename/reposition/delete |
+| **Sounds** | 19 | Import (single/batch), place instruments (incl. plug-in instruments) on the timeline or a parameter sheet, playback properties, fades, **MultiSound playlist editing + weights**, asset listing, **build an event from audio files in one call** |
+| **Assets** | 2 | Asset details, move/rename assets into folders |
+| **Parameters** | 7 | All 11 parameter types, labels, **global parameters**, initial values, **live parameter values while auditioning**, **trigger conditions** |
+| **Banks** | 9 | Create (into bank folders)/rename/delete/move, assign/remove events, list membership |
+| **Automation** | 7 | Parameter/timeline-driven curves on any automatable property, point editing/shapes, automation lanes — the heart of evolving/interactive music |
+| **Modulators** | 2 | Random/AHDSR/sidechain/autopitch modulators on any property |
+| **Snapshots** | 10 | Mixer state presets: scope strips, **capture property values**, intensity/behavior |
+| **Mixer** | 23 | Groups + routing, dB volume, effect chains (built-in + **plug-in effects**, settings, remove), master bus, VCAs (assign/unassign/list), **project-level return buses + sends** |
 | **Folders** | 2 | Create hierarchies, list browser tree |
 | **Workspace** | 4 | Browser/editor selection, navigate-to, roots |
-| **Utility** | 6 | Generic lookup/list/delete/isValid, debug dump, project validation |
+| **Utility** | 10 | Lookup/list (any entity type)/delete/isValid, dump, **validated property + relationship editing**, entity schemas, project audit |
 
 ### Typed, safe by default
 
@@ -124,9 +126,9 @@ Smaller/cheaper models truncate tool lists. Set `FMOD_STUDIO_MCP_PROFILE` in you
 
 | Profile | For |
 |---------|-----|
-| `full` *(default)* | All 13 modules |
-| `events` | Building/editing events, sounds, parameters, audition, markers |
-| `mixer` | Mixer structure, routing, effects, audition, markers |
+| `full` *(default)* | All 15 modules |
+| `events` | Building/editing events, sounds, parameters, modulators, audition, markers |
+| `mixer` | Mixer structure, routing, effects, modulators, audition, markers |
 | `banks` | Bank management + build plumbing |
 | `minimal` | Read the project, verify the bridge |
 

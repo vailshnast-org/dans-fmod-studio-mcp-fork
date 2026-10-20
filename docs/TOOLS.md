@@ -17,14 +17,21 @@ Every tool in FmodStudioMCP, grouped by module. All tools run in the **live** pr
 | `project_save_all` | `()` | Save project + every edited file (assets, banks, plugins). |
 | `project_build` | `(banks?, platforms?)` | **long** — build banks for the selected platform(s); optionally scope to specific bank name(s)/platform name(s). |
 | `project_get_modified` | `()` | Whether the project has unsaved changes. |
+| `project_undo` | `(steps?)` | Studio's Edit > Undo (1–20 steps), via `studio.window.triggerAction`. |
+| `project_redo` | `(steps?)` | Studio's Edit > Redo (1–20 steps). |
+| `project_trigger_action` | `(window_action)` | Run a non-destructive Studio menu action: `RefreshModifiedAssets`, `ValidateProject`, `ExportGuids`, `ZoomToFit`, `ToggleTransitionTimelineVisibility`, `ShowLogicTracks`. |
+| `project_export_guids` | `()` | Export GUIDs.txt for game code. |
+| `project_list_plugins` | `()` | Plug-in effects/instruments available to this Studio install. |
+| `project_get_version` | `()` | Running Studio version + OS. |
 
 ## Events (`event_tools.py`)
 
 | Tool | Signature | What it does |
 |------|-----------|--------------|
-| `event_create` | `(name, folder?)` | Create an event (optionally under an `event:/…` folder). |
+| `event_create` | `(name, folder?, spatializer?)` | Create an event (optionally under an `event:/…` folder); `spatializer=True/False` picks 3D/2D via `workspace.addEvent`. |
 | `event_delete` | `(target)` | Delete an event. |
-| `event_info` | `(target)` | guid/name/path + maxVoices. |
+| `event_info` | `(target)` | guid/name/path, maxVoices, is3D, isOneShot, assigned banks. |
+| `event_describe` | `(target)` | One-call overview: tracks (with instruments), parameters, marker tracks + markers, banks. |
 | `event_list` | `()` | List every event (capped). |
 | `event_lookup` | `(target)` | Resolve to canonical path + guid. |
 | `event_set_name` | `(target, name)` | Rename. |
@@ -44,6 +51,7 @@ Every tool in FmodStudioMCP, grouped by module. All tools run in the **live** pr
 | `event_key_off` | `(target)` | Send keyoff (releases a pending sustain point). |
 | `event_return_to_start` | `(target)` | Return playback to the cursor/timeline start. |
 | `event_playback_status` | `(target)` | isPlaying/isPaused/isStopping + playhead position. |
+| `event_set_3d_attributes` | `(target, radial_distance, azimuth?, height?, rotation?)` | Position the auditioned event relative to the listener (hear attenuation/panning). |
 
 ## Markers (`marker_tools.py`) — timeline logic markers for interactive music
 
@@ -67,19 +75,42 @@ Every tool in FmodStudioMCP, grouped by module. All tools run in the **live** pr
 | Tool | Signature | What it does |
 |------|-----------|--------------|
 | `audio_import` | `(file_path)` | **long** — import a .wav/.aiff/.flac/.mp3/.ogg as an asset; returns `{guid}`. |
-| `audio_assets` | `()` | List imported audio assets (capped). |
-| `sound_add_to_track` | `(event_target, track_target, sound_type, start, length?, name?)` | Place a Single/Multi/Programmer/Scatterer/Event instrument on a track timeline. |
+| `audio_assets` | `(folder?, unused_only?)` | List audio assets (capped): asset path, length, channels, sample rate, streaming, instrument count. Filter by Assets subfolder or to unused assets. |
+| `sound_add_to_track` | `(event_target, track_target, sound_type, start, length?, name?, parameter?)` | Place a Single/Multi/Programmer/Scatterer/Event instrument on a track — on the timeline, or on a parameter sheet with `parameter`. |
 | `sound_create` | `(sound_type, name?)` | Stand-alone instrument (e.g. for a Multi's playlist). |
 | `sound_set_audio_file` | `(target, audio)` | Assign an imported asset to an instrument. |
 | `sound_set_owner` | `(target, owner)` | Nest instruments (SingleSound into a Multi, …). |
 | `sound_set_name` | `(target, name)` | Rename an instrument. |
-| `sound_info` | `(target)` | Instrument guid/name/path. |
+| `sound_info` | `(target)` | Instrument guid/name/path + hasAudioFile/audioFileName. |
+| `sound_set_properties` | `(target, volume?, pitch?, looping?, extra?)` | Set instrument playback properties (validated + read back). |
+| `sound_set_fade` | `(target, fade_in?, fade_out?, curve?)` | Instrument fade-in/out (`setFadeInCurve`/`setFadeOutCurve`). |
+| `event_list_sounds` | `(event_target)` | Every instrument in an event: type, start/length, audio file, owner. |
+| `audio_import_batch` | `(file_paths)` | **long** — import up to 100 files; all validated before any import. |
+| `sound_add_plugin` | `(event_target, track_target, plugin, start?, length?, parameter?)` | Place a plug-in instrument (e.g. AudioGaming AudioRain). |
+| `multi_list_entries` | `(target)` | A MultiSound's playlist entries (audio, play %) + playlist settings. |
+| `multi_add_entry` | `(target, audio?, sound_type?)` | Add a playlist entry (SingleSound with an asset, Programmer, Silence, nested Multi). |
+| `multi_remove_entry` | `(entry)` | Delete one playlist entry. |
+| `multi_set_weight` | `(entry, percentage)` | Set an entry's play percentage (0–100). |
+| `multi_set_playlist` | `(target, playlist_mode?, playback_mode?, looping?, play_count?)` | Playlist behavior (modes are Studio's numeric enums; 0 = default). |
+| `event_create_from_audio` | `(name, file_paths, folder?, bank?, spatializer?, looping?)` | **long** — import audio and build a playable event in one call (1 file = SingleSound, more = MultiSound playlist); rolls the event back on failure. |
+
+## Assets (`asset_tools.py`)
+
+Asset "folders" are subdirectories of each asset's `assetPath` (2.03 has no asset-folder object). Assets are referenced by `{guid}` or `asset:/<assetPath>`.
+
+| Tool | Signature | What it does |
+|------|-----------|--------------|
+| `audio_asset_info` | `(target)` | Asset path, absolute file path, length, channels, sample rate, streaming, instruments using it. |
+| `audio_asset_move` | `(target, new_path)` | Move/rename an asset inside Assets — **moves the file on disk**; refuses to change the extension or overwrite. |
 
 ## Parameters (`parameter_tools.py`)
 
 | Tool | Signature | What it does |
 |------|-----------|--------------|
-| `parameter_add` | `(event_target, name, param_type?, min?, max?)` | Add a game parameter (User/UserEnumeration/Distance/Direction/Elevation/EventConeAngle/EventOrientation). |
+| `parameter_add` | `(event_target, name, param_type?, min?, max?, labels?)` | Add a game parameter (all 11 `parameterType`s: User, UserDiscrete, UserEnumeration, Distance, DistanceNormalized, Direction, Elevation, EventConeAngle, EventOrientation, Speed, SpeedAbsolute). |
+| `parameter_add_global` | `(name, param_type?, min?, max?, labels?)` | Add a project-level parameter, referenced as `parameter:/Name`. |
+| `parameter_set_cursor` | `(event_target, parameter, value)` | Move a parameter while auditioning (hear layers/transitions react). |
+| `parameter_add_condition` | `(target, parameter, min, max?, event_target?)` | Trigger condition on an instrument/LoopRegion/TransitionMarker/TransitionRegion (range or label). |
 | `parameter_list` | `(event_target)` | List an event's parameters. |
 | `parameter_set_initial` | `(event_target, parameter_name, value)` | Set the initial value. |
 | `parameter_set_labels` | `(event_target, parameter_name, labels)` | Set enumeration labels on a UserEnumeration. |
@@ -88,7 +119,8 @@ Every tool in FmodStudioMCP, grouped by module. All tools run in the **live** pr
 
 | Tool | Signature | What it does |
 |------|-----------|--------------|
-| `bank_create` | `(name)` | Create a bank. |
+| `bank_create` | `(name, folder?)` | Create a bank, optionally inside a bank folder (created if missing). |
+| `bank_set_folder` | `(target, folder)` | Move a bank into a bank folder (`""` = root); its `bank:/` path changes accordingly. |
 | `bank_list` | `()` | List every bank (capped). |
 | `bank_info` | `(target)` | guid/name/path. |
 | `bank_rename` | `(target, name)` | Rename. |
@@ -101,14 +133,16 @@ Every tool in FmodStudioMCP, grouped by module. All tools run in the **live** pr
 
 | Tool | Signature | What it does |
 |------|-----------|--------------|
-| `mixer_group_create` | `(name, output_target?)` | Create a group (Master out by default). |
+| `mixer_group_create` | `(name, output_target?)` | Create a group (now explicitly routed to Master when no output is given). |
 | `mixer_group_list` | `()` | List mixer groups (capped). |
 | `mixer_group_info` | `(target)` | guid/name/path/volume. |
 | `mixer_group_rename` | `(target, name)` | Rename. |
 | `mixer_group_delete` | `(target)` | Delete a group. |
 | `mixer_group_route` | `(target, output_target)` | Set a group's output bus/group. |
 | `mixer_group_volume` | `(target, db)` | Volume in dB (-80…+10). |
-| `mixer_effect_add` | `(target, effect)` | Add an effect (23 types, e.g. `CompressorEffect`, `LimiterEffect`). |
+| `mixer_effect_add` | `(target, effect, settings?)` | Add an effect (e.g. `CompressorEffect`, `LimiterEffect`), optionally configuring it in the same call. |
+| `mixer_effect_add_plugin` | `(target, plugin, settings?)` | Add a plug-in effect (Steam Audio, Resonance, …) from `project_list_plugins`. |
+| `mixer_effect_remove` | `(target, effect)` | Remove + delete an effect from a chain (refuses the built-in fader/panner). |
 | `mixer_effect_list` | `(target)` | List effects on a group's chain (tagged with `entity` type — includes built-in `MixerBusFader`/`MixerBusPanner` alongside any effects added). |
 | `mixer_master_info` | `()` | Master bus guid/name/volume. |
 | `mixer_master_volume` | `(db)` | Set master volume in dB. |
@@ -116,8 +150,12 @@ Every tool in FmodStudioMCP, grouped by module. All tools run in the **live** pr
 | `vca_list` | `()` | List every VCA (capped). |
 | `vca_info` | `(target)` | guid/name/volume. |
 | `vca_volume` | `(target, db)` | Set a VCA's volume in dB. |
-| `vca_assign` | `(vca_target, strip_target)` | Assign a mixer strip to a VCA. |
-| `mixer_send_create` | `(event_target, source_group_target, return_name, level_db?)` | Create a return track + send within one event's mixer (e.g. a reverb bus). Per-event only — FMOD has no cross-event send in this API. |
+| `vca_assign` | `(vca_target, strip_target)` | Assign a mixer strip to a VCA (strip `masters` relationship, verified). |
+| `vca_unassign` | `(vca_target, strip_target)` | Remove a strip from a VCA. |
+| `vca_list_strips` | `(vca_target)` | Strips assigned to a VCA. |
+| `mixer_send_create` | `(event_target, source_group_target, return_name, level_db?)` | Create a return track + send within one event's mixer. Send link verified by read-back. |
+| `mixer_return_create` | `(name, output_target?)` | Create a project-level return bus (shared reverb etc.). |
+| `mixer_send_add` | `(source_group_target, return_target, level_db?)` | Send from any group/track to a return bus, verified by read-back. |
 
 ## Automation (`automation_tools.py`) — the heart of evolving/interactive music
 
@@ -125,10 +163,16 @@ Every tool in FmodStudioMCP, grouped by module. All tools run in the **live** pr
 |------|-----------|--------------|
 | `automation_add_curve` | `(target, property, driver, driver_type, points)` | Bind a property to a curve; as the driver moves, the property follows. |
 | `automation_add` | `(target, property, driver, driver_type, position, value)` | Add one point to an existing curve. |
-| `automation_list` | `(target)` | Report whether an object supports automators. |
+| `automation_list` | `(target, property?)` | Every curve on a target's automator: guid, driver, sorted points, and `pointDetails` (point guid, curveShape, isSCurve). |
+| `automation_set_point` | `(point, position?, value?, curve_shape?, s_curve?)` | Move/edit one point or shape the segment after it. |
+| `automation_remove_point` | `(curve, position, tolerance?)` | Remove the point at a position. |
+| `automation_delete_curve` | `(curve)` | Delete a whole curve. |
+| `automation_show_track` | `(event_target, target, property?)` | Show the automation as a lane under its track in the event editor. |
 
-- `property` = `volume` | `pitch` | `gain`. `target` is the automated object
-  (mixer group, bus, VCA, event, effect).
+- `property` = `volume` | `pitch` | `gain`, or any other automatable property
+  of the target (e.g. an effect's cutoff — checked to exist on the live
+  object first). `target` is the automated object (mixer group, bus, VCA,
+  event, effect).
 - `driver_type="parameter"` → `driver` is `parameter:/Intensity`; points are
   `[parameterValue, mappedValue]`.
 - `driver_type="timeline"` → `driver` is `event:/…`; points are `[seconds, value]`.
@@ -142,6 +186,13 @@ automation_add_curve "group:/Music/Drums" "volume" "parameter:/Intensity" "param
 automation_add_curve "group:/Music/Pads"   "volume" "parameter:/Intensity" "parameter" [[0,0],[0.6,-6],[1,-80]]
 ```
 
+## Modulators (`modulator_tools.py`)
+
+| Tool | Signature | What it does |
+|------|-----------|--------------|
+| `modulator_add` | `(target, modulator_type, property, settings?)` | `RandomizerModulator` / `ADSRModulator` / `SidechainModulator` / `AutopitchModulator` on one property (e.g. random `pitch` on footsteps). |
+| `modulator_list` | `(target)` | Modulators under an instrument/event with their settings. |
+
 ## Snapshots (`snapshot_tools.py`)
 
 | Tool | Signature | What it does |
@@ -151,7 +202,11 @@ automation_add_curve "group:/Music/Pads"   "volume" "parameter:/Intensity" "para
 | `snapshot_info` | `(target)` | guid/name/path. |
 | `snapshot_rename` | `(target, name)` | Rename. |
 | `snapshot_delete` | `(target)` | Delete a snapshot. |
-| `snapshot_bind_group` | `(snapshot_target, group_target)` | Bind a mixer group's captured settings to a snapshot. |
+| `snapshot_bind_group` | `(snapshot_target, group_target)` | Scope a mixer strip into a snapshot (creates/reuses its snapshot track). |
+| `snapshot_set_property` | `(snapshot_target, target, property, value)` | Capture a value in the snapshot (e.g. a group's volume at -12 dB); strips are scoped automatically. |
+| `snapshot_list_properties` | `(snapshot_target)` | Scoped strips + every captured value, intensity, behavior. |
+| `snapshot_remove_property` | `(snapshot_target, target, property)` | Stop the snapshot changing a property. |
+| `snapshot_set_settings` | `(snapshot_target, intensity?, behavior?)` | Intensity 0–100, behavior 0 (Overriding, default) / 1 (Blending). |
 
 Snapshots are activated by the game like a sound (they ship in banks); the
 authoring side here creates and organises them.
@@ -160,7 +215,7 @@ authoring side here creates and organises them.
 
 | Tool | Signature | What it does |
 |------|-----------|--------------|
-| `folder_create` | `(kind, path)` | Find-or-create a folder chain (`"UI/HUD"`); kind = `EventFolder`/`AssetFolder`. `AssetFolder` isn't creatable in FMOD Studio 2.03.14 — errors clearly rather than silently no-op'ing. |
+| `folder_create` | `(kind, path)` | Find-or-create a folder chain (`"UI/HUD"`); kind = `EventFolder`/`BankFolder`. `AssetFolder` doesn't exist in 2.03 (asset folders are asset-path subdirectories — use `audio_asset_move`). |
 | `folder_list` | `(kind?)` | List folders (optionally filtered by kind). |
 
 ## Workspace (`workspace_tools.py`)
@@ -177,8 +232,12 @@ authoring side here creates and organises them.
 | Tool | Signature | What it does |
 |------|-----------|--------------|
 | `utility_lookup` | `(target)` | Resolve any object to guid/name/path. |
-| `utility_list` | `(obj_type)` | List a type: Event/Bank/MixerGroup/MixerBus/MixerVCA/Snapshot/Folder/Preset. |
+| `utility_list` | `(obj_type, include_derived?, within?)` | List any model entity type (capped), optionally with derived types / inside one object. |
 | `utility_is_valid` | `(target)` | Whether the object is valid. |
 | `utility_delete` | `(target)` | Delete any object (**destructive**). |
 | `utility_dump` | `(target)` | Real introspection: every plain settable property (with value) + every relationship (cardinality + count). **Use this before concluding a capability doesn't exist** — FMOD's own `dump()` only logs to Studio's own console, invisible to this bridge, and is not what this tool calls. |
-| `utility_validate` | `()` | Run project validation and report issues. |
+| `utility_validate` | `()` | Audit: events in no bank, events with no instruments, SingleSounds without audio, invalid objects. |
+| `utility_get_properties` | `(target)` | Every plain property → value. |
+| `utility_set_properties` | `(target, properties)` | Set any plain properties; names checked against the live object, types matched, values read back (`clamped` lists adjusted ones). |
+| `utility_set_relationship` | `(target, relationship, destination, action?)` | Add/remove a relationship destination, verified by read-back. |
+| `utility_describe_entity` | `(entity)` | A model type's schema via `entity.document()`. |
