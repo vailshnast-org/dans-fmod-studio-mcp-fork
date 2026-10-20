@@ -253,8 +253,10 @@ def register(mcp: FastMCP):
     async def utility_validate() -> dict:
         """Audit the project for problems that build fine but play wrong:
         events in no bank (never ship), events with no instruments, single
-        instruments with no audio (play silence), and invalid objects
-        (missing required relationships). Capped per category.
+        instruments with no audio (play silence), invalid objects (missing
+        required relationships), and events still named "New Event" /
+        "Nested Event" (usually leftovers; reported, not counted against
+        ok). Capped per category. For one event in depth use event_lint.
         """
         # The previous version called studio.project.validate(), which is not
         # part of FMOD's scripting API (absent from the 2.03 reference) — it
@@ -262,11 +264,13 @@ def register(mcp: FastMCP):
         return await client.execute(
             f"var cap={_VALIDATE_CAP};"
             "var events=studio.project.model.Event.findInstances()||[];"
-            "var noBank=[],empty=[],invalid=[],silent=[];"
+            "var noBank=[],empty=[],invalid=[],silent=[],defaultNamed=[];"
+            "var dn=/^(New Event|Nested Event)( \\d+)?$/;"
             "for(var i=0;i<events.length;i++){var e=events[i];"
             "var br=e.relationships.banks;"
             "var nb=(br&&br.destinations)?br.destinations.length:0;"
             "if(nb===0&&noBank.length<cap)noBank.push({guid:G(e),path:P(e)});"
+            "if(dn.test(N(e)||'')&&defaultNamed.length<cap)defaultNamed.push({guid:G(e),path:P(e)});"
             "var n=0;try{n=(studio.project.model.Sound.findInstances("
             "{searchContext:e,includeDerivedTypes:true})||[]).length;}catch(__e){n=-1;}"
             "if(n===0&&empty.length<cap)empty.push({guid:G(e),path:P(e)});}"
@@ -284,5 +288,6 @@ def register(mcp: FastMCP):
             "return {eventCount:events.length,"
             "eventsNotInAnyBank:noBank,eventsWithNoInstruments:empty,"
             "singleSoundsWithoutAudio:silent,invalidObjects:invalid,"
+            "eventsWithDefaultNames:defaultNamed,"
             "ok:noBank.length+empty.length+silent.length+invalid.length===0};"
         )

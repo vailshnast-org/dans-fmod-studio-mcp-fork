@@ -18,7 +18,15 @@ MARKER_ENTITY_TYPES = (
     "SustainPoint",
     "TransitionMarker",
     "TransitionRegion",
+    "TempoMarker",
 )
+
+# Tempo markers define the bars/beats that quantized transitions and
+# instruments snap to. Created as a TempoMarker linked to a marker track and
+# the event's timeline (confirmed live on 2.03.15; there is no addTempo*
+# method on MarkerTrack).
+TEMPO_RANGE = (1.0, 999.0)
+TIME_SIGNATURE_DENOMINATORS = (1, 2, 4, 8, 16, 32)
 
 
 def _check_name(name: str) -> None:
@@ -222,7 +230,8 @@ def register(mcp: FastMCP):
             "if(!cls)continue;"
             "var arr=cls.findInstances({searchContext:t})||[];"
             "for(var j=0;j<arr.length&&out.length<200;j++){"
-            "out.push({guid:G(arr[j]),name:N(arr[j]),markerType:types[i]});}"
+            "out.push({guid:G(arr[j]),name:N(arr[j]),markerType:types[i],"
+            "position:arr[j].position,length:arr[j].length,tempo:arr[j].tempo});}"
             "}catch(__e){}}"
             "return out;"
         )
@@ -345,4 +354,52 @@ def register(mcp: FastMCP):
             transition_target=transition_target,
             audio_track_target=audio_track_target,
             crossfade_length=crossfade_length,
+        )
+
+    @mcp.tool()
+    async def marker_add_tempo(
+        track_target: str,
+        position: float,
+        bpm: float,
+        beats_per_bar: int = 4,
+        beat_unit: int = 4,
+    ) -> dict:
+        """Add a tempo marker (BPM + time signature) — needed before
+        quantized transitions/instruments line up with the music's bars and
+        beats. Place one at 0 for the whole event, more where the tempo
+        changes.
+
+        Args:
+            track_target: Marker track {guid} from event_add_marker_track.
+            position: Timeline position in seconds (>= 0).
+            bpm: Tempo, 1-999.
+            beats_per_bar: Time signature numerator (1-32).
+            beat_unit: Time signature denominator (1, 2, 4, 8, 16, 32).
+        """
+        _check_position(position)
+        if not TEMPO_RANGE[0] <= bpm <= TEMPO_RANGE[1]:
+            raise FmodMCPError(ErrorCode.VALUE_OUT_OF_RANGE, "bpm must be 1-999")
+        if not 1 <= beats_per_bar <= 32:
+            raise FmodMCPError(ErrorCode.VALUE_OUT_OF_RANGE, "beats_per_bar must be 1-32")
+        if beat_unit not in TIME_SIGNATURE_DENOMINATORS:
+            raise FmodMCPError(
+                ErrorCode.VALUE_OUT_OF_RANGE,
+                f"beat_unit must be one of {TIME_SIGNATURE_DENOMINATORS}",
+            )
+        return await client.execute(
+            "var t=L(p.track_target);"
+            "if(!t.isOfType('MarkerTrack'))throw new Error(p.track_target+' is not a marker track');"
+            "var ev=t.event;if(!ev||!ev.timeline)throw new Error('marker track has no event timeline');"
+            "var m=studio.project.create('TempoMarker');"
+            "if(!m)throw new Error('could not create a TempoMarker');"
+            "m.markerTrack=t;m.timeline=ev.timeline;m.position=p.position;m.tempo=p.bpm;"
+            "m.timeSignatureNumerator=p.beats_per_bar;m.timeSignatureDenominator=p.beat_unit;"
+            "if(!m.isValid){studio.project.deleteObject(m);throw new Error('tempo marker did not become valid');}"
+            "return {guid:G(m),position:m.position,bpm:m.tempo,"
+            "timeSignature:m.timeSignatureNumerator+'/'+m.timeSignatureDenominator};",
+            track_target=track_target,
+            position=position,
+            bpm=bpm,
+            beats_per_bar=beats_per_bar,
+            beat_unit=beat_unit,
         )
