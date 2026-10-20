@@ -20,6 +20,8 @@ PROFILES: dict[str, set[str] | None] = {
     # game-audio authoring; drops mixer, banks, workspace navigation.
     "events": {
         "project_tools",
+        "analysis_tools",
+        "studio_tools",
         "event_tools",
         "sound_tools",
         "asset_tools",
@@ -34,6 +36,8 @@ PROFILES: dict[str, set[str] | None] = {
     # `mixer` — mixer structure, routing, effects, snapshots + minimal project.
     "mixer": {
         "project_tools",
+        "analysis_tools",
+        "studio_tools",
         "mixer_tools",
         "snapshot_tools",
         "automation_tools",
@@ -47,6 +51,8 @@ PROFILES: dict[str, set[str] | None] = {
     # `banks` — bank management, platform/build surface + minimal project.
     "banks": {
         "project_tools",
+        "analysis_tools",
+        "studio_tools",
         "bank_tools",
         "asset_tools",
         "folder_tools",
@@ -56,6 +62,7 @@ PROFILES: dict[str, set[str] | None] = {
     # `minimal` — smoke test / verify the bridge + read the project tree.
     "minimal": {
         "project_tools",
+        "studio_tools",
         "utility_tools",
         "workspace_tools",
     },
@@ -68,6 +75,7 @@ PROFILES: dict[str, set[str] | None] = {
 # quietly booting with fewer tools than intended.
 _EXPECTED_MODULES = frozenset(
     {
+        "analysis_tools",
         "asset_tools",
         "audition_tools",
         "automation_tools",
@@ -81,6 +89,7 @@ _EXPECTED_MODULES = frozenset(
         "project_tools",
         "snapshot_tools",
         "sound_tools",
+        "studio_tools",
         "utility_tools",
         "workspace_tools",
     }
