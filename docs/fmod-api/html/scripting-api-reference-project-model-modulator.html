@@ -1,0 +1,78 @@
+<html>
+<head>
+<title>Scripting API Reference | Project.Model.Modulator</title>
+<link rel="stylesheet" href="style/docs.css">
+<link rel="stylesheet" href="style/code_highlight.css">
+<script type="text/javascript" src="scripts/language-selector.js"></script></head>
+<body>
+<div class="docs-body">
+<div class="manual-toc">
+<p>FMOD Studio User Manual 2.03</p>
+<ul>
+<li><a href="welcome-to-fmod-studio.html">Welcome to FMOD Studio</a></li>
+<li><a href="fmod-studio-concepts.html">FMOD Studio Concepts</a></li>
+<li><a href="organizing-the-project.html">Organizing the Project</a></li>
+<li><a href="authoring-events.html">Authoring Events</a></li>
+<li><a href="working-with-instruments.html">Working with Instruments</a></li>
+<li><a href="managing-assets.html">Managing Assets</a></li>
+<li><a href="parameters.html">Parameters</a></li>
+<li><a href="getting-events-into-your-game.html">Getting Events into Your Game</a></li>
+<li><a href="mixing.html">Mixing</a></li>
+<li><a href="the-sandbox.html">The Sandbox</a></li>
+<li><a href="editing-during-live-update.html">Editing During Live Update</a></li>
+<li><a href="profiling.html">Profiling</a></li>
+<li><a href="dialogue-and-localization.html">Dialogue and Localization</a></li>
+<li><a href="using-source-control.html">Using Source Control</a></li>
+<li><a href="supporting-downloadable-and-user-generated-content.html">Supporting Downloadable and User-generated Content</a></li>
+<li><a href="advanced-topics.html">Advanced Topics</a></li>
+<li><a href="quick-start-tutorial.html">Quick Start Tutorial</a></li>
+<li><a href="effect-reference.html">Effect Reference</a></li>
+<li><a href="event-macro-controls-reference.html">Event Macros Drawer Reference</a></li>
+<li><a href="instrument-reference.html">Instrument Reference</a></li>
+<li><a href="keyboard-shortcut-reference.html">Keyboard Shortcut Reference</a></li>
+<li><a href="modulator-reference.html">Modulator Reference</a></li>
+<li><a href="parameters-reference.html">Parameters Reference</a></li>
+<li><a href="plugin-reference.html">Plug-in Reference</a></li>
+<li><a href="scripting-terminal-reference.html">Scripting</a></li>
+<li class="manual-current-chapter manual-inactive-chapter"><a href="scripting-api-reference.html">Scripting API Reference</a><ul class="subchapters"><li><a href="scripting-api-reference-globals.html">Globals</a></li><li><a href="scripting-api-reference-menu.html">Menu</a></li><li><a href="scripting-api-reference-project.html">Project</a></li><li><a href="scripting-api-reference-project-entity.html">Project.Entity</a></li><li><a href="scripting-api-reference-project-managedobject.html">Project.ManagedObject</a></li><li><a href="scripting-api-reference-project-model.html">Project.Model</a></li><li><a href="scripting-api-reference-project-model-asset.html">Project.Model.Asset</a></li><li><a href="scripting-api-reference-project-model-automatableobject.html">Project.Model.AutomatableObject</a></li><li><a href="scripting-api-reference-project-model-automationcurve.html">Project.Model.AutomationCurve</a></li><li><a href="scripting-api-reference-project-model-automator.html">Project.Model.Automator</a></li><li><a href="scripting-api-reference-project-model-bank.html">Project.Model.Bank</a></li><li><a href="scripting-api-reference-project-model-event.html">Project.Model.Event</a></li><li><a href="scripting-api-reference-project-model-folder.html">Project.Model.Folder</a></li><li><a href="scripting-api-reference-project-model-mixereffect.html">Project.Model.MixerEffect</a></li><li><a href="scripting-api-reference-project-model-mixerstrip.html">Project.Model.MixerStrip</a></li><li class="manual-current-chapter manual-active-chapter"><a href="scripting-api-reference-project-model-modulator.html">Project.Model.Modulator</a></li><li><a href="scripting-api-reference-project-model-parameter.html">Project.Model.Parameter</a></li><li><a href="scripting-api-reference-project-model-sound.html">Project.Model.Sound</a></li><li><a href="scripting-api-reference-project-model-track.html">Project.Model.Track</a></li><li><a href="scripting-api-reference-project-model-triggerable.html">Project.Model.Triggerable</a></li><li><a href="scripting-api-reference-project-workspace.html">Project.Workspace</a></li><li><a href="scripting-api-reference-system.html">System</a></li><li><a href="scripting-api-reference-ui.html">UI</a></li><li><a href="scripting-api-reference-window.html">Window</a></li></ul></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="glossary.html">Glossary</a></li>
+<li><a href="appendix-a-celeste.html">Appendix: Celeste Getting Started Guide</a></li>
+<li><a href="appendix-b-reaper-integration.html">Appendix: Reaper Integration</a></li>
+</ul>
+</div>
+<div class="manual-content studio">
+<h1>26. Scripting API Reference | Project.Model.Modulator</h1>
+<p><strong>Types:</strong></p>
+<ul>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-modulator.html#modeladsrmodulator" title="An AHDSR curve model.Modulator applied to a single property of a model.AutomatableObject.">model.ADSRModulator</a> An AHDSR curve <code>model.Modulator</code> applied to a single property of a <code>model.AutomatableObject</code>.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-modulator.html#modelautopitchmodulator" title="A model.Modulator that affects the pitch of an instrument across the range of model.GameParameters.">model.AutopitchModulator</a> A <code>model.Modulator</code> that affects the pitch of an instrument across the range of <code>model.GameParameter</code>s.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-modulator.html#modellfomodulator" title="A low frequency oscillator model.Modulator that applies a function to a single property of a model.AutomatableObject.">model.LFOModulator</a> A low frequency oscillator <code>model.Modulator</code> that applies a function to a single property of a <code>model.AutomatableObject</code>.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-modulator.html#modelmodulator" title="The base class for objects which additively affect the value of a model.AutomatableObject's property.">model.Modulator</a> The base class for objects which additively affect the value of a <code>model.AutomatableObject</code>'s property.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-modulator.html#modelrandomizermodulator" title="A model.Modulator that applies random values to a single property of a model.AutomatableObject.">model.RandomizerModulator</a> A <code>model.Modulator</code> that applies random values to a single property of a <code>model.AutomatableObject</code>.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-modulator.html#modelsidechainmodulator" title="A model.Modulator that uses the input signal from an external model.Sidechain to apply random values to a single property of a model.AutomatableObject.">model.SidechainModulator</a> A <code>model.Modulator</code> that uses the input <a href="glossary.html#signal">signal</a> from an external <code>model.Sidechain</code> to apply random values to a single property of a <code>model.AutomatableObject</code>.</span></li>
+</ul>
+<h2 api="function" id="modeladsrmodulator"><a href="#modeladsrmodulator">model.ADSRModulator</a></h2>
+<p>An AHDSR curve <a class="apilink" href="scripting-api-reference-project-model-modulator.html#modelmodulator">model.Modulator</a> applied to a single property of a <a class="apilink" href="scripting-api-reference-project-model-automatableobject.html#modelautomatableobject">model.AutomatableObject</a>.</p>
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/studio/modulator-reference.html#ahdsr-modulator">AHDSR Modulator</a></p>
+<h2 api="function" id="modelautopitchmodulator"><a href="#modelautopitchmodulator">model.AutopitchModulator</a></h2>
+<p>A <a class="apilink" href="scripting-api-reference-project-model-modulator.html#modelmodulator">model.Modulator</a> that affects the pitch of an instrument across the range of <a class="apilink" href="scripting-api-reference-project-model-parameter.html#modelgameparameter">model.GameParameter</a>s.</p>
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/studio/modulator-reference.html#autopitch-modulator">Autopitch Modulator</a></p>
+<h2 api="function" id="modellfomodulator"><a href="#modellfomodulator">model.LFOModulator</a></h2>
+<p>A low frequency oscillator <a class="apilink" href="scripting-api-reference-project-model-modulator.html#modelmodulator">model.Modulator</a> that applies a function to a single property of a <a class="apilink" href="scripting-api-reference-project-model-automatableobject.html#modelautomatableobject">model.AutomatableObject</a>.</p>
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/studio/modulator-reference.html#lfo-modulator">LFO Modulator</a></p>
+<h2 api="function" id="modelmodulator"><a href="#modelmodulator">model.Modulator</a></h2>
+<p>The base class for objects which additively affect the value of a <a class="apilink" href="scripting-api-reference-project-model-automatableobject.html#modelautomatableobject">model.AutomatableObject</a>'s property.</p>
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/studio/modulator-reference.html">Modulator</a></p>
+<h2 api="function" id="modelrandomizermodulator"><a href="#modelrandomizermodulator">model.RandomizerModulator</a></h2>
+<p>A <a class="apilink" href="scripting-api-reference-project-model-modulator.html#modelmodulator">model.Modulator</a> that applies random values to a single property of a <a class="apilink" href="scripting-api-reference-project-model-automatableobject.html#modelautomatableobject">model.AutomatableObject</a>.</p>
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/studio/modulator-reference.html#random-modulator">Random Modulator</a></p>
+<h2 api="function" id="modelsidechainmodulator"><a href="#modelsidechainmodulator">model.SidechainModulator</a></h2>
+<p>A <a class="apilink" href="scripting-api-reference-project-model-modulator.html#modelmodulator">model.Modulator</a> that uses the input <a href="glossary.html#signal">signal</a> from an external <a class="apilink" href="scripting-api-reference-project-model-mixereffect.html#modelsidechain">model.Sidechain</a> to apply random values to a single property of a <a class="apilink" href="scripting-api-reference-project-model-automatableobject.html#modelautomatableobject">model.AutomatableObject</a>.</p>
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/studio/modulator-reference.html#sidechain-modulator">Sidechain Modulator</a>, <a href="https://fmod.com/docs/2.03/studio/glossary.html#sidechain-effect">Sidechain Effect</a></p></div>
+
+<p class="manual-footer">FMOD Studio User Manual 2.03.15 (2026-09-21). &copy; 2026 Firelight Technologies Pty Ltd.</p>
+</div>
+</body>
+</html>
+

@@ -1,0 +1,149 @@
+<html>
+<head>
+<title>Scripting API Reference | Project.Entity</title>
+<link rel="stylesheet" href="style/docs.css">
+<link rel="stylesheet" href="style/code_highlight.css">
+<script type="text/javascript" src="scripts/language-selector.js"></script></head>
+<body>
+<div class="docs-body">
+<div class="manual-toc">
+<p>FMOD Studio User Manual 2.03</p>
+<ul>
+<li><a href="welcome-to-fmod-studio.html">Welcome to FMOD Studio</a></li>
+<li><a href="fmod-studio-concepts.html">FMOD Studio Concepts</a></li>
+<li><a href="organizing-the-project.html">Organizing the Project</a></li>
+<li><a href="authoring-events.html">Authoring Events</a></li>
+<li><a href="working-with-instruments.html">Working with Instruments</a></li>
+<li><a href="managing-assets.html">Managing Assets</a></li>
+<li><a href="parameters.html">Parameters</a></li>
+<li><a href="getting-events-into-your-game.html">Getting Events into Your Game</a></li>
+<li><a href="mixing.html">Mixing</a></li>
+<li><a href="the-sandbox.html">The Sandbox</a></li>
+<li><a href="editing-during-live-update.html">Editing During Live Update</a></li>
+<li><a href="profiling.html">Profiling</a></li>
+<li><a href="dialogue-and-localization.html">Dialogue and Localization</a></li>
+<li><a href="using-source-control.html">Using Source Control</a></li>
+<li><a href="supporting-downloadable-and-user-generated-content.html">Supporting Downloadable and User-generated Content</a></li>
+<li><a href="advanced-topics.html">Advanced Topics</a></li>
+<li><a href="quick-start-tutorial.html">Quick Start Tutorial</a></li>
+<li><a href="effect-reference.html">Effect Reference</a></li>
+<li><a href="event-macro-controls-reference.html">Event Macros Drawer Reference</a></li>
+<li><a href="instrument-reference.html">Instrument Reference</a></li>
+<li><a href="keyboard-shortcut-reference.html">Keyboard Shortcut Reference</a></li>
+<li><a href="modulator-reference.html">Modulator Reference</a></li>
+<li><a href="parameters-reference.html">Parameters Reference</a></li>
+<li><a href="plugin-reference.html">Plug-in Reference</a></li>
+<li><a href="scripting-terminal-reference.html">Scripting</a></li>
+<li class="manual-current-chapter manual-inactive-chapter"><a href="scripting-api-reference.html">Scripting API Reference</a><ul class="subchapters"><li><a href="scripting-api-reference-globals.html">Globals</a></li><li><a href="scripting-api-reference-menu.html">Menu</a></li><li><a href="scripting-api-reference-project.html">Project</a></li><li class="manual-current-chapter manual-active-chapter"><a href="scripting-api-reference-project-entity.html">Project.Entity</a></li><li><a href="scripting-api-reference-project-managedobject.html">Project.ManagedObject</a></li><li><a href="scripting-api-reference-project-model.html">Project.Model</a></li><li><a href="scripting-api-reference-project-model-asset.html">Project.Model.Asset</a></li><li><a href="scripting-api-reference-project-model-automatableobject.html">Project.Model.AutomatableObject</a></li><li><a href="scripting-api-reference-project-model-automationcurve.html">Project.Model.AutomationCurve</a></li><li><a href="scripting-api-reference-project-model-automator.html">Project.Model.Automator</a></li><li><a href="scripting-api-reference-project-model-bank.html">Project.Model.Bank</a></li><li><a href="scripting-api-reference-project-model-event.html">Project.Model.Event</a></li><li><a href="scripting-api-reference-project-model-folder.html">Project.Model.Folder</a></li><li><a href="scripting-api-reference-project-model-mixereffect.html">Project.Model.MixerEffect</a></li><li><a href="scripting-api-reference-project-model-mixerstrip.html">Project.Model.MixerStrip</a></li><li><a href="scripting-api-reference-project-model-modulator.html">Project.Model.Modulator</a></li><li><a href="scripting-api-reference-project-model-parameter.html">Project.Model.Parameter</a></li><li><a href="scripting-api-reference-project-model-sound.html">Project.Model.Sound</a></li><li><a href="scripting-api-reference-project-model-track.html">Project.Model.Track</a></li><li><a href="scripting-api-reference-project-model-triggerable.html">Project.Model.Triggerable</a></li><li><a href="scripting-api-reference-project-workspace.html">Project.Workspace</a></li><li><a href="scripting-api-reference-system.html">System</a></li><li><a href="scripting-api-reference-ui.html">UI</a></li><li><a href="scripting-api-reference-window.html">Window</a></li></ul></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="glossary.html">Glossary</a></li>
+<li><a href="appendix-a-celeste.html">Appendix: Celeste Getting Started Guide</a></li>
+<li><a href="appendix-b-reaper-integration.html">Appendix: Reaper Integration</a></li>
+</ul>
+</div>
+<div class="manual-content studio">
+<h1>26. Scripting API Reference | Project.Entity</h1>
+<p>A <code>studio.project.Entity</code> provides information about the type of a <a class="apilink" href="scripting-api-reference-project-managedobject.html#managedobject">ManagedObject</a>.</p>
+<p>The entity for a given <a class="apilink" href="scripting-api-reference-project-managedobject.html#managedobject">ManagedObject</a> can be retrieved using <a class="apilink" href="scripting-api-reference-project-managedobject.html#managedobjectentity">ManagedObject.entity</a>. This provides the string representation for an entity, which can then be looked up in the <a class="apilink" href="scripting-api-reference-project-model.html">project.model</a>.</p>
+<p><strong>Properties:</strong></p>
+<ul>
+<li><span><a class="apilink" href="scripting-api-reference-project-entity.html#entityisabstract" title="A constant boolean value that is set to true if an object is the base class of another entity type.">entity.isAbstract</a> A constant boolean value that is set to true if an object is the base class of another entity type.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-entity.html#entityisglobal" title="A constant boolean value that is set to true if an entity exists globally, rather than on a per project basis.">entity.isGlobal</a> A constant boolean value that is set to true if an entity exists globally, rather than on a per project basis.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-entity.html#entityissingleton" title="A constant boolean value that is set to true if only a single ManagedObject instance of the entity can exist at any given time.">entity.isSingleton</a> A constant boolean value that is set to true if only a single <code>ManagedObject</code> instance of the entity can exist at any given time.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-entity.html#entityproperties" title="Returns an array of property description objects containing named properties that represent each ManagedObject property available for this entity.">entity.properties</a> Returns an array of property description objects containing named properties that represent each <code>ManagedObject</code> property available for this entity.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-entity.html#entitysuperentities" title="An array of strings representing the entity type inherited by this entity.">entity.superentities</a> An array of strings representing the entity type inherited by this entity.</span></li>
+</ul>
+<p><strong>Methods:</strong></p>
+<ul>
+<li><span><a class="apilink" href="scripting-api-reference-project-entity.html#entitydocument" title="Returns a string describing the entity, including its properties and relationships.">entity.document</a> Returns a string describing the entity, including its properties and relationships.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-entity.html#entityfindinstances" title="Returns an array of ManagedObject instances of a given entity type.">entity.findInstances</a> Returns an array of <code>ManagedObject</code> instances of a given entity type.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-entity.html#entitysingletoninstance" title="Returns the singleton ManagedObject instance of a particular entity type.">entity.singletonInstance</a> Returns the singleton <code>ManagedObject</code> instance of a particular entity type.</span></li>
+</ul>
+<p><strong>Objects:</strong></p>
+<ul>
+<li><span><a class="apilink" href="scripting-api-reference-project-entity.html#relationship-description-object" title="An unnamed data object describing the relationship between two entities.">Relationship Description Object</a> An unnamed data object describing the relationship between two entities.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-entity.html#property-description-object" title="An unnamed data object containing the data type and default value of a property.">Property Description Object</a> An unnamed data object containing the data type and default value of a property.</span></li>
+</ul>
+<h2 api="function" id="entityisabstract"><a href="#entityisabstract">entity.isAbstract</a></h2>
+<p>A constant boolean value that is set to true if an object is the base class of another entity type.</p>
+<p>Abstract entities cannot be instantiated with <a class="apilink" href="scripting-api-reference-project.html#projectcreate">project.create</a>.</p>
+<h2 api="function" id="entityisglobal"><a href="#entityisglobal">entity.isGlobal</a></h2>
+<p>A constant boolean value that is set to true if an entity exists globally, rather than on a per project basis.</p>
+<h2 api="function" id="entityissingleton"><a href="#entityissingleton">entity.isSingleton</a></h2>
+<p>A constant boolean value that is set to true if only a single <a class="apilink" href="scripting-api-reference-project-managedobject.html#managedobject">ManagedObject</a> instance of the entity can exist at any given time.</p>
+<h2 api="function" id="entityproperties"><a href="#entityproperties">entity.properties</a></h2>
+<p>Returns an array of property description objects containing named properties that represent each <a class="apilink" href="scripting-api-reference-project-managedobject.html#managedobject">ManagedObject</a> property available for this entity.</p>
+<p><strong>See Also:</strong> <a class="apilink" href="scripting-api-reference-project-entity.html#property-description-object">Property Description Object</a></p>
+<h2 api="function" id="entitysuperentities"><a href="#entitysuperentities">entity.superEntities</a></h2>
+<p>An array of strings representing the entity type inherited by this entity.</p>
+<h2 api="function" id="entitydocument"><a href="#entitydocument">entity.document</a></h2>
+<p>Returns a string describing the entity, including its properties and relationships.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">entity</span><span class="p">.</span><span class="nb">document</span><span class="p">()</span>
+</pre></div>
+
+<h2 api="function" id="entityfindinstances"><a href="#entityfindinstances">entity.findInstances</a></h2>
+<p>Returns an array of <a class="apilink" href="scripting-api-reference-project-managedobject.html#managedobject">ManagedObject</a> instances of a given entity type.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">entity</span><span class="p">.</span><span class="nx">findInstances</span><span class="p">(</span>
+    <span class="p">[</span><span class="nx">options</span><span class="p">]</span>
+<span class="p">)</span>
+</pre></div>
+
+<p>You can optionally pass an <code>options</code> object <code>{ searchContext, includeDerivedTypes }</code>. Passing a managed object for the <code>searchContext</code> field confines the search to children of that object. Passing <code>true</code> for the <code>includeDerivedTypes</code> field will allow derived types of the given entity to be returned.</p>
+<p>For example:</p>
+<div class="highlight language-javascript"><pre><span></span><span class="c1">// find all SingleSounds within the project</span>
+<span class="nx">studio</span><span class="p">.</span><span class="nx">project</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">SingleSound</span><span class="p">.</span><span class="nx">findInstances</span><span class="p">();</span>
+
+<span class="c1">// find all SingleSounds within the currently selected event</span>
+<span class="nx">studio</span><span class="p">.</span><span class="nx">project</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">SingleSound</span><span class="p">.</span><span class="nx">findInstances</span><span class="p">({</span> <span class="nx">searchContext</span><span class="o">:</span> <span class="nx">studio</span><span class="p">.</span><span class="nb">window</span><span class="p">.</span><span class="nx">browserCurrent</span><span class="p">()</span> <span class="p">});</span>
+
+<span class="c1">// find all GroupTracks, ReturnTracks and MasterTracks within the currently selected event</span>
+<span class="nx">studio</span><span class="p">.</span><span class="nx">project</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">AudioTrack</span><span class="p">.</span><span class="nx">findInstances</span><span class="p">({</span> <span class="nx">searchContext</span><span class="o">:</span> <span class="nx">studio</span><span class="p">.</span><span class="nb">window</span><span class="p">.</span><span class="nx">browserCurrent</span><span class="p">(),</span> <span class="nx">includeDerivedTypes</span><span class="o">:</span> <span class="kc">true</span> <span class="p">});</span>
+</pre></div>
+
+<h2 api="function" id="entitysingletoninstance"><a href="#entitysingletoninstance">entity.singletonInstance</a></h2>
+<p>Returns the singleton <a class="apilink" href="scripting-api-reference-project-managedobject.html#managedobject">ManagedObject</a> instance of a particular entity type.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">entity</span><span class="p">.</span><span class="nx">singletonInstance</span><span class="p">()</span>
+</pre></div>
+
+<p>An error will be thrown if the entity is not a singleton type.</p>
+<h2 api="function" id="relationship-description-object"><a href="#relationship-description-object">Relationship Description Object</a></h2>
+<p>An unnamed data object describing the relationship between two entities.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="p">{</span>
+    <span class="nx">cardinality</span><span class="o">:</span> <span class="p">[</span><span class="nx">string</span><span class="p">],</span>
+    <span class="nx">destinationType</span><span class="o">:</span> <span class="p">[</span><span class="nx">string</span><span class="p">],</span>
+    <span class="nx">isRequired</span><span class="o">:</span> <span class="p">[</span><span class="nx">bool</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+
+<dl>
+<dt>cardinality</dt>
+<dd>Description of relationship, e.g. one-to-many, many-to-one.</dd>
+<dt>destinationType</dt>
+<dd>Entity type the relationship targets.</dd>
+<dt>isRequired</dt>
+<dd>Indicates whether this relationship is required.</dd>
+</dl>
+<h2 api="function" id="property-description-object"><a href="#property-description-object">Property Description Object</a></h2>
+<p>An unnamed data object containing the data type and default value of a property.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="p">{</span>
+    <span class="nx">dataType</span><span class="o">:</span> <span class="p">[</span><span class="nx">string</span><span class="p">],</span>
+    <span class="nx">defaultValue</span><span class="o">:</span> <span class="p">[</span><span class="nx">variant</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+
+<dl>
+<dt>dataType</dt>
+<dd>The type of data the property represents.</dd>
+<dt>defaultValue</dt>
+<dd>The default value of the property.</dd>
+</dl>
+<p>This is the object type returned from <a class="apilink" href="scripting-api-reference-project-entity.html#entityproperties">entity.Properties</a>.</p>
+<h2 api="function" id="entityrelationships"><a href="#entityrelationships">entity.relationships</a></h2>
+<p>Returns an array of relationship description objects, containing named relationships that represents each <a class="apilink" href="scripting-api-reference-project-managedobject.html#managedobject">ManagedObject</a> relationship available for this entity.</p>
+<p><strong>See Also:</strong> <a class="apilink" href="scripting-api-reference-project-entity.html#relationship-description-object">Relationship Description Object</a></p></div>
+
+<p class="manual-footer">FMOD Studio User Manual 2.03.15 (2026-09-21). &copy; 2026 Firelight Technologies Pty Ltd.</p>
+</div>
+</body>
+</html>
+

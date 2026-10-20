@@ -1,0 +1,90 @@
+<html>
+<head>
+<title>Scripting API Reference | Menu</title>
+<link rel="stylesheet" href="style/docs.css">
+<link rel="stylesheet" href="style/code_highlight.css">
+<script type="text/javascript" src="scripts/language-selector.js"></script></head>
+<body>
+<div class="docs-body">
+<div class="manual-toc">
+<p>FMOD Studio User Manual 2.03</p>
+<ul>
+<li><a href="welcome-to-fmod-studio.html">Welcome to FMOD Studio</a></li>
+<li><a href="fmod-studio-concepts.html">FMOD Studio Concepts</a></li>
+<li><a href="organizing-the-project.html">Organizing the Project</a></li>
+<li><a href="authoring-events.html">Authoring Events</a></li>
+<li><a href="working-with-instruments.html">Working with Instruments</a></li>
+<li><a href="managing-assets.html">Managing Assets</a></li>
+<li><a href="parameters.html">Parameters</a></li>
+<li><a href="getting-events-into-your-game.html">Getting Events into Your Game</a></li>
+<li><a href="mixing.html">Mixing</a></li>
+<li><a href="the-sandbox.html">The Sandbox</a></li>
+<li><a href="editing-during-live-update.html">Editing During Live Update</a></li>
+<li><a href="profiling.html">Profiling</a></li>
+<li><a href="dialogue-and-localization.html">Dialogue and Localization</a></li>
+<li><a href="using-source-control.html">Using Source Control</a></li>
+<li><a href="supporting-downloadable-and-user-generated-content.html">Supporting Downloadable and User-generated Content</a></li>
+<li><a href="advanced-topics.html">Advanced Topics</a></li>
+<li><a href="quick-start-tutorial.html">Quick Start Tutorial</a></li>
+<li><a href="effect-reference.html">Effect Reference</a></li>
+<li><a href="event-macro-controls-reference.html">Event Macros Drawer Reference</a></li>
+<li><a href="instrument-reference.html">Instrument Reference</a></li>
+<li><a href="keyboard-shortcut-reference.html">Keyboard Shortcut Reference</a></li>
+<li><a href="modulator-reference.html">Modulator Reference</a></li>
+<li><a href="parameters-reference.html">Parameters Reference</a></li>
+<li><a href="plugin-reference.html">Plug-in Reference</a></li>
+<li><a href="scripting-terminal-reference.html">Scripting</a></li>
+<li class="manual-current-chapter manual-inactive-chapter"><a href="scripting-api-reference.html">Scripting API Reference</a><ul class="subchapters"><li><a href="scripting-api-reference-globals.html">Globals</a></li><li class="manual-current-chapter manual-active-chapter"><a href="scripting-api-reference-menu.html">Menu</a></li><li><a href="scripting-api-reference-project.html">Project</a></li><li><a href="scripting-api-reference-project-entity.html">Project.Entity</a></li><li><a href="scripting-api-reference-project-managedobject.html">Project.ManagedObject</a></li><li><a href="scripting-api-reference-project-model.html">Project.Model</a></li><li><a href="scripting-api-reference-project-model-asset.html">Project.Model.Asset</a></li><li><a href="scripting-api-reference-project-model-automatableobject.html">Project.Model.AutomatableObject</a></li><li><a href="scripting-api-reference-project-model-automationcurve.html">Project.Model.AutomationCurve</a></li><li><a href="scripting-api-reference-project-model-automator.html">Project.Model.Automator</a></li><li><a href="scripting-api-reference-project-model-bank.html">Project.Model.Bank</a></li><li><a href="scripting-api-reference-project-model-event.html">Project.Model.Event</a></li><li><a href="scripting-api-reference-project-model-folder.html">Project.Model.Folder</a></li><li><a href="scripting-api-reference-project-model-mixereffect.html">Project.Model.MixerEffect</a></li><li><a href="scripting-api-reference-project-model-mixerstrip.html">Project.Model.MixerStrip</a></li><li><a href="scripting-api-reference-project-model-modulator.html">Project.Model.Modulator</a></li><li><a href="scripting-api-reference-project-model-parameter.html">Project.Model.Parameter</a></li><li><a href="scripting-api-reference-project-model-sound.html">Project.Model.Sound</a></li><li><a href="scripting-api-reference-project-model-track.html">Project.Model.Track</a></li><li><a href="scripting-api-reference-project-model-triggerable.html">Project.Model.Triggerable</a></li><li><a href="scripting-api-reference-project-workspace.html">Project.Workspace</a></li><li><a href="scripting-api-reference-system.html">System</a></li><li><a href="scripting-api-reference-ui.html">UI</a></li><li><a href="scripting-api-reference-window.html">Window</a></li></ul></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="glossary.html">Glossary</a></li>
+<li><a href="appendix-a-celeste.html">Appendix: Celeste Getting Started Guide</a></li>
+<li><a href="appendix-b-reaper-integration.html">Appendix: Reaper Integration</a></li>
+</ul>
+</div>
+<div class="manual-content studio">
+<h1>26. Scripting API Reference | Menu</h1>
+<div class="toc">
+<ul>
+<li><a href="#module-menu">Module: Menu</a><ul>
+<li><a href="#menuaddmenuitemdescription">menu.addMenuItem(description)</a></li>
+<li><a href="#menuremovemenuitemdescription">menu.removeMenuItem(description)</a></li>
+<li><a href="#menumenuitems">menu.menuItems()</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<h2 id="module-menu"><a href="#module-menu">Module: Menu</a></h2>
+<p>The <code>studio.menu</code> module provides access to menu bar items.</p>
+<h3 id="menuaddmenuitemdescription"><a href="#menuaddmenuitemdescription">menu.addMenuItem(description)</a></h3>
+<p>Registers a menu item under the "Scripts" menu, based on the description object:</p>
+<div class="highlight language-javascript"><pre><span></span><span class="p">{</span>
+    <span class="nx">name</span><span class="o">:</span> <span class="p">[</span><span class="nx">string</span><span class="p">]</span> <span class="p">(</span><span class="nx">required</span><span class="p">),</span>
+    <span class="nx">execute</span><span class="o">:</span> <span class="p">[</span><span class="kd">function</span><span class="p">]</span> <span class="p">(</span><span class="nx">required</span><span class="p">),</span>
+    <span class="nx">keySequence</span><span class="o">:</span> <span class="p">[</span><span class="nx">string</span><span class="p">],</span>
+    <span class="nx">isEnabled</span><span class="o">:</span> <span class="p">[</span><span class="nx">bool</span><span class="p">]</span> <span class="p">(</span><span class="nx">dynamic</span><span class="p">),</span>
+    <span class="nx">isChecked</span><span class="o">:</span> <span class="p">[</span><span class="nx">bool</span><span class="p">]</span> <span class="p">(</span><span class="nx">dynamic</span><span class="p">),</span>
+    <span class="nx">subMenuItems</span><span class="o">:</span> <span class="p">[</span><span class="nx">array</span><span class="p">(</span><span class="nx">description</span><span class="p">)]</span> <span class="p">(</span><span class="nx">dynamic</span><span class="p">),</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>The name property must be a string, but other properties can specify a function to be called dynamically, which returns a value of the expected type (for example, you may want to reevaluate <code>isEnabled</code> based on what's selected). Using a '\' character in the item name will place it in a submenu. Adding an item with a name containing all dashes ('-' character) will result in a separator being added.</p>
+<ul>
+<li><code>name</code>: The name of the menu item that appears in the menu.</li>
+<li><code>execute</code>: The function to be called by the menu item.</li>
+<li><code>keySequence</code>: The keyboard shortcut for the menu item.</li>
+<li><code>isEnabled</code>: Determines when the menu item becomes enabled.</li>
+<li><code>isChecked</code>: Determines whether a checkmark appears next to the menu item.</li>
+<li><code>subMenuItems</code>: Specifies the items that appear in the menu item's associated submenu, if any.</li>
+</ul>
+<p>Returns <code>true</code> if the operation succeeds, or <code>false</code> otherwise.</p>
+<h3 id="menuremovemenuitemdescription"><a href="#menuremovemenuitemdescription">menu.removeMenuItem(description)</a></h3>
+<p>Removes a menu item that was added with <a href="#menuaddmenuitemdescription">menu.addMenuItem()</a>. The <code>description</code> argument must match a <code>description</code> that the menu item was added with.</p>
+<p>Returns <code>true</code> if the operation succeeds, or <code>false</code> otherwise.</p>
+<h3 id="menumenuitems"><a href="#menumenuitems">menu.menuItems()</a></h3>
+<p>Returns an <code>Array</code> of menu item descriptions added with <a href="#menuaddmenuitemdescription">menu.addMenuItem()</a>. The order of the <code>Array</code> matches the order in which the items were added.</p></div>
+
+<p class="manual-footer">FMOD Studio User Manual 2.03.15 (2026-09-21). &copy; 2026 Firelight Technologies Pty Ltd.</p>
+</div>
+</body>
+</html>
+

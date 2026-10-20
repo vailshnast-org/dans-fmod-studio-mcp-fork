@@ -1,0 +1,195 @@
+<html>
+<head>
+<title>Parameters Reference</title>
+<link rel="stylesheet" href="style/docs.css">
+<link rel="stylesheet" href="style/code_highlight.css">
+<script type="text/javascript" src="scripts/language-selector.js"></script></head>
+<body>
+<div class="docs-body">
+<div class="manual-toc">
+<p>FMOD Studio User Manual 2.03</p>
+<ul>
+<li><a href="welcome-to-fmod-studio.html">Welcome to FMOD Studio</a></li>
+<li><a href="fmod-studio-concepts.html">FMOD Studio Concepts</a></li>
+<li><a href="organizing-the-project.html">Organizing the Project</a></li>
+<li><a href="authoring-events.html">Authoring Events</a></li>
+<li><a href="working-with-instruments.html">Working with Instruments</a></li>
+<li><a href="managing-assets.html">Managing Assets</a></li>
+<li><a href="parameters.html">Parameters</a></li>
+<li><a href="getting-events-into-your-game.html">Getting Events into Your Game</a></li>
+<li><a href="mixing.html">Mixing</a></li>
+<li><a href="the-sandbox.html">The Sandbox</a></li>
+<li><a href="editing-during-live-update.html">Editing During Live Update</a></li>
+<li><a href="profiling.html">Profiling</a></li>
+<li><a href="dialogue-and-localization.html">Dialogue and Localization</a></li>
+<li><a href="using-source-control.html">Using Source Control</a></li>
+<li><a href="supporting-downloadable-and-user-generated-content.html">Supporting Downloadable and User-generated Content</a></li>
+<li><a href="advanced-topics.html">Advanced Topics</a></li>
+<li><a href="quick-start-tutorial.html">Quick Start Tutorial</a></li>
+<li><a href="effect-reference.html">Effect Reference</a></li>
+<li><a href="event-macro-controls-reference.html">Event Macros Drawer Reference</a></li>
+<li><a href="instrument-reference.html">Instrument Reference</a></li>
+<li><a href="keyboard-shortcut-reference.html">Keyboard Shortcut Reference</a></li>
+<li><a href="modulator-reference.html">Modulator Reference</a></li>
+<li class="manual-current-chapter manual-active-chapter"><a href="parameters-reference.html">Parameters Reference</a><ul>
+<li><a href="#timeline-parameters">Timeline Parameters</a></li>
+<li><a href="#user-parameters">User Parameters</a><ul>
+<li><a href="#continuous-user-parameters">Continuous User Parameters</a></li>
+<li><a href="#labeled-user-parameters">Labeled User Parameters</a></li>
+<li><a href="#discrete-user-parameters">Discrete User Parameters</a></li>
+</ul>
+</li>
+<li><a href="#built-in-parameters">Built-in parameters</a><ul>
+<li><a href="#distance">Distance</a></li>
+<li><a href="#distance-normalized">Distance (Normalized)</a></li>
+<li><a href="#direction">Direction</a></li>
+<li><a href="#elevation">Elevation</a></li>
+<li><a href="#event-cone-angle">Event Cone Angle</a></li>
+<li><a href="#event-orientation">Event Orientation</a></li>
+<li><a href="#speed-relative">Speed (Relative)</a></li>
+<li><a href="#speed-absolute">Speed (Absolute)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="plugin-reference.html">Plug-in Reference</a></li>
+<li><a href="scripting-terminal-reference.html">Scripting</a></li>
+<li><a href="scripting-api-reference.html">Scripting API Reference</a></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="glossary.html">Glossary</a></li>
+<li><a href="appendix-a-celeste.html">Appendix: Celeste Getting Started Guide</a></li>
+<li><a href="appendix-b-reaper-integration.html">Appendix: Reaper Integration</a></li>
+</ul>
+</div>
+<div class="manual-content studio">
+<h1>23. Parameters Reference</h1>
+<p>A parameter is an <a href="glossary.html#event-property">event property</a> that can be used to trigger and control an event's <a href="glossary.html#instrument">instruments</a>, <a href="glossary.html#logic-marker">logic markers</a>, and <a href="glossary.html#automation">automatable</a> <a href="glossary.html#event-property">properties</a>, and whose value can be set by game code. This chapter describes the properties, settings, and behaviors of each type of parameter in detail.</p>
+<p>For information about adding parameters to events and possible uses of parameters in games, please see the <a href="authoring-events.html#parameters">parameters</a> section of the <a href="authoring-events.html">authoring events</a> chapter and the <a href="parameters.html">parameters</a> chapter.</p>
+<p>A parameter has settings that can be changed in the <span class="dead-link" href="glossary.html#edit-parameter-dialog">edit parameter dialog</span class="dead-link">.</p>
+<p><img alt="The Edit Parameter Dialog" src="images/editParameterDialog.png" /></p>
+<p>The following settings are common to most parameters.</p>
+<dl>
+<dt><strong>Parameter Type</strong> (Dropdown menu)</dt>
+<dd>There are several different types of <a href="glossary.html#parameter">parameter</a>. Each type has different behaviors, settings, and potential applications. For information about specific types of parameter, see the <a href="#timeline-parameters">timeline parameters</a>, <a href="#user-parameters">user parameters</a>, and <a href="#built-in-parameters">built-in parameters</a> sections of this chapter.</dd>
+<dt><strong>Parameter Name</strong> (Text field)</dt>
+<dd>The name of a parameter appears in the <a href="glossary.html#parameters-browser">parameters browser</a> and on all instances of that parameter throughout your project. Multiple parameters may have the same name only if they are located in different folders. Your game can use the name of a <a href="glossary.html#local-parameter">local parameter</a> instance or global parameter to get and set its value. For information on getting and setting the values of global parameters, see <a href="https://fmod.com/docs/2.03/api/studio-api-system.html#studio_system_getparameterbyname">Studio::System::getParameterByName</a> and <a href="https://fmod.com/docs/2.03/api/studio-api-system.html#studio_system_setparameterbyname">Studio::System::setParameterByName</a> in the <a href="https://fmod.com/docs/2.03/api">FMOD Engine User Manual</a>, and for information on getting and setting the values of local parameter instances, see <a href="https://fmod.com/docs/2.03/api/studio-api-eventinstance.html#studio_eventinstance_getparameterbyname">Studio::EventInstance::getParameterByName</a> and <a href="https://fmod.com/docs/2.03/api/studio-api-eventinstance.html#studio_eventinstance_setparameterbyname">Studio::EventInstance::setParameterByName</a>.</dd>
+<dt><strong>Range</strong> (Number fields)</dt>
+<dd>Every parameter has a specific range of possible values. If a parameter is set to a value outside of its range, it is instead set to closest value within that range. For information about how range is defined for specific types of parameters, see the <a href="#timeline-parameters">timeline parameters</a>, <a href="#user-parameters">user parameters</a>, and <a href="#built-in-parameters">built-in parameters</a> sections of this chapter.</dd>
+<dt><strong>Parameter Scope</strong> (Radio buttons)</dt>
+<dd>The scope of a parameter may be either <a href="glossary.html#local-parameter">local</a> or <a href="glossary.html#global-parameter">global</a>. The value of a global parameter is shared by every instance of that parameter in your project. The value of a local parameter can be different in each event instance that contains an instance of that parameter.</dd>
+<dt><strong>Hold value during playback</strong> (Checkbox)</dt>
+<dd>The values of a parameter may be held during playback. The values of held local parameters can be set to new values only when their event instances are not playing or paused. This means you can set the held local parameters in an event instance before that instance starts, but not when it is playing. Held global parameters cannot be set to new values by your game under any circumstances.</dd>
+</dl>
+<p>Other properties that appear in the edit parameter dialog are specific to certain types of parameter.</p>
+<p>Certain additional parameter properties can be viewed in a parameter's deck.</p>
+<p><img alt="A Parameter Deck" src="images/parameterDeck.png" /></p>
+<p>The parameter deck allows you to set a parameter's current value, as well as the parameter's velocity.</p>
+<dl>
+<dt><strong>Velocity</strong> (Dial)</dt>
+<dd>Velocity causes a parameter's current value to continually ramp up or down at a fixed rate, until it reaches the parameter's minimum or maximum value. This allows a parameter to change value over time even without being set to a new value. Only user parameters may have velocity.<br />
+<strong>Units</strong>: Units per second.</dd>
+</dl>
+<p>When a parameter is subject to both a <a href="glossary.html#seek-modulator">seek modulator</a> and velocity, setting the parameter to a new value causes it to ramp to that value at the rate specified by its seek modulator, then to resume moving at the rate specified by its velocity.</p>
+<p>Every property and setting of a parameter is shared between all instances of that parameter.</p>
+<h2 id="timeline-parameters"><a href="#timeline-parameters">23.1 Timeline Parameters</a></h2>
+<p>Unlike all other <a href="glossary.html#parameter">parameter</a> types, timeline parameters are unique to their <a href="glossary.html#parent-event">parent event</a> and cannot be used in other events, and cannot be created or changed with the <span class="dead-link" href="glossary.html#edit-parameter-dialog">edit parameter dialog</span class="dead-link">. Timeline parameter sheets can contain <a href="glossary.html#logic-marker">logic markers</a>, but cannot be used for the <span class="dead-link" href="glossary.html#parameter-trigger-condition">parameter trigger conditions</span class="dead-link"> of <a href="glossary.html#instrument">instruments</a> or logic markers.</p>
+<p><img alt="Logic Markers" src="images/logicTracksWithMarkers.png" /></p>
+<p>An event can contain no more than one timeline parameter. Timelines cannot be given names.</p>
+<p>A timeline's minimum value is always 0. The maximum value of a timeline is based on the rightmost logic marker or instrument on that parameter. The <span class="dead-link" href="glossary.html#initial-value">initial value</span class="dead-link"> of a timeline is always 0.</p>
+<p>Timeline parameters are always <a href="glossary.html#local-parameter">local</a> in <span class="dead-link" href="glossary.html#parameter-scope">scope</span class="dead-link">, and the value of a timeline cannot be <a href="glossary.html#modulator">modulated</a> or <a href="glossary.html#automation">automated</a>.</p>
+<p>The value of a timeline automatically advances when the event instance containing that parameter is playing, unless its <a href="glossary.html#playback-position">current value</a> reaches a <a href="glossary.html#sustain-point">sustain point</a>. The rate at which a timeline advances is scaled by the event's <span class="dead-link" href="glossary.html#event-pitch">pitch property</span class="dead-link">, found in the event's <span class="dead-link" href="glossary.html#macros-drawer">macros drawer</span class="dead-link">.</p>
+<p><img alt="Event Macros" src="images/eventMacrosWithDistance.png" title="The event macro controls drawer." /></p>
+<p>Your game's code can get and set the value of a timeline with <a href="https://fmod.com/docs/2.03/api/studio-api-eventinstance.html#studio_eventinstance_gettimelineposition">Studio::EventInstance::getTimelinePosition</a> and <a href="https://fmod.com/docs/2.03/api/studio-api-eventinstance.html#studio_eventinstance_settimelineposition">Studio::EventInstance::setTimelinePosition</a>.</p>
+<p>If a <a href="glossary.html#persistent">non-persistent</a> event instance's timeline reaches its maximum value and no other content is playing in that event instance, the instance <a href="glossary.html#natural-end">naturally ends</a>, automatically entering the stopped <a href="advanced-topics.html#event-state">event state</a>.</p>
+<h2 id="user-parameters"><a href="#user-parameters">23.2 User Parameters</a></h2>
+<p>User parameters are <a href="glossary.html#parameter">parameters</a> that can be customized to represent any variable in your game. Unlike <a href="#built-in-parameters">built-in parameters</a> and <a href="#timeline-parameters">timeline parameters</a>, they do not update automatically, and must be set by your game's code or adjusted by <a href="glossary.html#automation">automation</a> or <a href="glossary.html#modulator">modulators</a>. If a user parameter is used by a <a href="glossary.html#referenced-event">referenced event</a>, a control for that parameter is included in the deck whenever an event instrument that references that event is selected.</p>
+<p>The following settings are common to user parameters, and can be changed in the <span class="dead-link" href="glossary.html#edit-parameter-dialog">edit parameter dialog</span class="dead-link">.</p>
+<dl>
+<dt><strong>Initial Value</strong> (Text field or dropdown menu)</dt>
+<dd>Every user parameter has an <span class="dead-link" href="glossary.html#initial-value">initial value</span class="dead-link"> to which it is set by default. Each <a href="glossary.html#global-parameter">global parameter</a> is set to its initial value when <a href="https://fmod.com/docs/2.03/api/studio-api-system.html#studio_system_initialize">the FMOD Studio system is initialized</a> by your game. Each new instance of a <a href="glossary.html#local-parameter">local parameter</a> is set to the parameter's initial value upon being created.</dd>
+<dt><strong>Exposed recursively via event instruments</strong> (Checkbox)</dt>
+<dd>Parameters that are exposed recursively are implicitly added to the <a href="glossary.html#parent-event">parent events</a> of any <a href="glossary.html#referenced-event">referenced events</a> in which the parameter is present. If a parameter is present in both a referenced event and that event's parent, those parameters automatically share the same value unless the parameter property of the event instrument is automated. This allows you to set the value of a parameter in a referenced event by setting it in the parent event. Parameters that are not exposed recursively are not implicitly added to the parent event, but may be manually added to the parent event, or otherwise controlled by automation or modulators in that parent event. This property only appears for local parameters, as global parameters can be set regardless of the events in which they are present.</dd>
+<dt><strong>Read-only</strong> (Checkbox)</dt>
+<dd>A read-only parameter's value cannot be set by your game's code, but can still be controlled by <a href="glossary.html#automation">automation</a> and <a href="glossary.html#modulator">modulation</a>. Setting a parameter to be read-only makes it easier to tell which parameters are supposed to be set by game code when auditioning events in <a href="glossary.html#fmod-studio">FMOD Studio</a>.</dd>
+</dl>
+<h3 id="continuous-user-parameters"><a href="#continuous-user-parameters">23.2.1 Continuous User Parameters</a></h3>
+<p>Continuous user parameters use floating point (decimal) numbers.</p>
+<p>Each continuous parameter has a minimum and a maximum value that defines its range, and can be set to any floating point value within that range.</p>
+<p>The initial value of a continuous parameter may be any floating point number within its range.</p>
+<h3 id="labeled-user-parameters"><a href="#labeled-user-parameters">23.2.2 Labeled User Parameters</a></h3>
+<p>Labeled user parameters use strings (labels) instead of numerical values. The labels of a labeled parameter can be viewed and edited in the <span class="dead-link" href="glossary.html#edit-parameter-dialog">edit parameter dialog</span class="dead-link">. </p>
+<dl>
+<dt><strong>Labels</strong> (Label browser)</dt>
+<dd>Each labeled parameter has a predefined list of labeled values that constitutes its range, and can be set to any value within in that range. </dd>
+</dl>
+<p><img alt="Parameter Labels" src="images/labeledParameter.png" /></p>
+<p>The range of a labeled parameter is automatically derived from its labels, and is always 0 to n, where n is the index of its last label. The value associated with each label can be viewed in the edit parameter dialog.</p>
+<p>The initial value of a labeled parameter may be any label within its range.</p>
+<h3 id="discrete-user-parameters"><a href="#discrete-user-parameters">23.2.3 Discrete User Parameters</a></h3>
+<p>Discrete user parameters use integer (whole) numbers.</p>
+<p>Each discrete parameter has a minimum and maximum value that defines its range, and can be set to any integer value within that range.</p>
+<p>The initial value of a labeled parameter may be any integer number within its range.</p>
+<h2 id="built-in-parameters"><a href="#built-in-parameters">23.3 Built-in parameters</a></h2>
+<p>Built-in parameters are <a href="glossary.html#parameter">parameters</a> whose values automatically update based on the <span class="dead-link" href="glossary.html#3d-attributes">3D attributes</span class="dead-link"> of the <a href="glossary.html#event-instance">event instance</a> and <a href="glossary.html#listener">listener</a> in your game engine.</p>
+<p>When auditioning in <a href="glossary.html#fmod-studio">FMOD Studio</a>, you can alter the auditioning event instance's 3D attributes by moving the event instance in the <a href="glossary.html#3d-preview">3D preview</a> tool, or by changing the values of its built-in parameters in the editor. </p>
+<p>Built-in parameters are always <a href="glossary.html#local-parameter">local</a> in <span class="dead-link" href="glossary.html#parameter-scope">scope</span class="dead-link">.</p>
+<p>For information about adding parameters to events, please see the <a href="authoring-events.html#parameters">parameters</a> section of the authoring events chapter.</p>
+<p>For the purposes of setting event instance positions and listener positions in your game's code, FMOD Studio uses the 3D Cartesian coordinate system, with the x and z axes used to describe the horizontal plane, and the x and y axes used to describe the vertical plane.</p>
+<p>For more information about how 3D attributes are set in your game's code, see <a href="https://fmod.com/docs/2.03/api/studio-api-eventinstance.html#studio_eventinstance_set3dattributes">Studio::EventInstance::set3DAttributes</a> and <a href="https://fmod.com/docs/2.03/api/studio-api-system.html#studio_system_setlistenerattributes">Studio::System::setListenerAttributes</a> in the <a href="https://fmod.com/docs/2.03/api">FMOD Engine User Manual</a>.</p>
+<p><img alt="XYZ" src="images/xyz.png" /></p>
+<p>Below is the legend for all diagrams used in this section.</p>
+<p><img alt="Built-in Parameter Legend" src="images/builtinParametersLegend.png" /></p>
+<h3 id="distance"><a href="#distance">23.3.1 Distance</a></h3>
+<p>The distance parameter type represents the distance between the <a href="glossary.html#listener">listener</a> and the <a href="glossary.html#event-instance">event instance</a>. It uses the same units of distance as the game engine.</p>
+<p><img alt="Distance Parameter" src="images/distance.png" /></p>
+<p>Each distance parameter has a minimum and maximum value, and is automatically set to the distance between the event instance and the nearest listener. This range can be customized. At value 0 the event instance is closest to the listener. A higher value represents greater distance.</p>
+<p>When auditioning in the <a href="glossary.html#event-editor-window">event editor window</a>, moving the event instance in the <a href="glossary.html#3d-preview">3D preview</a> towards or away from the listener changes the value of the event's distance parameter.</p>
+<p>Note that the game's distance factor, set by the <code>distancefactor</code> property in <a href="https://fmod.com/docs/2.03/api/core-api-system.html#system_set3dsettings">System::set3DSettings</a>, does <em>not</em> have any effect on the distance calculated for a distance parameter. The calculated distance is based on the units used when setting the position of the listener and the event instance.</p>
+<h3 id="distance-normalized"><a href="#distance-normalized">23.3.2 Distance (Normalized)</a></h3>
+<p>The distance (normalized) parameter type represents the distance between the <a href="glossary.html#listener">listener</a> and the <a href="glossary.html#event-instance">event instance</a>. Unlike the distance parameter type, the distance (normalized) parameter type does not use the same units of distance as the game engine, and does not have a settable minimum and maximum value. Instead, it ranges from 0 to 1, where 0 represents the minimum distance property of an event that uses the parameter, and 1 represents the maximum distance property of that event.</p>
+<p>Each distance (normalized) parameter is automatically set to a value corresponding to the distance between the event instance and the nearest listener. If the distance in game distance units between the event instance and the emitter is less than or equal to the event's minimum distance property, the distance (normalized) parameter is set to 0; if the distance in game distance units is greater than or equal to the event's maximum distance property, the distance (normalized) parameter is set to 1; and if the distance in game distance units is between the event's minimum and maximum distance, the distance (normalized) parameter is set to <code>(d-i)/(a-i)</code>, where <code>d</code> is the distance between the event instance and the nearest listener in game units, <code>i</code> is the event's minimum distance property, and <code>a</code> is the event's maximum distance property.</p>
+<p>When auditioning in the <a href="glossary.html#event-editor-window">event editor window</a>, moving the event instance in the <a href="glossary.html#3d-preview">3D preview</a> towards or away from the listener changes the value of the event's distance (normalized) parameter.</p>
+<p>Note that the game's distance factor, set by the <code>distancefactor</code> property in <a href="https://fmod.com/docs/2.03/api/core-api-system.html#system_set3dsettings">System::set3DSettings</a>, does <em>not</em> have any effect on the distance calculated for a distance parameter. The calculated distance is based on the units used when setting the position of the listener and the event instance.</p>
+<p><img alt="Distance (Normalized) Parameter" src="images/distance-normalized.png" /></p>
+<h3 id="direction"><a href="#direction">23.3.3 Direction</a></h3>
+<p>The direction parameter type is the angle between the direction the <a href="glossary.html#listener">listener</a> is facing and the direction from the listener to the <a href="glossary.html#event-instance">event instance</a>, in degrees. Direction parameters work with the <a href="glossary.html#listeners-horizontal-plane">listener's horizontal plane</a>.</p>
+<p><img alt="Direction Parameter" src="images/direction.png" /></p>
+<p>A direction parameter has a minimum value of -180 and maximum value of 180, and is automatically set to the angle between the direction the listener is facing and the direction from the listener to the event instance on the horizontal plane. 0&deg; is positioned directly in front of the listener, -180&deg; or 180&deg; is positioned directly behind, -90&deg; is positioned to the left of the listener, and 90&deg; is positioned to the right of the listener.</p>
+<p>Direction parameters differ from <a href="#event-cone-angle">event cone angle parameters</a> in that event cone angle measures the angle between the direction the event instance is facing and the direction from it to the listener. In addition, direction parameters only take into account the relative positions of the listener and event instance on the listener's horizontal plane, whereas event cone angle parameters also take into account elevation.</p>
+<p>When auditioning in the <a href="glossary.html#event-editor-window">event editor window</a>, moving the event instance in the <a href="glossary.html#3d-preview">3D preview</a> around the listener changes the value of the direction parameter.</p>
+<h3 id="elevation"><a href="#elevation">23.3.4 Elevation</a></h3>
+<p>The elevation parameter type is the angle between the direction the <a href="glossary.html#listener">listener</a> is facing and the direction from the listener to the <a href="glossary.html#event-instance">event instance</a> on the vertical (xy) plane, in degrees.</p>
+<p><img alt="Elevation Parameter" src="images/elevation.png" /></p>
+<p>Each elevation parameter has a minimum value of -90 and maximum value of 90, and is automatically set to the angle between the plane formed by the listener's forward and left vectors (noted as the "listener's horizontal plane") and the vector between the listener and the event instance. At 0&deg; is when the listener's horizontal plane matches the vector between the listener and the event instance. At 90&deg; is when the listener's horizontal plane is directly below the vector between the listener and the event instance (ie. the event instance is above the listener), and at -90&deg; is when the listener's horizontal plane is directly above the listener (ie. the event instance is below the listener). Elevation does not take into consideration whether the listener is looking at the event instance.</p>
+<p>An elevation parameter can be used in situations where it is important that event instances sound different if above or below the listener, such as when a player is in a World War I-era biplane.</p>
+<p>When auditioning in the <a href="glossary.html#event-editor-window">event editor window</a>, moving the event instance in the <a href="glossary.html#3d-preview">3D preview</a> above or below the listener changes the value of the elevation parameter. You can do this by holding onto the Ctrl key and dragging the event instance.</p>
+<h3 id="event-cone-angle"><a href="#event-cone-angle">23.3.5 Event Cone Angle</a></h3>
+<p>The event cone angle parameter type is the angle between the direction the <a href="glossary.html#event-instance">event instance</a> is facing and the direction from it to the <a href="glossary.html#listener">listener</a>, in degrees.</p>
+<p><img alt="Event Cone Angle" src="images/eventConeAngle.png" /></p>
+<p>An event cone angle parameter has a minimum value of 0 and maximum value of 180. Each is automatically set to the absolute value of the angle between the direction the event instance is facing and the direction from the event instance to the listener. At 0&deg;, the event instance faces towards the listener and at 180&deg; the event instance faces away from the listener.</p>
+<p>Event cone angle parameters differ from <a href="#direction">direction parameters</a> in that direction parameters measure the angle between the direction the listener is facing and the direction from the listener to the event instance. In addition, direction parameters only take into account <a href="glossary.html#listeners-horizontal-plane">listener's horizontal plane</a>, whereas event cone angle parameters also take into account elevation.</p>
+<p>Some events represent objects that emit sound in a non-spherical manner. For example, televisions or megaphones tend to project sound more loudly in one direction than in others. This parameter type can be used to define how such events behave. It is often used to define the size and shape of the emission cone for an event.</p>
+<p>When auditioning in the <a href="glossary.html#event-editor-window">event editor window</a>, rotating the event instance in the <a href="glossary.html#3d-preview">3D preview</a> changes the value of the event cone angle parameter.</p>
+<h3 id="event-orientation"><a href="#event-orientation">23.3.6 Event Orientation</a></h3>
+<p>The event orientation parameter type is the angle between the direction the <a href="glossary.html#listener">listener</a> is facing and the direction the <a href="glossary.html#event-instance">event instance</a> is facing, in degrees.</p>
+<p><img alt="Event Orientation Parameter" src="images/eventOrientation.png" /></p>
+<p>An event orientation parameter has a minimum value of -180 and maximum value of 180. Each is automatically set to the angle between the direction the listener is facing and the direction the event instance is facing, as measured on the horizontal plane. If both the listener and instance are facing the same direction, the angle is 0&deg;. As the listener and the event instance turn to face opposite directions, the angle will increase toward a maximum of 180&deg;. The event orientation parameter only takes into account orientation on the horizontal plane (xz).</p>
+<p>The event orientation parameter is useful when an event represents a sound that surrounds the listener instead of coming from a single point source, such as a wind ambience that sounds different depending on which way the listener faces relative to the wind direction.</p>
+<p>When auditioning in the <a href="glossary.html#event-editor-window">event editor window</a>, rotating the event instance in the <a href="glossary.html#3d-preview">3D preview</a> changes the value of the event orientation parameter. Rotating the listener in the <span class="dead-link" href="glossary.html#sandbox">sandbox</span class="dead-link"> window will also change the value of the event orientation parameter.</p>
+<h3 id="speed-relative"><a href="#speed-relative">23.3.7 Speed (Relative)</a></h3>
+<p>The speed (relative) parameter type represents the speed of the event instance relative to the listener. It is measured in units of distance per second, and uses the same units of distance as the game engine.</p>
+<p>Each speed parameter has a minimum value of 0 and a maximum value, and is automatically set to the speed at which the event instance is moving relative to the listener. When the event instance is moving at the same velocity and in the same direction as the listener, the value of the speed parameter is zero. Higher values represent greater differences in velocity. For example, if the listener is moving at a rate of 1 unit/second and the event instance is moving in the opposite direction at a rate of 10 units/second, the value of the speed parameter is 11.</p>
+<p>The range of a speed parameter can be customized. The maximum value of a speed parameter must be greater than its minimum value, and its minimum value cannot be less than zero.</p>
+<p>The 3D preview tool and sandbox do not alter the value of speed parameters when auditioning events.</p>
+<h3 id="speed-absolute"><a href="#speed-absolute">23.3.8 Speed (Absolute)</a></h3>
+<p>The speed (absolute) parameter type represents the speed of the event instance relative to the empty space it is moving through. It is measured in units of distance per second, and uses the same units of distance as the game engine.</p>
+<p>Each speed parameter has a minimum value of 0 and a maximum value, and is automatically set to the speed at which the event instance is moving relative to the 0, 0, 0 position in the system of 3D coordinates used in your game. When the event instance's position is not changing, the value of the speed (absolute) parameter is zero, whereas higher values represent greater velocities. For example, if the event instance is moving at a rate of 4 units/second, the value of the speed (absolute) parameter is 4.</p>
+<p>The speed and direction of the listener have no impact on the speed (absolute) of events.</p>
+<p>The range of a speed parameter can be customized. The maximum value of a speed parameter must be greater than its minimum value, and its minimum value cannot be less than zero.</p>
+<p>The 3D preview tool and sandbox do not alter the value of speed parameters when auditioning events.</p></div>
+
+<p class="manual-footer">FMOD Studio User Manual 2.03.15 (2026-09-21). &copy; 2026 Firelight Technologies Pty Ltd.</p>
+</div>
+</body>
+</html>
+

@@ -1,0 +1,168 @@
+<html>
+<head>
+<title>Scripting API Reference | Project.Model.Parameter</title>
+<link rel="stylesheet" href="style/docs.css">
+<link rel="stylesheet" href="style/code_highlight.css">
+<script type="text/javascript" src="scripts/language-selector.js"></script></head>
+<body>
+<div class="docs-body">
+<div class="manual-toc">
+<p>FMOD Studio User Manual 2.03</p>
+<ul>
+<li><a href="welcome-to-fmod-studio.html">Welcome to FMOD Studio</a></li>
+<li><a href="fmod-studio-concepts.html">FMOD Studio Concepts</a></li>
+<li><a href="organizing-the-project.html">Organizing the Project</a></li>
+<li><a href="authoring-events.html">Authoring Events</a></li>
+<li><a href="working-with-instruments.html">Working with Instruments</a></li>
+<li><a href="managing-assets.html">Managing Assets</a></li>
+<li><a href="parameters.html">Parameters</a></li>
+<li><a href="getting-events-into-your-game.html">Getting Events into Your Game</a></li>
+<li><a href="mixing.html">Mixing</a></li>
+<li><a href="the-sandbox.html">The Sandbox</a></li>
+<li><a href="editing-during-live-update.html">Editing During Live Update</a></li>
+<li><a href="profiling.html">Profiling</a></li>
+<li><a href="dialogue-and-localization.html">Dialogue and Localization</a></li>
+<li><a href="using-source-control.html">Using Source Control</a></li>
+<li><a href="supporting-downloadable-and-user-generated-content.html">Supporting Downloadable and User-generated Content</a></li>
+<li><a href="advanced-topics.html">Advanced Topics</a></li>
+<li><a href="quick-start-tutorial.html">Quick Start Tutorial</a></li>
+<li><a href="effect-reference.html">Effect Reference</a></li>
+<li><a href="event-macro-controls-reference.html">Event Macros Drawer Reference</a></li>
+<li><a href="instrument-reference.html">Instrument Reference</a></li>
+<li><a href="keyboard-shortcut-reference.html">Keyboard Shortcut Reference</a></li>
+<li><a href="modulator-reference.html">Modulator Reference</a></li>
+<li><a href="parameters-reference.html">Parameters Reference</a></li>
+<li><a href="plugin-reference.html">Plug-in Reference</a></li>
+<li><a href="scripting-terminal-reference.html">Scripting</a></li>
+<li class="manual-current-chapter manual-inactive-chapter"><a href="scripting-api-reference.html">Scripting API Reference</a><ul class="subchapters"><li><a href="scripting-api-reference-globals.html">Globals</a></li><li><a href="scripting-api-reference-menu.html">Menu</a></li><li><a href="scripting-api-reference-project.html">Project</a></li><li><a href="scripting-api-reference-project-entity.html">Project.Entity</a></li><li><a href="scripting-api-reference-project-managedobject.html">Project.ManagedObject</a></li><li><a href="scripting-api-reference-project-model.html">Project.Model</a></li><li><a href="scripting-api-reference-project-model-asset.html">Project.Model.Asset</a></li><li><a href="scripting-api-reference-project-model-automatableobject.html">Project.Model.AutomatableObject</a></li><li><a href="scripting-api-reference-project-model-automationcurve.html">Project.Model.AutomationCurve</a></li><li><a href="scripting-api-reference-project-model-automator.html">Project.Model.Automator</a></li><li><a href="scripting-api-reference-project-model-bank.html">Project.Model.Bank</a></li><li><a href="scripting-api-reference-project-model-event.html">Project.Model.Event</a></li><li><a href="scripting-api-reference-project-model-folder.html">Project.Model.Folder</a></li><li><a href="scripting-api-reference-project-model-mixereffect.html">Project.Model.MixerEffect</a></li><li><a href="scripting-api-reference-project-model-mixerstrip.html">Project.Model.MixerStrip</a></li><li><a href="scripting-api-reference-project-model-modulator.html">Project.Model.Modulator</a></li><li class="manual-current-chapter manual-active-chapter"><a href="scripting-api-reference-project-model-parameter.html">Project.Model.Parameter</a></li><li><a href="scripting-api-reference-project-model-sound.html">Project.Model.Sound</a></li><li><a href="scripting-api-reference-project-model-track.html">Project.Model.Track</a></li><li><a href="scripting-api-reference-project-model-triggerable.html">Project.Model.Triggerable</a></li><li><a href="scripting-api-reference-project-workspace.html">Project.Workspace</a></li><li><a href="scripting-api-reference-system.html">System</a></li><li><a href="scripting-api-reference-ui.html">UI</a></li><li><a href="scripting-api-reference-window.html">Window</a></li></ul></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="glossary.html">Glossary</a></li>
+<li><a href="appendix-a-celeste.html">Appendix: Celeste Getting Started Guide</a></li>
+<li><a href="appendix-b-reaper-integration.html">Appendix: Reaper Integration</a></li>
+</ul>
+</div>
+<div class="manual-content studio">
+<h1>26. Scripting API Reference | Project.Model.Parameter</h1>
+<p><strong>Types:</strong></p>
+<ul>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-parameter.html#modelactionsheet" title="A sheet for an model.Event that plays through a playlist of instruments.">model.ActionSheet</a> A sheet for an <code>model.Event</code> that plays through a playlist of instruments.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-parameter.html#modelgameparameter" title="A built-in parameter or user parameter of a model.Event, whose input value is specified by the game.">model.GameParameter</a> A built-in <a href="glossary.html#parameter">parameter</a> or user parameter of a <code>model.Event</code>, whose input value is specified by the game.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-parameter.html#modelparameter" title="The base class for a parameter sheet upon which instruments can be placed, within an model.Event.">model.Parameter</a> The base class for a <a href="glossary.html#parameter-sheet">parameter sheet</a> upon which <a href="glossary.html#instrument">instruments</a> can be placed, within an <code>model.Event</code>.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-parameter.html#modelparameterpreset" title="An object representing a parameter in your project.">model.ParameterPreset</a> An object representing a <a href="glossary.html#parameter">parameter</a> in your project.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-parameter.html#modelparameterproxy" title="An object containing a reference to a model.ParameterPreset.">model.ParameterProxy</a> An object containing a reference to a <code>model.ParameterPreset</code>.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-parameter.html#modeltimeline" title="A parameter sheet of a model.Event that automatically increases its value over time.">model.Timeline</a> A <a href="glossary.html#parameter-sheet">parameter sheet</a> of a <code>model.Event</code> that automatically increases its value over time.</span></li>
+</ul>
+<p><strong>Extension Methods:</strong></p>
+<ul>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-parameter.html#gameparametergetcursorposition" title="Retrieves the parameter's cursor position.">GameParameter.getCursorPosition</a> Retrieves the <a href="glossary.html#parameter">parameter</a>'s <a href="glossary.html#cursor">cursor</a> position.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-parameter.html#gameparametersetcursorposition" title="Sets the cursor position of the global, user, or built-in parameter to a number.">GameParameter.setCursorPosition</a> Sets the <a href="glossary.html#cursor">cursor</a> position of the <a href="glossary.html#global-parameter">global</a>, <a href="glossary.html#user-parameter">user</a>, or <a href="glossary.html#built-in-parameter">built-in</a> parameter to a number.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-parameter.html#parametergetplayheadposition" title="Retrieves the playback position of a parameter, within the context of the associated model.Event.">Parameter.getPlayheadPosition</a> Retrieves the <a href="glossary.html#playback-position">playback position</a> of a parameter, within the context of the associated <code>model.Event</code>.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-parameter.html#parameterpresetgetpath" title="Retrieves the project's unique path identifier for the parameter.">ParameterPreset.getPath</a> Retrieves the project's unique path identifier for the parameter.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-parameter.html#parameterproxygetcursorposition" title="Retrieves the parameter's cursor position.">ParameterProxy.getCursorPosition</a> Retrieves the <a href="glossary.html#parameter">parameter</a>'s <a href="glossary.html#cursor">cursor</a> position.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-parameter.html#parameterproxysetcursorposition" title="Sets the cursor position of the parameter to a number.">ParameterProxy.setCursorPosition</a> Sets the <a href="glossary.html#cursor">cursor</a> position of the <a href="glossary.html#parameter">parameter</a> to a number.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-parameter.html#timelinegetcursorposition" title="Retrieves the timeline's cursor position.">Timeline.getCursorPosition</a> Retrieves the <a href="glossary.html#timeline">timeline</a>'s <a href="glossary.html#cursor">cursor</a> position.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-parameter.html#timelinesetcursorposition" title="Sets the cursor position of the timeline to a number.">Timeline.setCursorPosition</a> Sets the <a href="glossary.html#cursor">cursor</a> position of the <a href="glossary.html#timeline">timeline</a> to a number.</span></li>
+</ul>
+<h2 api="function" id="modelactionsheet"><a href="#modelactionsheet">model.ActionSheet</a></h2>
+<p>A sheet for an <a class="apilink" href="scripting-api-reference-project-model-event.html#modelevent">model.Event</a> that plays through a playlist of instruments.</p>
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/studio/glossary.html#action-sheet">Action Sheet</a></p>
+<h2 api="function" id="modelgameparameter"><a href="#modelgameparameter">model.GameParameter</a></h2>
+<p>A built-in <a href="glossary.html#parameter">parameter</a> or user parameter of a <a class="apilink" href="scripting-api-reference-project-model-event.html#modelevent">model.Event</a>, whose input value is specified by the game.</p>
+<p><strong>See Also:</strong> <a href="parameters-reference.html#built-in-parameters">Built-in parameters</a>, <a href="parameters-reference.html#user-parameters">User parameters</a></p>
+<h2 api="function" id="modelparameter"><a href="#modelparameter">model.Parameter</a></h2>
+<p>The base class for a <a href="glossary.html#parameter-sheet">parameter sheet</a> upon which <a href="glossary.html#instrument">instruments</a> can be placed, within an <a class="apilink" href="scripting-api-reference-project-model-event.html#modelevent">model.Event</a>.</p>
+<p><strong>See Also:</strong> <a href="parameters-reference.html">Parameters Reference</a></p>
+<h2 api="function" id="modelparameterpreset"><a href="#modelparameterpreset">model.ParameterPreset</a></h2>
+<p>An object representing a <a href="glossary.html#parameter">parameter</a> in your project.</p>
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/studio/parameters.html">Parameter</a></p>
+<h2 api="function" id="modelparameterproxy"><a href="#modelparameterproxy">model.ParameterProxy</a></h2>
+<p>An object containing a reference to a <a class="apilink" href="scripting-api-reference-project-model-parameter.html#modelparameterpreset">model.ParameterPreset</a>.</p>
+<h2 api="function" id="modeltimeline"><a href="#modeltimeline">model.Timeline</a></h2>
+<p>A <a href="glossary.html#parameter-sheet">parameter sheet</a> of a <a class="apilink" href="scripting-api-reference-project-model-event.html#modelevent">model.Event</a> that automatically increases its value over time.</p>
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/studio/glossary.html#timeline">Timeline</a></p>
+<h2 api="function" id="gameparametergetcursorposition"><a href="#gameparametergetcursorposition">GameParameter.getCursorPosition</a></h2>
+<p>Retrieves the <a href="glossary.html#parameter">parameter</a>'s <a href="glossary.html#cursor">cursor</a> position.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">GameParameter</span><span class="p">.</span><span class="nx">getCursorPosition</span><span class="p">()</span>
+</pre></div>
+
+<p>Returns the cursor position of the global <a href="glossary.html#user-parameter">user parameter</a> as a <code>number</code>. Returns <code>undefined</code> if the scope of the game parameter is not global.</p>
+<p>Example:</p>
+<div class="highlight language-javascript"><pre><span></span><span class="kd">var</span> <span class="nx">globalParameterPreset</span> <span class="o">=</span> <span class="nx">studio</span><span class="p">.</span><span class="nx">project</span><span class="p">.</span><span class="nx">lookup</span><span class="p">(</span><span class="s2">&quot;parameter:/game_state/time_of_day&quot;</span><span class="p">);</span> <span class="c1">// return a ParameterPreset object</span>
+<span class="kd">var</span> <span class="nx">timeOfDay</span> <span class="o">=</span> <span class="nx">globalParameterPreset</span><span class="p">.</span><span class="nx">parameter</span><span class="p">.</span><span class="nx">getCursorPosition</span><span class="p">();</span>
+</pre></div>
+
+<h2 api="function" id="gameparametersetcursorposition"><a href="#gameparametersetcursorposition">GameParameter.setCursorPosition</a></h2>
+<p>Sets the <a href="glossary.html#cursor">cursor</a> position of the <a href="glossary.html#global-parameter">global</a>, <a href="glossary.html#user-parameter">user</a>, or <a href="glossary.html#built-in-parameter">built-in</a> parameter to a number.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">GameParameter</span><span class="p">.</span><span class="nx">setCursorPosition</span><span class="p">(</span>
+    <span class="nx">position</span>
+<span class="p">)</span>
+</pre></div>
+
+<dl>
+<dt>position</dt>
+<dd>The numerical position to set the parameter's cursor to.</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight language-javascript"><pre><span></span><span class="kd">var</span> <span class="nx">globalParameterPreset</span> <span class="o">=</span> <span class="nx">studio</span><span class="p">.</span><span class="nx">project</span><span class="p">.</span><span class="nx">lookup</span><span class="p">(</span><span class="s2">&quot;parameter:/game_state/time_of_day&quot;</span><span class="p">);</span> <span class="c1">// return a ParameterPreset object</span>
+<span class="nx">globalParameterPreset</span><span class="p">.</span><span class="nx">parameter</span><span class="p">.</span><span class="nx">setCursorPosition</span><span class="p">(</span><span class="mi">1300</span><span class="p">);</span>
+</pre></div>
+
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/studio/glossary.html#game-parameter">Game Parameter</a></p>
+<h2 api="function" id="parametergetplayheadposition"><a href="#parametergetplayheadposition">Parameter.getPlayheadPosition</a></h2>
+<p>Retrieves the <a href="glossary.html#playback-position">playback position</a> of a parameter, within the context of the associated <a class="apilink" href="scripting-api-reference-project-model-event.html#modelevent">model.Event</a>.</p>
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/studio/parameters.html">Parameter</a></p>
+<h2 api="function" id="parameterpresetgetpath"><a href="#parameterpresetgetpath">ParameterPreset.getPath</a></h2>
+<p>Retrieves the project's unique path identifier for the parameter.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">ParameterPreset</span><span class="p">.</span><span class="nx">getPath</span><span class="p">()</span>
+</pre></div>
+
+<p>Returns the parameter's <a href="https://fmod.com/docs/2.03/studio/advanced-topics.html#paths">path</a> in your project as a <code>string</code>.</p>
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/studio/parameters.html">Parameter</a></p>
+<h2 api="function" id="parameterproxygetcursorposition"><a href="#parameterproxygetcursorposition">ParameterProxy.getCursorPosition</a></h2>
+<p>Retrieves the <a href="glossary.html#parameter">parameter</a>'s <a href="glossary.html#cursor">cursor</a> position.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">ParameterProxy</span><span class="p">.</span><span class="nx">getCursorPosition</span><span class="p">()</span>
+</pre></div>
+
+<p>Returns the cursor position as a <code>number</code>, within the context of the associated <a href="glossary.html#event">event</a>.</p>
+<p>This is only meaningful when dealing with <a href="glossary.html#global-parameter">global parameters</a>, since <a href="glossary.html#local-parameter">local parameters</a> do not have meaningful cursor positions outside of specific event instances.</p>
+<p>The equivalent of calling <code>parameterProxy.event.getCursorPosition(parameterProxy.preset)</code>.</p>
+<h2 api="function" id="parameterproxysetcursorposition"><a href="#parameterproxysetcursorposition">ParameterProxy.setCursorPosition</a></h2>
+<p>Sets the <a href="glossary.html#cursor">cursor</a> position of the <a href="glossary.html#parameter">parameter</a> to a number.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">ParameterProxy</span><span class="p">.</span><span class="nx">setCursorPosition</span><span class="p">(</span>
+    <span class="nx">position</span>
+<span class="p">)</span>
+</pre></div>
+
+<dl>
+<dt>position</dt>
+<dd>The numerical position to set the parameter proxy's cursor to.</dd>
+</dl>
+<p>Sets the parameter's cursor position to a <code>number</code>, within the context of the associated <a href="glossary.html#event">event</a>.</p>
+<p>The equivalent of calling <code>parameterProxy.event.setCursorPosition(parameterProxy.preset, position)</code>.</p>
+<h2 api="function" id="timelinegetcursorposition"><a href="#timelinegetcursorposition">Timeline.getCursorPosition()</a></h2>
+<p>Retrieves the <a href="glossary.html#timeline">timeline</a>'s <a href="glossary.html#cursor">cursor</a> position.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">Timeline</span><span class="p">.</span><span class="nx">getCursorPosition</span><span class="p">()</span>
+</pre></div>
+
+<p>Returns the cursor position as a <code>number</code>, within the context of the associated <a href="glossary.html#event">event</a>.</p>
+<p>The equivalent of calling <code>timeline.event.getCursorPosition(timeline)</code>.</p>
+<h2 api="function" id="timelinesetcursorposition"><a href="#timelinesetcursorposition">Timeline.setCursorPosition</a></h2>
+<p>Sets the <a href="glossary.html#cursor">cursor</a> position of the <a href="glossary.html#timeline">timeline</a> to a number.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">Timeline</span><span class="p">.</span><span class="nx">setCursorPosition</span><span class="p">(</span>
+    <span class="nx">position</span>
+<span class="p">)</span>
+</pre></div>
+
+<dl>
+<dt>position</dt>
+<dd>The numerical position to set the timeline to.</dd>
+</dl>
+<p>Sets the cursor position to a <code>number</code>, within the context of the associated <a href="glossary.html#event">event</a>.</p>
+<p>The equivalent of calling <code>timeline.event.setCursorPosition(timeline, position)</code>.</p>
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/studio/glossary.html#timeline">Timeline</a></p></div>
+
+<p class="manual-footer">FMOD Studio User Manual 2.03.15 (2026-09-21). &copy; 2026 Firelight Technologies Pty Ltd.</p>
+</div>
+</body>
+</html>
+

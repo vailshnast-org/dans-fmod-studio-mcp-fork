@@ -1,0 +1,189 @@
+<html>
+<head>
+<title>Scripting API Reference | Window</title>
+<link rel="stylesheet" href="style/docs.css">
+<link rel="stylesheet" href="style/code_highlight.css">
+<script type="text/javascript" src="scripts/language-selector.js"></script></head>
+<body>
+<div class="docs-body">
+<div class="manual-toc">
+<p>FMOD Studio User Manual 2.03</p>
+<ul>
+<li><a href="welcome-to-fmod-studio.html">Welcome to FMOD Studio</a></li>
+<li><a href="fmod-studio-concepts.html">FMOD Studio Concepts</a></li>
+<li><a href="organizing-the-project.html">Organizing the Project</a></li>
+<li><a href="authoring-events.html">Authoring Events</a></li>
+<li><a href="working-with-instruments.html">Working with Instruments</a></li>
+<li><a href="managing-assets.html">Managing Assets</a></li>
+<li><a href="parameters.html">Parameters</a></li>
+<li><a href="getting-events-into-your-game.html">Getting Events into Your Game</a></li>
+<li><a href="mixing.html">Mixing</a></li>
+<li><a href="the-sandbox.html">The Sandbox</a></li>
+<li><a href="editing-during-live-update.html">Editing During Live Update</a></li>
+<li><a href="profiling.html">Profiling</a></li>
+<li><a href="dialogue-and-localization.html">Dialogue and Localization</a></li>
+<li><a href="using-source-control.html">Using Source Control</a></li>
+<li><a href="supporting-downloadable-and-user-generated-content.html">Supporting Downloadable and User-generated Content</a></li>
+<li><a href="advanced-topics.html">Advanced Topics</a></li>
+<li><a href="quick-start-tutorial.html">Quick Start Tutorial</a></li>
+<li><a href="effect-reference.html">Effect Reference</a></li>
+<li><a href="event-macro-controls-reference.html">Event Macros Drawer Reference</a></li>
+<li><a href="instrument-reference.html">Instrument Reference</a></li>
+<li><a href="keyboard-shortcut-reference.html">Keyboard Shortcut Reference</a></li>
+<li><a href="modulator-reference.html">Modulator Reference</a></li>
+<li><a href="parameters-reference.html">Parameters Reference</a></li>
+<li><a href="plugin-reference.html">Plug-in Reference</a></li>
+<li><a href="scripting-terminal-reference.html">Scripting</a></li>
+<li class="manual-current-chapter manual-inactive-chapter"><a href="scripting-api-reference.html">Scripting API Reference</a><ul class="subchapters"><li><a href="scripting-api-reference-globals.html">Globals</a></li><li><a href="scripting-api-reference-menu.html">Menu</a></li><li><a href="scripting-api-reference-project.html">Project</a></li><li><a href="scripting-api-reference-project-entity.html">Project.Entity</a></li><li><a href="scripting-api-reference-project-managedobject.html">Project.ManagedObject</a></li><li><a href="scripting-api-reference-project-model.html">Project.Model</a></li><li><a href="scripting-api-reference-project-model-asset.html">Project.Model.Asset</a></li><li><a href="scripting-api-reference-project-model-automatableobject.html">Project.Model.AutomatableObject</a></li><li><a href="scripting-api-reference-project-model-automationcurve.html">Project.Model.AutomationCurve</a></li><li><a href="scripting-api-reference-project-model-automator.html">Project.Model.Automator</a></li><li><a href="scripting-api-reference-project-model-bank.html">Project.Model.Bank</a></li><li><a href="scripting-api-reference-project-model-event.html">Project.Model.Event</a></li><li><a href="scripting-api-reference-project-model-folder.html">Project.Model.Folder</a></li><li><a href="scripting-api-reference-project-model-mixereffect.html">Project.Model.MixerEffect</a></li><li><a href="scripting-api-reference-project-model-mixerstrip.html">Project.Model.MixerStrip</a></li><li><a href="scripting-api-reference-project-model-modulator.html">Project.Model.Modulator</a></li><li><a href="scripting-api-reference-project-model-parameter.html">Project.Model.Parameter</a></li><li><a href="scripting-api-reference-project-model-sound.html">Project.Model.Sound</a></li><li><a href="scripting-api-reference-project-model-track.html">Project.Model.Track</a></li><li><a href="scripting-api-reference-project-model-triggerable.html">Project.Model.Triggerable</a></li><li><a href="scripting-api-reference-project-workspace.html">Project.Workspace</a></li><li><a href="scripting-api-reference-system.html">System</a></li><li><a href="scripting-api-reference-ui.html">UI</a></li><li class="manual-current-chapter manual-active-chapter"><a href="scripting-api-reference-window.html">Window</a></li></ul></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="glossary.html">Glossary</a></li>
+<li><a href="appendix-a-celeste.html">Appendix: Celeste Getting Started Guide</a></li>
+<li><a href="appendix-b-reaper-integration.html">Appendix: Reaper Integration</a></li>
+</ul>
+</div>
+<div class="manual-content studio">
+<h1>26. Scripting API Reference | Window</h1>
+<div class="toc">
+<ul>
+<li><a href="#module-window">Module: Window</a><ul>
+<li><a href="#windowopenwindowtype">window.open(windowType)</a></li>
+<li><a href="#windownavigatetomanagedobject">window.navigateTo(managedObject)</a></li>
+<li><a href="#windowbrowsercurrenttabname">window.browserCurrent([tabName])</a></li>
+<li><a href="#windowbrowserselectiontabname">window.browserSelection([tabName])</a></li>
+<li><a href="#windoweditorcurrent">window.editorCurrent()</a></li>
+<li><a href="#windoweditorselection">window.editorSelection()</a></li>
+<li><a href="#windowdeckcurrent">window.deckCurrent()</a></li>
+<li><a href="#windowdeckselection">window.deckSelection()</a></li>
+<li><a href="#windowactions">window.actions</a></li>
+<li><a href="#windowtriggeractionactiontype">window.triggerAction(actionType)</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<h2 id="module-window"><a href="#module-window">Module: Window</a></h2>
+<p>The <code>studio.window</code> module allows for interaction with the window context.</p>
+<h3 id="windowopenwindowtype"><a href="#windowopenwindowtype">window.open(windowType)</a></h3>
+<p>Opens a new window of the given window type (e.g. "Event Editor").</p>
+<p>Returns <code>true</code> if the window request is valid, or <code>false</code> otherwise.</p>
+<h3 id="windownavigatetomanagedobject"><a href="#windownavigatetomanagedobject">window.navigateTo(managedObject)</a></h3>
+<p>Attempts to navigate to a <a class="apilink" href="scripting-api-reference-project-managedobject.html#managedobject">ManagedObject</a> in the UI. Will open a new window if required. Returns <code>true</code> if successful.</p>
+<h3 id="windowbrowsercurrenttabname"><a href="#windowbrowsercurrenttabname">window.browserCurrent([tabName])</a></h3>
+<p>Returns the currently selected <a class="apilink" href="scripting-api-reference-project-managedobject.html#managedobject">ManagedObject</a> in the active browser tab of the last active window. A <code>tabName</code> can optionally be specified to select from a different browser tab.</p>
+<h3 id="windowbrowserselectiontabname"><a href="#windowbrowserselectiontabname">window.browserSelection([tabName])</a></h3>
+<p>Returns an <code>Array</code> of selected <a class="apilink" href="scripting-api-reference-project-managedobject.html#managedobject">ManagedObject</a>s in the active browser tab of the last active window. A <code>tabName</code> can optionally be specified to select from a different browser tab.</p>
+<h3 id="windoweditorcurrent"><a href="#windoweditorcurrent">window.editorCurrent()</a></h3>
+<p>Returns the currently selected <a class="apilink" href="scripting-api-reference-project-managedobject.html#managedobject">ManagedObject</a> in the last active editor (e.g. in the multitrack view).</p>
+<h3 id="windoweditorselection"><a href="#windoweditorselection">window.editorSelection()</a></h3>
+<p>Returns an array of selected <a class="apilink" href="scripting-api-reference-project-managedobject.html#managedobject">ManagedObject</a>s in the last active editor (e.g. in the multitrack view).</p>
+<h3 id="windowdeckcurrent"><a href="#windowdeckcurrent">window.deckCurrent()</a></h3>
+<p>Returns the currently selected <a class="apilink" href="scripting-api-reference-project-managedobject.html#managedobject">ManagedObject</a> in the deck of the last active window.</p>
+<h3 id="windowdeckselection"><a href="#windowdeckselection">window.deckSelection()</a></h3>
+<p>Returns an array of selected <a class="apilink" href="scripting-api-reference-project-managedobject.html#managedobject">ManagedObject</a>s in the deck of the last active window.</p>
+<h3 id="windowactions"><a href="#windowactions">window.actions</a></h3>
+<p>An enumeration used with <a href="#windowtriggeractionactiontype">studio.window.triggerAction()</a> to trigger the execution of an action. Possible values are:</p>
+<ul>
+<li><code>AddTransitionTimeline</code></li>
+<li><code>BringToFront</code></li>
+<li><code>Build</code></li>
+<li><code>BuildAllPlatforms</code></li>
+<li><code>ClearRecentFiles</code></li>
+<li><code>CloseProject</code></li>
+<li><code>CloseTab</code></li>
+<li><code>ContinuousZoomToFit</code></li>
+<li><code>Copy</code></li>
+<li><code>CopyGuid</code></li>
+<li><code>CopyPath</code></li>
+<li><code>DecreaseDefaultTrackHeight</code></li>
+<li><code>Delete</code></li>
+<li><code>Duplicate</code></li>
+<li><code>ExitApplication</code></li>
+<li><code>ExportGuids</code></li>
+<li><code>Find</code></li>
+<li><code>FlattenBrowserFolders</code></li>
+<li><code>FollowPlaybackPosition</code></li>
+<li><code>ImportAudioFiles</code></li>
+<li><code>IncreaseDefaultTrackHeight</code></li>
+<li><code>LoopPlayback</code></li>
+<li><code>MergeConflictingAsset</code></li>
+<li><code>MoveTo</code></li>
+<li><code>MoveToCursor</code></li>
+<li><code>NewBrowserFolder</code></li>
+<li><code>NewBrowserItem</code></li>
+<li><code>NewMixerGroup</code></li>
+<li><code>NewMixerReturn</code></li>
+<li><code>NewParameter</code></li>
+<li><code>NewProject</code></li>
+<li><code>NewTab</code></li>
+<li><code>OpenInExternal</code></li>
+<li><code>OpenInFileSystem</code></li>
+<li><code>OpenInNewWindow</code></li>
+<li><code>OpenMostRecentFile</code></li>
+<li><code>OpenProject</code></li>
+<li><code>PackageProject</code></li>
+<li><code>Paste</code></li>
+<li><code>Redo</code></li>
+<li><code>RefreshModifiedAssets</code></li>
+<li><code>RemoveTransitionTimeline</code></li>
+<li><code>Rename</code></li>
+<li><code>RevertToSaved</code></li>
+<li><code>SandboxToggleEmitter_01</code></li>
+<li><code>SandboxToggleEmitter_02</code></li>
+<li><code>SandboxToggleEmitter_03</code></li>
+<li><code>SandboxToggleEmitter_04</code></li>
+<li><code>SandboxToggleEmitter_05</code></li>
+<li><code>SandboxToggleEmitter_06</code></li>
+<li><code>SandboxToggleEmitter_07</code></li>
+<li><code>SandboxToggleEmitter_08</code></li>
+<li><code>SandboxToggleEmitter_09</code></li>
+<li><code>SandboxToggleEmitter_10</code></li>
+<li><code>Save</code></li>
+<li><code>SaveAs</code></li>
+<li><code>ScriptReload</code></li>
+<li><code>SendToBack</code></li>
+<li><code>ShowAbout</code></li>
+<li><code>ShowAutomationValues</code></li>
+<li><code>ShowCompactStrips</code></li>
+<li><code>ShowFMODio</code></li>
+<li><code>ShowLogicTracks</code></li>
+<li><code>ShowMarkerLines</code></li>
+<li><code>ShowOverlappingInstrumentsInLanes</code></li>
+<li><code>ShowPreferences</code></li>
+<li><code>ShowQuestionsPage</code></li>
+<li><code>ShowQuickStartTutorial</code></li>
+<li><code>ShowSupportEmail</code></li>
+<li><code>ShowUserManual</code></li>
+<li><code>ShowWelcome</code></li>
+<li><code>SnapToItems</code></li>
+<li><code>SnapToRuler</code></li>
+<li><code>SourceControlBrowseForProject</code></li>
+<li><code>SourceControlCommit</code></li>
+<li><code>SourceControlIdentifyLocalChanges</code></li>
+<li><code>SourceControlRevert</code></li>
+<li><code>SourceControlSync</code></li>
+<li><code>Split</code></li>
+<li><code>ToggleBulkEdit</code></li>
+<li><code>ToggleConnectToGame</code></li>
+<li><code>ToggleFilePlayback</code></li>
+<li><code>ToggleTransitionTimelineVisibility</code></li>
+<li><code>Undo</code></li>
+<li><code>ValidateProject</code></li>
+<li><code>ViewBrowser</code></li>
+<li><code>ViewDeck</code></li>
+<li><code>ViewProperties</code></li>
+<li><code>WindowBringAllToFront</code></li>
+<li><code>WindowClose</code></li>
+<li><code>WindowCycle</code></li>
+<li><code>WindowMaximize</code></li>
+<li><code>WindowMinimize</code></li>
+<li><code>ZoomIn</code></li>
+<li><code>ZoomOut</code></li>
+<li><code>ZoomToFit</code></li>
+</ul>
+<h3 id="windowtriggeractionactiontype"><a href="#windowtriggeractionactiontype">window.triggerAction(actionType)</a></h3>
+<p>Attempts to trigger the <code>actionType</code> action for the last active window. The available options are described by the <a href="#windowactions">window.actions</a> enum.</p></div>
+
+<p class="manual-footer">FMOD Studio User Manual 2.03.15 (2026-09-21). &copy; 2026 Firelight Technologies Pty Ltd.</p>
+</div>
+</body>
+</html>
+

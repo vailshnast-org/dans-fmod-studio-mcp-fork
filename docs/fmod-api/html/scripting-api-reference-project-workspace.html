@@ -1,0 +1,113 @@
+<html>
+<head>
+<title>Scripting API Reference | Project.Workspace</title>
+<link rel="stylesheet" href="style/docs.css">
+<link rel="stylesheet" href="style/code_highlight.css">
+<script type="text/javascript" src="scripts/language-selector.js"></script></head>
+<body>
+<div class="docs-body">
+<div class="manual-toc">
+<p>FMOD Studio User Manual 2.03</p>
+<ul>
+<li><a href="welcome-to-fmod-studio.html">Welcome to FMOD Studio</a></li>
+<li><a href="fmod-studio-concepts.html">FMOD Studio Concepts</a></li>
+<li><a href="organizing-the-project.html">Organizing the Project</a></li>
+<li><a href="authoring-events.html">Authoring Events</a></li>
+<li><a href="working-with-instruments.html">Working with Instruments</a></li>
+<li><a href="managing-assets.html">Managing Assets</a></li>
+<li><a href="parameters.html">Parameters</a></li>
+<li><a href="getting-events-into-your-game.html">Getting Events into Your Game</a></li>
+<li><a href="mixing.html">Mixing</a></li>
+<li><a href="the-sandbox.html">The Sandbox</a></li>
+<li><a href="editing-during-live-update.html">Editing During Live Update</a></li>
+<li><a href="profiling.html">Profiling</a></li>
+<li><a href="dialogue-and-localization.html">Dialogue and Localization</a></li>
+<li><a href="using-source-control.html">Using Source Control</a></li>
+<li><a href="supporting-downloadable-and-user-generated-content.html">Supporting Downloadable and User-generated Content</a></li>
+<li><a href="advanced-topics.html">Advanced Topics</a></li>
+<li><a href="quick-start-tutorial.html">Quick Start Tutorial</a></li>
+<li><a href="effect-reference.html">Effect Reference</a></li>
+<li><a href="event-macro-controls-reference.html">Event Macros Drawer Reference</a></li>
+<li><a href="instrument-reference.html">Instrument Reference</a></li>
+<li><a href="keyboard-shortcut-reference.html">Keyboard Shortcut Reference</a></li>
+<li><a href="modulator-reference.html">Modulator Reference</a></li>
+<li><a href="parameters-reference.html">Parameters Reference</a></li>
+<li><a href="plugin-reference.html">Plug-in Reference</a></li>
+<li><a href="scripting-terminal-reference.html">Scripting</a></li>
+<li class="manual-current-chapter manual-inactive-chapter"><a href="scripting-api-reference.html">Scripting API Reference</a><ul class="subchapters"><li><a href="scripting-api-reference-globals.html">Globals</a></li><li><a href="scripting-api-reference-menu.html">Menu</a></li><li><a href="scripting-api-reference-project.html">Project</a></li><li><a href="scripting-api-reference-project-entity.html">Project.Entity</a></li><li><a href="scripting-api-reference-project-managedobject.html">Project.ManagedObject</a></li><li><a href="scripting-api-reference-project-model.html">Project.Model</a></li><li><a href="scripting-api-reference-project-model-asset.html">Project.Model.Asset</a></li><li><a href="scripting-api-reference-project-model-automatableobject.html">Project.Model.AutomatableObject</a></li><li><a href="scripting-api-reference-project-model-automationcurve.html">Project.Model.AutomationCurve</a></li><li><a href="scripting-api-reference-project-model-automator.html">Project.Model.Automator</a></li><li><a href="scripting-api-reference-project-model-bank.html">Project.Model.Bank</a></li><li><a href="scripting-api-reference-project-model-event.html">Project.Model.Event</a></li><li><a href="scripting-api-reference-project-model-folder.html">Project.Model.Folder</a></li><li><a href="scripting-api-reference-project-model-mixereffect.html">Project.Model.MixerEffect</a></li><li><a href="scripting-api-reference-project-model-mixerstrip.html">Project.Model.MixerStrip</a></li><li><a href="scripting-api-reference-project-model-modulator.html">Project.Model.Modulator</a></li><li><a href="scripting-api-reference-project-model-parameter.html">Project.Model.Parameter</a></li><li><a href="scripting-api-reference-project-model-sound.html">Project.Model.Sound</a></li><li><a href="scripting-api-reference-project-model-track.html">Project.Model.Track</a></li><li><a href="scripting-api-reference-project-model-triggerable.html">Project.Model.Triggerable</a></li><li class="manual-current-chapter manual-active-chapter"><a href="scripting-api-reference-project-workspace.html">Project.Workspace</a></li><li><a href="scripting-api-reference-system.html">System</a></li><li><a href="scripting-api-reference-ui.html">UI</a></li><li><a href="scripting-api-reference-window.html">Window</a></li></ul></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="glossary.html">Glossary</a></li>
+<li><a href="appendix-a-celeste.html">Appendix: Celeste Getting Started Guide</a></li>
+<li><a href="appendix-b-reaper-integration.html">Appendix: Reaper Integration</a></li>
+</ul>
+</div>
+<div class="manual-content studio">
+<h1>26. Scripting API Reference | Project.Workspace</h1>
+<p>The root workspace <a class="apilink" href="scripting-api-reference-project-managedobject.html#managedobject">ManagedObject</a> of the project.</p>
+<p><strong>Methods:</strong></p>
+<ul>
+<li><span><a class="apilink" href="scripting-api-reference-project-workspace.html#workspaceaddevent" title="Adds an event with the given name to the project.">workspace.addEvent</a> Adds an <a href="glossary.html#event">event</a> with the given name to the <span class="dead-link" href="glossary.html#fmod-studio-project">project</span class="dead-link">.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-workspace.html#workspaceaddgameparameter" title="Adds a parameter to the project.">workspace.addGameParameter</a> Adds a <a href="glossary.html#parameter">parameter</a> to the project.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-workspace.html#workspaceaddtag" title="Adds a tag with the given name to the project.">workspace.addTag</a> Adds a <a href="glossary.html#tag">tag</a> with the given name to the <span class="dead-link" href="glossary.html#fmod-studio-project">project</span class="dead-link">.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-workspace.html#workspacecreateplugin" title="Creates either a plug-in effect or a plug-in instrument.">workspace.createPlugin</a> Creates either a plug-in <a href="glossary.html#effect">effect</a> or a plug-in <a href="glossary.html#instrument">instrument</a>.</span></li>
+</ul>
+<h2 api="function" id="workspaceaddevent"><a href="#workspaceaddevent">workspace.addEvent</a></h2>
+<p>Adds an <a href="glossary.html#event">event</a> with the given name to the <span class="dead-link" href="glossary.html#fmod-studio-project">project</span class="dead-link">.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">workspace</span><span class="p">.</span><span class="nx">addEvent</span><span class="p">(</span>
+    <span class="nx">name</span><span class="p">,</span>
+    <span class="nx">withSpatializer</span>
+<span class="p">)</span>
+</pre></div>
+
+<dl>
+<dt>name</dt>
+<dd>The <code>string</code> value to assign the new event.</dd>
+<dt>withSpatializer</dt>
+<dd>A <code>bool</code> value determining whether to add an <a href="glossary.html#spatializer-effect">FMOD spatializer</a> to the new event's <a href="glossary.html#master-track">master track</a>.</dd>
+</dl>
+<p>Returns the event's <a class="apilink" href="scripting-api-reference-project-managedobject.html#managedobject">ManagedObject</a>.</p>
+<p>The <code>withSpatializer</code> argument should be <code>true</code> if a spatializer on the master track is desired and <code>false</code> otherwise.</p>
+<h2 api="function" id="workspaceaddgameparameter"><a href="#workspaceaddgameparameter">workspace.addGameParameter</a></h2>
+<p>Adds a <a href="glossary.html#parameter">parameter</a> to the project.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">workspace</span><span class="p">.</span><span class="nx">addGameParameter</span><span class="p">(</span>
+    <span class="nx">parameterDefinition</span>
+<span class="p">)</span>
+</pre></div>
+
+<dl>
+<dt>parameterDefinition</dt>
+<dd>The object describing the parameter to add.</dd>
+</dl>
+<p>Returns the parameter <a class="apilink" href="scripting-api-reference-project-managedobject.html#managedobject">ManagedObject</a>.</p>
+<p>The properties of the <code>parameterDefinition</code> object match those of the object given as an argument to the <a class="apilink" href="scripting-api-reference-project-model-event.html#eventaddgameparameter">Event.addGameParameter</a> function.</p>
+<h2 api="function" id="workspaceaddtag"><a href="#workspaceaddtag">workspace.addTag</a></h2>
+<p>Adds a <a href="glossary.html#tag">tag</a> with the given name to the <span class="dead-link" href="glossary.html#fmod-studio-project">project</span class="dead-link">.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">workspace</span><span class="p">.</span><span class="nx">addTag</span><span class="p">(</span>
+    <span class="nx">name</span>
+<span class="p">)</span>
+</pre></div>
+
+<dl>
+<dt>name</dt>
+<dd>name of tag to add.</dd>
+</dl>
+<p>Returns the tag <a class="apilink" href="scripting-api-reference-project-managedobject.html#managedobject">ManagedObject</a>.</p>
+<p>If the tag already exists in the project, the existing tag is returned instead.</p>
+<h2 api="function" id="workspacecreateplugin"><a href="#workspacecreateplugin">workspace.createPlugin</a></h2>
+<p>Creates either a plug-in <a href="glossary.html#effect">effect</a> or a plug-in <a href="glossary.html#instrument">instrument</a>.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">workspace</span><span class="p">.</span><span class="nx">createPlugin</span><span class="p">(</span>
+    <span class="nx">identfier</span>
+<span class="p">)</span>
+</pre></div>
+
+<dl>
+<dt>identifier</dt>
+<dd>The plug-in to use for the creation. This must match the name of an <a href="https://fmod.com/docs/2.03/api/plugin-api-dsp.html#fmod_dsp_description">FMOD_DSP_DESCRIPTION</a>.</dd>
+</dl>
+<p>Returns the plug-in effect or plug-in instrument <a class="apilink" href="scripting-api-reference-project-managedobject.html#managedobject">ManagedObject</a>.</p></div>
+
+<p class="manual-footer">FMOD Studio User Manual 2.03.15 (2026-09-21). &copy; 2026 Firelight Technologies Pty Ltd.</p>
+</div>
+</body>
+</html>
+

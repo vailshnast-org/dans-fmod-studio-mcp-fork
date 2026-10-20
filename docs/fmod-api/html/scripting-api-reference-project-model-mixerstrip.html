@@ -1,0 +1,119 @@
+<html>
+<head>
+<title>Scripting API Reference | Project.Model.MixerStrip</title>
+<link rel="stylesheet" href="style/docs.css">
+<link rel="stylesheet" href="style/code_highlight.css">
+<script type="text/javascript" src="scripts/language-selector.js"></script></head>
+<body>
+<div class="docs-body">
+<div class="manual-toc">
+<p>FMOD Studio User Manual 2.03</p>
+<ul>
+<li><a href="welcome-to-fmod-studio.html">Welcome to FMOD Studio</a></li>
+<li><a href="fmod-studio-concepts.html">FMOD Studio Concepts</a></li>
+<li><a href="organizing-the-project.html">Organizing the Project</a></li>
+<li><a href="authoring-events.html">Authoring Events</a></li>
+<li><a href="working-with-instruments.html">Working with Instruments</a></li>
+<li><a href="managing-assets.html">Managing Assets</a></li>
+<li><a href="parameters.html">Parameters</a></li>
+<li><a href="getting-events-into-your-game.html">Getting Events into Your Game</a></li>
+<li><a href="mixing.html">Mixing</a></li>
+<li><a href="the-sandbox.html">The Sandbox</a></li>
+<li><a href="editing-during-live-update.html">Editing During Live Update</a></li>
+<li><a href="profiling.html">Profiling</a></li>
+<li><a href="dialogue-and-localization.html">Dialogue and Localization</a></li>
+<li><a href="using-source-control.html">Using Source Control</a></li>
+<li><a href="supporting-downloadable-and-user-generated-content.html">Supporting Downloadable and User-generated Content</a></li>
+<li><a href="advanced-topics.html">Advanced Topics</a></li>
+<li><a href="quick-start-tutorial.html">Quick Start Tutorial</a></li>
+<li><a href="effect-reference.html">Effect Reference</a></li>
+<li><a href="event-macro-controls-reference.html">Event Macros Drawer Reference</a></li>
+<li><a href="instrument-reference.html">Instrument Reference</a></li>
+<li><a href="keyboard-shortcut-reference.html">Keyboard Shortcut Reference</a></li>
+<li><a href="modulator-reference.html">Modulator Reference</a></li>
+<li><a href="parameters-reference.html">Parameters Reference</a></li>
+<li><a href="plugin-reference.html">Plug-in Reference</a></li>
+<li><a href="scripting-terminal-reference.html">Scripting</a></li>
+<li class="manual-current-chapter manual-inactive-chapter"><a href="scripting-api-reference.html">Scripting API Reference</a><ul class="subchapters"><li><a href="scripting-api-reference-globals.html">Globals</a></li><li><a href="scripting-api-reference-menu.html">Menu</a></li><li><a href="scripting-api-reference-project.html">Project</a></li><li><a href="scripting-api-reference-project-entity.html">Project.Entity</a></li><li><a href="scripting-api-reference-project-managedobject.html">Project.ManagedObject</a></li><li><a href="scripting-api-reference-project-model.html">Project.Model</a></li><li><a href="scripting-api-reference-project-model-asset.html">Project.Model.Asset</a></li><li><a href="scripting-api-reference-project-model-automatableobject.html">Project.Model.AutomatableObject</a></li><li><a href="scripting-api-reference-project-model-automationcurve.html">Project.Model.AutomationCurve</a></li><li><a href="scripting-api-reference-project-model-automator.html">Project.Model.Automator</a></li><li><a href="scripting-api-reference-project-model-bank.html">Project.Model.Bank</a></li><li><a href="scripting-api-reference-project-model-event.html">Project.Model.Event</a></li><li><a href="scripting-api-reference-project-model-folder.html">Project.Model.Folder</a></li><li><a href="scripting-api-reference-project-model-mixereffect.html">Project.Model.MixerEffect</a></li><li class="manual-current-chapter manual-active-chapter"><a href="scripting-api-reference-project-model-mixerstrip.html">Project.Model.MixerStrip</a></li><li><a href="scripting-api-reference-project-model-modulator.html">Project.Model.Modulator</a></li><li><a href="scripting-api-reference-project-model-parameter.html">Project.Model.Parameter</a></li><li><a href="scripting-api-reference-project-model-sound.html">Project.Model.Sound</a></li><li><a href="scripting-api-reference-project-model-track.html">Project.Model.Track</a></li><li><a href="scripting-api-reference-project-model-triggerable.html">Project.Model.Triggerable</a></li><li><a href="scripting-api-reference-project-workspace.html">Project.Workspace</a></li><li><a href="scripting-api-reference-system.html">System</a></li><li><a href="scripting-api-reference-ui.html">UI</a></li><li><a href="scripting-api-reference-window.html">Window</a></li></ul></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="glossary.html">Glossary</a></li>
+<li><a href="appendix-a-celeste.html">Appendix: Celeste Getting Started Guide</a></li>
+<li><a href="appendix-b-reaper-integration.html">Appendix: Reaper Integration</a></li>
+</ul>
+</div>
+<div class="manual-content studio">
+<h1>26. Scripting API Reference | Project.Model.MixerStrip</h1>
+<p><strong>Types:</strong></p>
+<ul>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-mixerstrip.html#modeleventmixergroup" title="An audio track within a model.Event.">model.EventMixerGroup</a> An <a href="glossary.html#audio-track">audio track</a> within a <code>model.Event</code>.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-mixerstrip.html#modeleventmixermaster" title="The master track of an model.Event.">model.EventMixerMaster</a> The <a href="glossary.html#master-bus">master track</a> of an <code>model.Event</code>.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-mixerstrip.html#modeleventmixerreturn" title="A return track that can receive signals from within the event.">model.EventMixerReturn</a> A <a href="glossary.html#return-bus">return track</a> that can receive <a href="glossary.html#signal">signals</a> from within the <a href="glossary.html#event">event</a>.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-mixerstrip.html#modelmixerbus" title="The base class for routable buses.">model.MixerBus</a> The base class for routable <a href="glossary.html#bus">buses</a>.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-mixerstrip.html#modelmixergroup" title="A model.MixerBus that accepts the outputs of other mixer buses as inputs.">model.MixerGroup</a> A <code>model.MixerBus</code> that accepts the outputs of other mixer <a href="glossary.html#bus">buses</a> as inputs.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-mixerstrip.html#modelmixerinput" title="A model.MixerBus that allows output from a model.Event to enter the project-level mixer.">model.MixerInput</a> A <code>model.MixerBus</code> that allows output from a <code>model.Event</code> to enter the project-level <a href="glossary.html#mixer">mixer</a>.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-mixerstrip.html#modelmixermaster" title="The final output bus in the mixer.">model.MixerMaster</a> The final output <a href="glossary.html#bus">bus</a> in the <a href="glossary.html#mixer">mixer</a>.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-mixerstrip.html#modelmixerport" title="An output to an external audio port.">model.MixerPort</a> An output to an external audio port.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-mixerstrip.html#modelmixerreturn" title="A return bus that can receive a signal from a model.MixerSend.">model.MixerReturn</a> A <a href="glossary.html#return-bus">return bus</a> that can receive a <a href="glossary.html#signal">signal</a> from a <code>model.MixerSend</code>.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-mixerstrip.html#modelmixerstrip" title="The base class for elements represented as a strip.">model.MixerStrip</a> The base class for elements represented as a strip.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-mixerstrip.html#modelmixervca" title="A model.MixerStrip that scales the volume of any other mixer strips assigned to it.">model.MixerVCA</a> A <code>model.MixerStrip</code> that scales the volume of any other <a href="glossary.html#mixer-strip">mixer strips</a> assigned to it.</span></li>
+</ul>
+<p><strong>Extension Methods:</strong></p>
+<ul>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-mixerstrip.html#mixerbusgetinputformat" title="Retrieves the input format of the bus.">MixerBus.getInputFormat</a> Retrieves the input format of the <a href="glossary.html#bus">bus</a>.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-mixerstrip.html#mixerbusgetoutputformat" title="Retrieves the output format of the bus.">MixerBus.getOutputFormat</a> Retrieves the output format of the <a href="glossary.html#bus">bus</a>.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-mixerstrip.html#mixerstripgetpath" title="Retrieves the mixer strip's unique path identifier.">MixerStrip.getPath</a> Retrieves the <a href="glossary.html#mixer-strip">mixer strip's</a> unique path identifier.</span></li>
+</ul>
+<h2 api="function" id="modeleventmixergroup"><a href="#modeleventmixergroup">model.EventMixerGroup</a></h2>
+<p>An <a href="glossary.html#audio-track">audio track</a> within a <a class="apilink" href="scripting-api-reference-project-model-event.html#modelevent">model.Event</a>.</p>
+<h2 api="function" id="modeleventmixermaster"><a href="#modeleventmixermaster">model.EventMixerMaster</a></h2>
+<p>The <a href="glossary.html#master-bus">master track</a> of an <a class="apilink" href="scripting-api-reference-project-model-event.html#modelevent">model.Event</a>.</p>
+<h2 api="function" id="modeleventmixerreturn"><a href="#modeleventmixerreturn">model.EventMixerReturn</a></h2>
+<p>A <a href="glossary.html#return-bus">return track</a> that can receive <a href="glossary.html#signal">signals</a> from within the <a href="glossary.html#event">event</a>.</p>
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/studio/mixing.html#sends-and-return-buses">Sends and Return Buses</a>, <a href="https://fmod.com/docs/2.03/api/effects-reference.html#return">Return</a></p>
+<h2 api="function" id="modelmixerbus"><a href="#modelmixerbus">model.MixerBus</a></h2>
+<p>The base class for routable <a href="glossary.html#bus">buses</a>.</p>
+<h2 api="function" id="modelmixergroup"><a href="#modelmixergroup">model.MixerGroup</a></h2>
+<p>A <a class="apilink" href="scripting-api-reference-project-model-mixerstrip.html#modelmixerbus">model.MixerBus</a> that accepts the outputs of other mixer <a href="glossary.html#bus">buses</a> as inputs.</p>
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/studio/mixing.html#group-buses-and-routing">Group Buses and Routing</a></p>
+<h2 api="function" id="modelmixerinput"><a href="#modelmixerinput">model.MixerInput</a></h2>
+<p>A <a class="apilink" href="scripting-api-reference-project-model-mixerstrip.html#modelmixerbus">model.MixerBus</a> that allows output from a <a class="apilink" href="scripting-api-reference-project-model-event.html#modelevent">model.Event</a> to enter the project-level <a href="glossary.html#mixer">mixer</a>.</p>
+<p><a href="glossary.html#nested-event">Nested events</a>, <a href="glossary.html#snapshot">snapshots</a> and <span class="dead-link" href="glossary.html#profiler-session">profiler sessions</span class="dead-link"> cannot output to a mixer input.</p>
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/studio/glossary.html#mixer-strip">Mixer Strip</a></p>
+<h2 api="function" id="modelmixermaster"><a href="#modelmixermaster">model.MixerMaster</a></h2>
+<p>The final output <a href="glossary.html#bus">bus</a> in the <a href="glossary.html#mixer">mixer</a>.</p>
+<p><strong>See Also:</strong> <a class="apilink" href="scripting-api-reference-project-model-mixerstrip.html#modelmixerstrip">model.MixerStrip</a>, <a href="https://fmod.com/docs/2.03/studio/mixing.html#master-bus">Master Bus</a></p>
+<h2 api="function" id="modelmixerport"><a href="#modelmixerport">model.MixerPort</a></h2>
+<p>An output to an external audio port.</p>
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/studio/mixing.html#port-buses">Port Buses</a></p>
+<h2 api="function" id="modelmixerreturn"><a href="#modelmixerreturn">model.MixerReturn</a></h2>
+<p>A <a href="glossary.html#return-bus">return bus</a> that can receive a <a href="glossary.html#signal">signal</a> from a <a class="apilink" href="scripting-api-reference-project-model-mixereffect.html#modelmixersend">model.MixerSend</a>.</p>
+<p><strong>See Also:</strong>  <a href="https://fmod.com/docs/2.03/studio/mixing.html#sends-and-return-buses">Sends and Return Buses</a>, <a href="https://fmod.com/docs/2.03/api/effects-reference.html#return">Return</a></p>
+<h2 api="function" id="modelmixerstrip"><a href="#modelmixerstrip">model.MixerStrip</a></h2>
+<p>The base class for elements represented as a strip.</p>
+<h2 api="function" id="modelmixervca"><a href="#modelmixervca">model.MixerVCA</a></h2>
+<p>A <a class="apilink" href="scripting-api-reference-project-model-mixerstrip.html#modelmixerstrip">model.MixerStrip</a> that scales the volume of any other <a href="glossary.html#mixer-strip">mixer strips</a> assigned to it.</p>
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/studio/mixing.html#vcas">VCAs</a></p>
+<h2 api="function" id="mixerbusgetinputformat"><a href="#mixerbusgetinputformat">MixerBus.getInputFormat</a></h2>
+<p>Retrieves the input format of the <a href="glossary.html#bus">bus</a>.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">MixerBus</span><span class="p">.</span><span class="nx">getInputFormat</span><span class="p">()</span>
+</pre></div>
+
+<p>Returns the effective input format for a <a class="apilink" href="scripting-api-reference-project-model-mixerstrip.html#modelmixerbus">model.MixerBus</a> object as an enumeration.</p>
+<h2 api="function" id="mixerbusgetoutputformat"><a href="#mixerbusgetoutputformat">MixerBus.getOutputFormat</a></h2>
+<p>Retrieves the output format of the <a href="glossary.html#bus">bus</a>.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">MixerBus</span><span class="p">.</span><span class="nx">getOutputFormat</span><span class="p">()</span>
+</pre></div>
+
+<p>Returns the effective output format for a <a class="apilink" href="scripting-api-reference-project-model-mixerstrip.html#modelmixerbus">model.MixerBus</a> object as an enumeration.</p>
+<h2 api="function" id="mixerstripgetpath"><a href="#mixerstripgetpath">MixerStrip.getPath</a></h2>
+<p>Retrieves the <a href="glossary.html#mixer-strip">mixer strip's</a> unique path identifier.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">MixerStrip</span><span class="p">.</span><span class="nx">getPath</span><span class="p">()</span>
+</pre></div>
+
+<p>Returns the <a class="apilink" href="scripting-api-reference-project-model-mixerstrip.html#modelmixerstrip">model.MixerStrip</a>'s <a href="https://fmod.com/docs/2.03/studio/advanced-topics.html#paths">path</a> as a <code>string</code>.</p></div>
+
+<p class="manual-footer">FMOD Studio User Manual 2.03.15 (2026-09-21). &copy; 2026 Firelight Technologies Pty Ltd.</p>
+</div>
+</body>
+</html>
+

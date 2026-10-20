@@ -1,0 +1,1119 @@
+<html>
+<head>
+<title>Effect Reference</title>
+<link rel="stylesheet" href="style/docs.css">
+<link rel="stylesheet" href="style/code_highlight.css">
+<script type="text/javascript" src="scripts/language-selector.js"></script></head>
+<body>
+<div class="docs-body">
+<div class="manual-toc">
+<p>FMOD Studio User Manual 2.03</p>
+<ul>
+<li><a href="welcome-to-fmod-studio.html">Welcome to FMOD Studio</a></li>
+<li><a href="fmod-studio-concepts.html">FMOD Studio Concepts</a></li>
+<li><a href="organizing-the-project.html">Organizing the Project</a></li>
+<li><a href="authoring-events.html">Authoring Events</a></li>
+<li><a href="working-with-instruments.html">Working with Instruments</a></li>
+<li><a href="managing-assets.html">Managing Assets</a></li>
+<li><a href="parameters.html">Parameters</a></li>
+<li><a href="getting-events-into-your-game.html">Getting Events into Your Game</a></li>
+<li><a href="mixing.html">Mixing</a></li>
+<li><a href="the-sandbox.html">The Sandbox</a></li>
+<li><a href="editing-during-live-update.html">Editing During Live Update</a></li>
+<li><a href="profiling.html">Profiling</a></li>
+<li><a href="dialogue-and-localization.html">Dialogue and Localization</a></li>
+<li><a href="using-source-control.html">Using Source Control</a></li>
+<li><a href="supporting-downloadable-and-user-generated-content.html">Supporting Downloadable and User-generated Content</a></li>
+<li><a href="advanced-topics.html">Advanced Topics</a></li>
+<li><a href="quick-start-tutorial.html">Quick Start Tutorial</a></li>
+<li class="manual-current-chapter manual-active-chapter"><a href="effect-reference.html">Effect Reference</a><ul>
+<li><a href="#3-eq">3-EQ</a></li>
+<li><a href="#channel-mix">Channel Mix</a></li>
+<li><a href="#chorus">Chorus</a></li>
+<li><a href="#compressor">Compressor</a></li>
+<li><a href="#convolution-reverb">Convolution Reverb</a></li>
+<li><a href="#delay">Delay</a></li>
+<li><a href="#distortion">Distortion</a></li>
+<li><a href="#flanger">Flanger</a></li>
+<li><a href="#gain">Gain</a></li>
+<li><a href="#limiter">Limiter</a></li>
+<li><a href="#loudness-meter">Loudness Meter</a></li>
+<li><a href="#multiband-eq">Multiband EQ</a></li>
+<li><a href="#object-spatializer">Object Spatializer</a></li>
+<li><a href="#panner">Panner</a></li>
+<li><a href="#parametric-eq">Parametric EQ</a></li>
+<li><a href="#pitch-shifter">Pitch Shifter</a></li>
+<li><a href="#reverb">Reverb</a></li>
+<li><a href="#send">Send</a></li>
+<li><a href="#sidechain">Sidechain</a></li>
+<li><a href="#spatializer">Spatializer</a></li>
+<li><a href="#transceiver">Transceiver</a></li>
+</ul>
+</li>
+<li><a href="event-macro-controls-reference.html">Event Macros Drawer Reference</a></li>
+<li><a href="instrument-reference.html">Instrument Reference</a></li>
+<li><a href="keyboard-shortcut-reference.html">Keyboard Shortcut Reference</a></li>
+<li><a href="modulator-reference.html">Modulator Reference</a></li>
+<li><a href="parameters-reference.html">Parameters Reference</a></li>
+<li><a href="plugin-reference.html">Plug-in Reference</a></li>
+<li><a href="scripting-terminal-reference.html">Scripting</a></li>
+<li><a href="scripting-api-reference.html">Scripting API Reference</a></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="glossary.html">Glossary</a></li>
+<li><a href="appendix-a-celeste.html">Appendix: Celeste Getting Started Guide</a></li>
+<li><a href="appendix-b-reaper-integration.html">Appendix: Reaper Integration</a></li>
+</ul>
+</div>
+<div class="manual-content studio">
+<h1>18. Effect Reference</h1>
+<p>An <a href="glossary.html#effect">effect</a> is a modular unit that can be inserted into the <a href="glossary.html#signal-chain">signal chain</a> of a <a href="glossary.html#track">track</a> or <a href="glossary.html#bus">bus</a>, and which can perform real-time signal processing, routing, or analysis.</p>
+<p>Effects are displayed as panels in the deck when viewing the signal chain to which they have been added. The order of effects in the signal chain determines the order in which they are applied to the signal.</p>
+<p>Most effects have properties that are automatable and modulatable, meaning that their values can be adjusted in real time. This allows an effect property to have different values at different times and in different <a href="glossary.html#event-instance">event instances</a>.</p>
+<div class="admonition property colours">
+<p><img alt="Red" src="images/property-red.png" /> <img alt="Green" src="images/property-green.png" /> <img alt="Yellow" src="images/property-yellow.png" /><br />
+The highlight colors of dials and number boxes in the deck correspond to the type of property each control represents:</p>
+<ul>
+<li><em>Red.</em> Volume properties.</li>
+<li><em>Green.</em> Time-related properties, such as pitch and frequency.</li>
+<li><em>Yellow.</em> All other effect properties.</li>
+</ul>
+</div>
+<p>Some effects are <a href="glossary.html#shared-effect">shared effects</a> and can be present in multiple different events in the project. All instances of a single shared effect feature the same basic property values, automation, and modulation.</p>
+<p>For information on using effects to process signals in your project's buses and tracks, see the <a href="authoring-events.html#signal-chains">Signal Chains</a> section of the <a href="authoring-events.html">Authoring Events</a> chapter.</p>
+<p>The following properties and controls are common to many effects.</p>
+<dl>
+<dt><strong>Effect Name</strong> (Label)</dt>
+<dt><img alt="An effect's name" src="images/effect-name.png" title="An effect's name." /></dt>
+<dd>The name of the effect or shared effect.</dd>
+<dt><strong>Bypass</strong> (Toggle button)</dt>
+<dt><img alt="A bypass toggle button" src="images/bypass-toggle.png" title="A bypass toggle button." /></dt>
+<dd>Any effect can potentially be bypassed, suppressing its normal function for as long as it remains bypassed. A bypassed <a href="glossary.html#routing-effect">routing effect</a> does not route a duplicate of the signal at its location to its target destination, and a bypassed <a href="glossary.html#creative-effect">creative effect</a> does not alter the signal at its position in the signal chain. Effects that change the channel format of the signal at their position in the signal chain are a partial exception to this; such an effect always alters the channel format of the signal even when it is bypassed, though it will not alter the signal in any other way that it normally would.</dd>
+<dd>Bypassing does not affect in-game behavior; it only affects behavior when auditioning in FMOD Studio and when using <a href="glossary.html#live-update">live update</a> to connect <a href="glossary.html#fmod-studio">FMOD Studio</a> to your game.</dd>
+<dt><strong>Shared Effect Icon</strong> (Button)</dt>
+<dt><img alt="A preset effect icon" src="images/preset-effect-icon.png" title="A shared effect icon." /></dt>
+<dd>This icon is present if the effect is a shared effect, and flashes whenever the shared effect is being changed.</dd>
+<dd>Clicking on the shared effect icon opens the shared effect in the effects browser window.</dd>
+<dt><strong>Platform Exclusion Icon</strong> (Button)</dt>
+<dt><img alt="A platform exlcusion icon" src="images/platform-exclusion-icon.png" title="A platform exclusion icon." /></dt>
+<dd>This icon is present if the effect is excluded from at least one of your project's <span class="dead-link" href="glossary.html#target-platform">target platforms</span class="dead-link">. If it is excluded from the current platform, the icon is blue and the effect is dimmed; if the effect is not excluded from the current platform, the icon is gray.</dd>
+</dl>
+<h2 id="3-eq"><a href="#3-eq">18.1 3-EQ</a></h2>
+<p><img alt="The 3-EQ effect" src="images/threeeq-effect.png" title="The 3-EQ effect" /></p>
+<p>The FMOD 3-EQ is a three-band equalizer: It allows you to define three <a href="glossary.html#frequency-band">frequency bands</a>, "low," "mid," and "high," and to adjust the gain of each band. This allows you to emphasize or de-emphasize specific parts of a signal.</p>
+<p>The 3-EQ effect is built on the FMOD Engine's <a href="https://fmod.com/docs/2.03/api/effects-reference.html#three-eq">Three EQ effect</a>.</p>
+<div class="admonition performance">
+<p><strong>Performance:</strong> Low overhead.</p>
+</div>
+<dl>
+<dt><strong>Low</strong> (Dial)</dt>
+<dt><img alt="The low dial" src="images/three-eq-low.png" title="The low dial." /></dt>
+<dd>This is the gain to be applied to the low band.</dd>
+<dd>Range: -oo dB to +10 dB. Default value: 0 dB.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Mid</strong> (Dial)</dt>
+<dt><img alt="The mid dial" src="images/three-eq-mid.png" title="The mid dial." /></dt>
+<dd>This is the gain to be applied to the mid band.</dd>
+<dd>Range: -oo dB to +10 dB. Default value: 0 dB.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>High</strong> (Dial)</dt>
+<dt><img alt="The high dial" src="images/three-eq-high.png" title="The high dial." /></dt>
+<dd>This is the gain to be applied to the high band.</dd>
+<dd>Range: -oo dB to +10 dB. Default value: 0 dB.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>X-Low</strong> (Dial)</dt>
+<dt><img alt="The x-low dial" src="images/three-eq-x-low.png" title="The x-low dial." /></dt>
+<dd>This property's value defines the upper end of the low band and the lower end of the mid band. The lower end of the low band has no lower limit.</dd>
+<dd>Range: 10 Hz to 22 kHz. Default value: 400 Hz.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>X-High</strong> (Dial)</dt>
+<dt><img alt="The x-high dial" src="images/three-eq-x-high.png" title="The x-high dial." /></dt>
+<dd>This property's value defines the upper end of the mid band and the lower end of the high band. The upper end of the high band has no upper limit.</dd>
+<dd>Range: 10 Hz to 22 kHz. Default value: 4 kHz.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>X-Slope</strong> (Radio buttons)</dt>
+<dt><img alt="The x-slope radio buttons" src="images/three-eq-x-slope.png" title="The x-slope radio buttons." /></dt>
+<dd>The boundary between bands is not sharply delimited. The upper end of the low band is crossfaded with the lower end of the mid band, and the upper end of the mid band is crossfaded with the lower end of the high band, to prevent abrupt and obvious steps in volume when a sound gradually changes frequency.</dd>
+<dd>This property defines the slope of the curves used in the crossfade, 12 dB being the shallowest and gentlest curve, and 48 dB being the steepest. The default slope is 24 dB.</dd>
+</dl>
+<p><img alt="Diagram of Crossfade Curves" src="images/dsp-threeeq.svg" title="A Graph of 3-EQ Crossfade Curves" /><br />
+<em>A graph showing the curves used for each x-slope property value when the low, mid, and high properties are set to 0 dB, and x-low and x-high are set to below 100 Hz and above 10,000 Hz respectively.</em></p>
+<h2 id="channel-mix"><a href="#channel-mix">18.2 Channel Mix</a></h2>
+<p><img alt="The channel mix effect, mono input, none grouping" src="images/channel-mix-effect-mono-to-none.png" title="A channel mix effect with mono input and none grouping." /> <img alt="The channel mix effect, 5.1 input, none grouping" src="images/channel-mix-effect-five-one-to-none.png" title="A channel mix effect with 5.1 input and none grouping." /><br />
+<img alt="The channel mix effect, mono input, 5.1 grouping" src="images/channel-mix-effect-mono-to-five-one.png" title="A channel mix effect with mono input and 5.1 grouping." /> <img alt="The channel mix effect, 5.1 input, 5.1 grouping" src="images/channel-mix-effect-five-one-to-five-one.png" title="A channel mix effect with 5.1 input and 5.1 grouping." /></p>
+<p>This effect allows you to manipulate the individual <a href="glossary.html#speaker-channel">speaker channels</a> of a <a href="glossary.html#signal">signal</a>, routing any input speaker channel into any output speaker channel. Among other things, this allows the channel mix effect to be used as a low-cost multi-layer audio system, in which multiple input speaker channels are grouped (i.e.: routed and mixed) into a single output speaker channel. This is especially useful for streaming audio, as it allows a single streaming asset to take the place of multiple streaming assets, and for a single audio track and instrument to take the place of multiple audio tracks and instruments.</p>
+<p>The number of channel gain sliders that appears depends on the <a href="glossary.html#channel-format">speaker channel format</a> of the channel mix effect's input signal.</p>
+<p>The channel mix effect is built on the FMOD Engine's <a href="https://fmod.com/docs/2.03/api/effects-reference.html#channel-mix">channel mix effect</a>.</p>
+<div class="admonition performance">
+<p><strong>Performance:</strong> Low overhead.</p>
+</div>
+<dl>
+<dt><strong>Grouping</strong> (Drop-down menu)</dt>
+<dt><img alt="Grouping drop-down menu" src="images/channel-mix-grouping.png" title="The grouping drop-down menu." /></dt>
+<dd>This property sets the output channel format of the effect, and thus defines what speaker channels the input speaker channels can potentially be grouped (i.e.: routed and mixed) into. If set to "none," the effect output speaker channel format is the same as its input speaker channel format, and each input channel outputs to the equivalent output channel. If set to anything other than "none" or "mono," output channel drop-down menus appear beneath each channel gain slider.</dd>
+<dd>Default value: None.</dd>
+<dt><strong>Channel gain sliders</strong> (Sliders)</dt>
+<dt><img alt="Channel gain sliders" src="images/channel-mix-gain-sliders.png" title="The channel gain sliders." /></dt>
+<dd>These sliders, labelled "Ch. 0," "Ch. 1," and so on, correspond to the speaker channels of the effect's input signal, and allow you to duck or boost their volumes. The number of sliders on the effect depends on the number of speaker channels in that channel format.</dd>
+<dd>The sliders are presented in standard channel order (i.e.: L, R, C, LFE, LS, RS, LSR, RSR, TFL, TFR, TBL, TBR), regardless of which metering channel order is selected in the audio tab of FMOD Studio's preferences dialog.</dd>
+<dd>Range: -oo dB to +10 dB. Default value: 0 dB.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Output channel drop-down menus</strong> (Drop-down menus)</dt>
+<dt><img alt="Output channel drop-down menus" src="images/channel-mix-output.png" title="The output channel drop-down menus." /></dt>
+<dd>These menus appear beneath each channel gain slider if the grouping drop-down menu is set to anything other than "mono" or "none." Each such menu lists all the speaker channels in the output speaker channel format specified by the grouping drop-down menu. Setting an output channel drop-down menu to a speaker channel causes the input speaker channel to be grouped (i.e.: routed and mixed) into that output speaker channel. <em>For example, the "Ch. 1" slider usually represents the front right speaker channel. If you set the drop-down menu below that slider to "C," the channel mix effect routes the front right speaker channel's signal to the center channel.</em></dd>
+</dl>
+<h2 id="chorus"><a href="#chorus">18.3 Chorus</a></h2>
+<p><img alt="The chorus effect" src="images/chorus-effect.png" title="A chorus effect." /></p>
+<p>The chorus <a href="glossary.html#effect">effect</a> generates interference of the source <a href="glossary.html#signal">signal</a> by mixing it with a three delayed copies of that signal, and modulating the delay offset of those copies over time. The result sounds choral, as if multiple sources were producing the same sound at approximately the same time.</p>
+<p>The output of the chorus effect is balanced such that its output is not louder than its input.</p>
+<p>The effect works best on longer sounds that are sustained for some time.</p>
+<p>The chorus effect is built on the FMOD Engine's <a href="https://fmod.com/docs/2.03/api/effects-reference.html#chorus">chorus effect</a>.</p>
+<div class="admonition performance">
+<p><strong>Performance:</strong> Medium overhead.</p>
+</div>
+<dl>
+<dt><strong>Rate</strong> (Dial)</dt>
+<dt><img alt="Rate dial" src="images/chorus-rate.png" title="The rate dial." /></dt>
+<dd>The frequency with which the delay offset of the delayed copies oscillates.</dd>
+<dd>Range: 0 Hz to 20 Hz. Default value: 0.8 Hz.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+</dl>
+<p><img alt="Diagram of Chorus Effect" src="images/dsp-chorus-wave.svg" title="A visualization of the input signal and a copy of that signal with a delay offset." /></p>
+<dl>
+<dt><strong>Depth</strong> (Dial)</dt>
+<dt><img alt="Depth dial" src="images/chorus-depth.png" title="The depth dial." /></dt>
+<dd>The maximum delay offset applied to the delayed copies, expressed as a percentage. 0% represents 0 ms, 100% represents 100 ms. Values between those extremes follow the formula (delay in ms) = 100 &#215; (property value)<sup>2</sup>, such that a value of 50% results in a delay of 25 ms.</dd>
+<dd>Range: 0 % to 100%. Default value: 3%.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Mix</strong> (Dial)</dt>
+<dt><img alt="Mix dial" src="images/chorus-mix.png" title="The mix dial." /></dt>
+<dd>The wet/dry mix of this effect to be applied to the signal. The loudness of the mixed signal is automatically balanced to ensure the loudness of the output signal is consistent with that of the input signal.</dd>
+<dd>Range: 0% to 100%. Default value: 100%.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+</dl>
+<h2 id="compressor"><a href="#compressor">18.4 Compressor</a></h2>
+<p><img alt="The compressor effect" src="images/compressor-effect.png" title="A compressor effect." /></p>
+<p>The compressor reduces the volume of sounds above a certain threshold, reducing the <a href="glossary.html#signal">signal</a>'s dynamic range.</p>
+<p>A compressor may be controlled by either its input signal or by a signal from a sidechain effect in the same event or mixer as that compressor effect. </p>
+<p>When the peak loudness of the control signal exceeds the threshold property, the volume of the processed signal is ducked according to its ratio property. However, this ducking does not happen instantaneously; whenever the peak loudness increases to a new value above the threshold, the adjustment is ramped up over a period of time based on the attack property; and whenever the peak loudness drops below the threshold, the adjustment is ramped down over a period of time based on the release property.</p>
+<p>The compressor effect is built on the FMOD Engine's <a href="https://fmod.com/docs/2.03/api/effects-reference.html#compressor">compressor effect</a>.</p>
+<div class="admonition performance">
+<p><strong>Performance:</strong> Medium overhead.</p>
+</div>
+<dl>
+<dt><strong>Threshold</strong> (Dial)</dt>
+<dt><img alt="Threshold dial" src="images/compressor-threshold.png" title="The threshold dial." /></dt>
+<dd>This property defines the loudness above which the signal is ducked by the compressor effect. Signals quieter than this value are never ducked, and the compressor cannot duck a signal below this value.</dd>
+<dd>Range: -60 dB to 0 dB. Default value: 0 dB.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Ratio</strong> (Dial)</dt>
+<dt><img alt="Ratio dial" src="images/compressor-ratio.png" title="The ratio dial." /></dt>
+<dd>This property defines the ratio of the number of decibels the input signal's volume is above the threshold to the number of decibels above the threshold the compressor should reduce it to. A ratio property of 2.5:1 therefore means that for every 2.5 dB the signal is above the threshold, that signal is attenuated by 1.5 dB.</dd>
+<dd>For example, suppose the threshold is -12 dB and the signal's loudness is  -6 dB. If the ratio is 2:1, the compressor attenuates the signal by -3 dB; if the ratio is 3:1, the compressor attenuates the signal by -4 dB; and if the ratio is 1:1, the compressor does not attenuate the signal.</dd>
+<dd>Range: 1.0:1 to 50.0:1. Default value: 2.5:1.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Attack</strong> (Dial)</dt>
+<dt><img alt="Attack dial" src="images/compressor-attack.png" title="The attack dial." /></dt>
+<dd>This property defines the amount of time over which the signal's volume may be ramped down when peak loudness increases to a new value above the threshold.</dd>
+<dd>Range: 0.1 ms to 500 ms. Default value: 20 ms.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Release</strong> (Dial)</dt>
+<dt><img alt="Release dial" src="images/compressor-release.png" title="The release dial." /></dt>
+<dd>This property defines the amount of time over which the signal's volume may be ramped up when the signal's peak loudness decreases from a value above the threshold.</dd>
+<dd>Range: 10 ms to 5 sec. Default value: 200 ms.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Gain</strong> (Dial)</dt>
+<dt><img alt="Gain dial" src="images/compressor-gain.png" title="The gain dial." /></dt>
+<dd>This property represents a gain adjustment that's applied to the signal before compression.</dd>
+<dd>Range: -30 dB to +30 dB. Default value: 0 dB.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Channels</strong> (Toggle button)</dt>
+<dt><img alt="Channels toggle button" src="images/compressor-channels.png" title="The channels toggle button." /></dt>
+<dd>This property determines whether the <a href="glossary.html#speaker-channel">speaker channels</a> of the signal are processed individually or as a group. If disabled, each speaker channel is processed individually, and so is only affected by compression if that specific speaker channel (or the corresponding speaker channel of the control signal) exceeds the threshold; if enabled, all speaker channels are subject to equal compression whenever compression is applied, as if they had been <span class="dead-link" href="glossary.html#down-mix">down-mixed</span class="dead-link"> to mono speaker format.</dd>
+<dt><strong>Sidechain</strong> (Dropdown menu)</dt>
+<dt><img alt="Sidechain dropdown menu" src="images/compressor-sidechain.png" title="The sidechain dropdown menu." /></dt>
+<dd>This menu determines the sidechain (if any) linked to the compressor effect. If set to "No Inputs," the compressor effect is controlled by its input signal; whereas if it is set to a sidechain effect, the compressor effect is instead controlled by the signal from that sidechain effect.</dd>
+</dl>
+<h2 id="convolution-reverb"><a href="#convolution-reverb">18.5 Convolution Reverb</a></h2>
+<p><img alt="The convolution reverb effect" src="images/convolution-reverb-effect.png" title="A convolution reverb effect." /></p>
+<p>The convolution reverb <a href="glossary.html#effect">effect</a> uses an impulse response to simulate the reverberation characteristics of a real or fictional location and applies those characteristics to the signal.</p>
+<p>The convolution reverb effect allows more accurate reproduction of real-world locations' reverberation characteristics than the <a href="effect-reference.html#reverb">reverb effect</a>. However, unlike the reverb effect, it does not support adjusting or morphing reverb characteristics in real time. It is possible to work around this limitation by using multiple different convolution reverb effects on different <a href="glossary.html#track">tracks</a> or <a href="glossary.html#bus">buses</a> and crossfading between them, but using multiple convolution reverb effect instances incurs a commensurate increase in resource cost.</p>
+<p>The convolution reverb effect is built on the FMOD Engine's <a href="https://fmod.com/docs/2.03/api/effects-reference.html#convolution-reverb">convolution reverb effect</a>.</p>
+<div class="admonition performance">
+<p><strong>Performance:</strong> High overhead. Shorter impulse responses require less CPU time to process, while longer impulse responses require more.</p>
+</div>
+<dl>
+<dt><strong>Impulse Response</strong> (Graphic)</dt>
+<dt><img alt="Impulse response" src="images/convolution-reverb-impulse-response.png" title="The impulse response widget." /></dt>
+<dd>The impulse response used by the effect. To add or change the impulse response used by a convolution reverb effect, drag an appropriate file from Finder or Explorer onto this widget. Suitable impulse response files must be in 16 bit PCM format, and must have a sample rate equal to your game's output rate. For more information on impulse response files, see the <a href="https://fmod.com/docs/2.03/api/effects-reference.html#creation-of-an-impulse-response-for-use-with-the-convolution-reverb-effect">Creation of an impulse response for use with the convolution reverb effect</a> section of the <a href="https://fmod.com/docs/2.03/api">FMOD Engine User Manual</a>. The spaker channel format of the impulse response file determines the speaker channel format of the effect's output.</dd>
+<dd>The section of the graphic displayed with a medium gray background represents the parts of the waveform that are louder than -80 dB. Sections of the waveform quieter than this threshold are treated as silent for the purposes of impulse response calculation, in order to conserve resources.</dd>
+<dt><strong>Wet Level</strong> (Dial)</dt>
+<dt><img alt="Wet level" src="images/convolution-reverb-wet-level.png" title="The wet level dial." /></dt>
+<dd>The level of signal processed by this effect to be included in the effect's output.</dd>
+<dd>Range: -oo dB to +10 dB. Default value: 0 dB.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Dry Level</strong> (Dial)</dt>
+<dt><img alt="Dry level" src="images/convolution-reverb-dry-level.png" title="The dry level dial." /></dt>
+<dd>The level of the unprocessed input signal to be included in the effect's output.</dd>
+<dd>Range: -oo dB to +10 dB. Default value: -oo dB.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Channels</strong> (Toggle Button)</dt>
+<dt><img alt="Channels" src="images/convolution-reverb-channels.png" title="The channels toggle button." /></dt>
+<dd>Determines whether the channels should be linked or unlinked. If linked, the input signal is <span class="dead-link" href="glossary.html#down-mix">down-mixed</span class="dead-link"> to mono format before being processed by this effect. If unlinked, the input signal is down-mixed or <span class="dead-link" href="glossary.html#up-mix">up-mixed</span class="dead-link"> to match the channel format of the impulse response before being processed. Unlinked mode is therefore most useful when the channel format of the impulse response matches that of the signal.</dd>
+<dd>Default value: Linked.</dd>
+<dt><strong>Meters</strong> (Meters)</dt>
+<dt><img alt="Meters" src="images/convolution-reverb-meters.png" title="The meters." /></dt>
+<dd>Displays the levels of the effect's output. Each displayed meter represents a different <a href="glossary.html#speaker-channel">speaker channel</a> of the effect's output, and the order in which they are displayed corresponds to the metering channel order set in the "Audio" tab of the preferences dialog. The filled section of each meter represents the root mean square (RMS) level of the signal in that speaker channel averaged over 300ms, and the bar that appears above each filled meter section represents the peak level of the signal in that speaker channel. The speaker channel format of the effect's output is that of the impulse response file.</dd>
+</dl>
+<h2 id="delay"><a href="#delay">18.6 Delay</a></h2>
+<p><img alt="The delay effect" src="images/delay-effect.png" title="A delay effect." /></p>
+<p>The delay <a href="glossary.html#effect">effect</a> stores a copy of the <a href="glossary.html#signal">signal</a>, and mixes it back into the signal after a specific amount of time. This can be used to simulate a reflection of a sound that arrives some time after the initial sound is heard. While a delay effect is not as detailed and subtle as a <a href="effect-reference.html#reverb">reverb</a> or <a href="#convolution-reverb">convolution reverb</a> effect, it is a cheap and effective way to simulate the early, harsh reflections of an echoed sound.</p>
+<p>The delay effect is built on the FMOD Engine's <a href="https://fmod.com/docs/2.03/api/effects-reference.html#echo">echo effect</a>.</p>
+<div class="admonition performance">
+<p><strong>Performance:</strong> Medium overhead.</p>
+</div>
+<dl>
+<dt><strong>Delay</strong> (Dial)</dt>
+<dt><img alt="Delay" src="images/delay-delay-dial.png" title="The delay dial." /></dt>
+<dd>The amount of time delay applied to the copy of the signal.</dd>
+<dd>Range: 1 ms to 5 sec. Default value: 500 ms.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Feedback</strong> (Dial)</dt>
+<dt><img alt="Feedback" src="images/delay-feedback-dial.png" title="The feedback dial." /></dt>
+<dd>The amount of the signal to be fed back into the buffer after the initial delay. This determines how much the second and subsequent echoes fade with each subsequent iteration.</dd>
+<dd>Range: 0% to 100%. Default value: 50%.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Wet Level</strong> (Dial)</dt>
+<dt><img alt="Wet level" src="images/delay-wet-level-dial.png" title="The wet level dial." /></dt>
+<dd>The level of the delayed signal to be mixed into the effect's output. This determines how loud all the echoes are.</dd>
+<dd>Range: -oo dB to +10 dB. Default value: 0 dB.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Dry Level</strong> (Dial)</dt>
+<dt><img alt="Dry level" src="images/delay-dry-level-dial.png" title="The dry level dial." /></dt>
+<dd>The level of the non-delayed original signal to be mixed into the effect's output. If this is set to a low value, the original signal may be quieter than its echoes.</dd>
+<dd>Range: -oo dB to +10 dB. Default value: 0 dB.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+</dl>
+<h2 id="distortion"><a href="#distortion">18.7 Distortion</a></h2>
+<p><img alt="The distortion effect" src="images/distortion-effect.png" title="A distortion effect." /></p>
+<p>The distortion <a href="glossary.html#effect">effect</a> alters the shape of a <a href="glossary.html#signal">signal</a> to make it sound noisier. This can be used to simulate poor-quality or degraded recordings and signals.</p>
+<p>The effect is achieved by amplifying then clipping the signal at a level determined by the effect's level property.</p>
+<p>The distortion effect is built on the FMOD Engine's <a href="https://fmod.com/docs/2.03/api/effects-reference.html#distortion">distortion effect</a>.</p>
+<div class="admonition performance">
+<p><strong>Performance:</strong> Low overhead.</p>
+</div>
+<dl>
+<dt><strong>Level</strong> (Dial)</dt>
+<dt><img alt="Level" src="images/distortion-level-dial.png" title="The level dial." /></dt>
+<dd>The degree of distortion to be applied to the signal.</dd>
+<dd>Range: 0% to 100%. Default value: 50%.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+</dl>
+<h2 id="flanger"><a href="#flanger">18.8 Flanger</a></h2>
+<p><img alt="The flanger effect" src="images/flanger-effect.png" title="A flanger effect." /></p>
+<p>The flanger <a href="glossary.html#effect">effect</a> overlays the dry <a href="glossary.html#signal">signal</a> with a single delayed copy of that signal, and modulates the offset of the delay over time. The result is an oscillating phase shift, which is audible as a repetitive whooshing, sweeping effect. In addition, the levels of both signals are adjusted downward to ensure the loudness of the output signal is not significantly different to that of the input signal.</p>
+<p>The flanger effect is most commonly used in music, though it is sometimes also used in ambiances to create an otherworldly atmosphere.</p>
+<p>The flanger effect is built on the FMOD Engine's <a href="https://fmod.com/docs/2.03/api/effects-reference.html#flange">flange effect</a>.</p>
+<div class="admonition performance">
+<p><strong>Performance:</strong> Medium overhead.</p>
+</div>
+<dl>
+<dt><strong>Rate</strong> (Dial)</dt>
+<dt><img alt="Rate" src="images/flanger-rate-dial.png" title="The rate dial." /></dt>
+<dd>The frequency with which the delay offset oscillates.</dd>
+<dd>Range: 0 Hz to 20 Hz. Default value: 0.1 Hz.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Depth</strong> (Dial)</dt>
+<dt><img alt="Depth" src="images/flanger-depth-dial.png" title="The depth dial." /></dt>
+<dd>The maximum delay offset.</dd>
+<dd>Range: 0.01 ms to 1 ms. Default value: 1 ms.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Mix</strong> (Dial)</dt>
+<dt><img alt="Mix" src="images/flanger-mix-dial.png" title="The mix dial." /></dt>
+<dd>The mix of the dry signal and the overlaid copy.</dd>
+<dd>Range: 0% (Dry) to 100% (Vibrato). Default value: 50%.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+</dl>
+<h2 id="gain"><a href="#gain">18.9 Gain</a></h2>
+<p><img alt="The gain effect" src="images/gain-effect.png" title="A gain effect." /></p>
+<p>The gain <a href="glossary.html#effect">effect</a> adjusts the volume of the <a href="glossary.html#signal">signal</a>.</p>
+<p>The gain effect is equivalent to the FMOD Engine's <a href="https://fmod.com/docs/2.03/api/effects-reference.html#fader">fader effect</a>.</p>
+<div class="admonition performance">
+<p><strong>Performance:</strong> Low overhead.</p>
+</div>
+<dl>
+<dt><strong>Gain</strong> (Dial)</dt>
+<dt><img alt="Gain" src="images/gain-gain-dial.png" title="The gain dial." /></dt>
+<dd>The volume adjustment to be applied to the signal.</dd>
+<dd>Range: -oo dB to +10 dB. Default value: 0 dB.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+</dl>
+<h2 id="limiter"><a href="#limiter">18.10 Limiter</a></h2>
+<p><img alt="The limiter effect" src="images/limiter-effect.png" title="A limiter effect." /></p>
+<p>The limiter <a href="glossary.html#effect">effect</a> allows you to prevent the <a href="glossary.html#signal">signal</a> from exceeding a certain amplitude. Whenever the signal would exceed that amplitude, the limiter scales the signal to stay below it. When the signal would no longer exceed that amplitude, the signal is ramped back up to its original scale.</p>
+<p>Limiter effects can be used to control dynamics and avoid signal clipping.</p>
+<p>The limiter effect is built on the FMOD Engine's <a href="https://fmod.com/docs/2.03/api/effects-reference.html#limiter">limiter effect</a>.</p>
+<div class="admonition performance">
+<p><strong>Performance:</strong> Low overhead.</p>
+</div>
+<dl>
+<dt><strong>Input</strong> (Dial)</dt>
+<dt><img alt="Input" src="images/limiter-input-dial.png" title="The input dial." /></dt>
+<dd>The amount of gain to be applied to the input signal before any other processing by this effect.</dd>
+<dd>Range: 0 dB to 12 dB. Default value: 0 dB.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Ceiling</strong> (Dial)</dt>
+<dt><img alt="Ceiling" src="images/limiter-ceiling-dial.png" title="The ceiling dial." /></dt>
+<dd>The maximum amplitude that the signal may reach without being scaled.</dd>
+<dd>Range: -12 dB to 0 dB. Default value: 0 dB.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Release</strong> (Dial)</dt>
+<dt><img alt="Release" src="images/limiter-release-dial.png" title="The release dial." /></dt>
+<dd>The period over which the signal is ramped back to its original scale after ceasing to exceed the ceiling.</dd>
+<dd>Range: 1 ms to 1 sec. Default value: 10 ms.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Channels</strong> (Toggle button)</dt>
+<dt><img alt="Channels" src="images/limiter-channels-toggle.png" title="The channels toggle button." /></dt>
+<dd>This property determines whether the effect should operate in linked mode or unlinked mode. In linked mode, the channels are summed together and treated as a mono signal for the purposes of this effect; in unlinked mode, each channel is processed and limited separately.</dd>
+<dd>Default value: Linked.</dd>
+</dl>
+<h2 id="loudness-meter"><a href="#loudness-meter">18.11 Loudness Meter</a></h2>
+<p><img alt="The loudness meter effect" src="images/loudness-meter-effect.png" title="A loudness meter effect." /></p>
+<p>The loudness meter <a href="glossary.html#effect">effect</a> measures the apparent loudness of the <a href="glossary.html#signal">signal</a> at its position in the <a href="glossary.html#signal-chain">signal chain</a> in Loudness Units relative to Full Scale (LUFS). Rather than reporting only the signal's amplitude, the meter applies a filter that mimics the human ear's sensitivity to different frequencies, making the loudness meter a more accurate tool for measuring how loud a signal actually seems when listened to.</p>
+<p>Loudness meters are purely for analysing the signal. They do not process or change the signal at their position in any way, and have no influence on a sound's in-game behavior.</p>
+<p>The loudness meter effect is built on the FMOD Engine's <a href="https://fmod.com/docs/2.03/api/effects-reference.html#loudness-meter">loudness meter effect</a>.</p>
+<div class="admonition performance">
+<p><strong>Performance:</strong> Low overhead. However, when built into banks and used in a game that is not currently connected to FMOD Studio using live update, the loudness meter is automatically bypassed, and so has no overhead. By contrast, when auditioned in FMOD Studio or when FMOD Studio is connected to your game by live update, each loudness meter instance keeps records of the full period of time it has been metering the signal for, and so increases its memory consumption over time.</p>
+</div>
+<dl>
+<dt><strong>Meter</strong> (Graphic)</dt>
+<dt><img alt="Meter" src="images/loudness-meter-meter-graphic.png" title="The meter." /></dt>
+<dd>Displays the current loudness of the signal in loudness units (LU) relative to the value of the target property.</dd>
+<dt><strong>Pause</strong> (Toggle button)</dt>
+<dt><img alt="Pause" src="images/loudness-meter-pause-button.png" title="The pause toggle button." /></dt>
+<dd>When enabled, prevents the loudness meter from recording data or calculating what values it should display.</dd>
+<dd>Default value: Disabled.</dd>
+<dt><strong>Reset</strong> (Button)</dt>
+<dt><img alt="Reset" src="images/loudness-meter-reset-button.png" title="The reset button." /></dt>
+<dd>Clears the loudness meter's recorded data. This button can be used after making changes to the metered content in order to prevent measurements recorded before those changes from being included in the displayed results.</dd>
+<dt><strong>Target</strong> (Dial)</dt>
+<dt><img alt="Target" src="images/loudness-meter-target-dial.png" title="The target dial." /></dt>
+<dd>Defines the 0 point of the meter, allowing you to more easily judge when and whether the LUFS of the metered signal is exceeding a specific value.</dd>
+<dd>Range: -24 LUFS to -12 LUFS. Default value: -23 LUFS.</dd>
+<dt><strong>Integrated</strong> (Value display)</dt>
+<dt><img alt="Integrated" src="images/loudness-meter-integrated-display.png" title="The integrated display." /></dt>
+<dd>Indicates the average loudness of the signal over the entire duration of the recording period, in LUFS.</dd>
+<dt><strong>Range</strong> (Value display)</dt>
+<dt><img alt="Range" src="images/loudness-meter-range-display.png" title="The range display." /></dt>
+<dd>Displays the difference between the loudest and quietest parts of the signal over the last three seconds, calculated by taking the 95th percentile of the distribution in LUFS and subtracting the 10th percentile to get the difference in Loudness Units (LU).</dd>
+<dt><strong>Max Peak (Value display)</strong></dt>
+<dt><img alt="Max Peak" src="images/loudness-meter-max-peak-display.png" title="The max peak display." /></dt>
+<dd>Indicates the highest peak loudness of the signal over the entire duration of the recording period.</dd>
+<dd>Range: -80 dBTP to oo dBTP.</dd>
+</dl>
+<h2 id="multiband-eq"><a href="#multiband-eq">18.12 Multiband EQ</a></h2>
+<p><img alt="The multiband EQ effect" src="images/multiband-eq-effect.png" title="A multiband EQ effect." /></p>
+<p>The multiband EQ <a href="glossary.html#effect">effect</a> is a five-band parametric equalizer that allows you to attenuate or accentuate specific frequencies of a <a href="glossary.html#signal">signal</a>. Each of its five bands (A, B, C, D, and E) can be assigned a different type of filter.</p>
+<p>The multiband EQ effect is built on the FMOD Engine's <a href="https://fmod.com/docs/2.03/api/effects-reference.html#multiband-equalizer">multiband equalizer effect</a>.</p>
+<div class="admonition performance">
+<p><strong>Performance:</strong> Low overhead to medium overhead. Each band of a multiband EQ effect is a separate filter that incurs its own CPU cost. The more bands are enabled (i.e.: set to a filter type other than "Off"), the higher the effect's total CPU cost.</p>
+</div>
+<dl>
+<dt><strong>Filter Graphic</strong> (Mouse-editable graphic)</dt>
+<dt><img alt="Filter graphic" src="images/multiband-eq-filter-graphic.png" title="The filter graphic." /></dt>
+<dd>This graphical display allows you to edit the properties of the displayed band's filter by clicking and dragging the letter-in-a-circle symbol. Dragging the icon horizontally alters the filter's frequency property, and dragging it vertically alters the filter's Q or gain property. These properties are described in more detail below.</dd>
+<dd>The scale on the left side represents the gain and is used by the red graph line, and the scale on the right side represents the phase, and is used by the gray graph line.</dd>
+<dt><strong>Band Selection</strong> (Radio buttons with inset dropdown menus)</dt>
+<dt><img alt="Band selection" src="images/multiband-eq-band-selection-radio-buttons.png" title="The band selection radio buttons." /></dt>
+<dd>These five buttons, labeled A, B, C, D, and E, determine which band of the effect is displayed in the filter graphic and has its properties displayed on the right side of the effect.</dd>
+<dt><strong>Filter type</strong> (Dropdown menus)</dt>
+<dt><img alt="Filter type" src="images/multiband-eq-filter-type-dropdown.png" title="A filter type dropdown menu." /></dt>
+<dd>These five dropdown menus, located on the band selection radio buttons, define the type of filter to be used by their associated bands. Each can be set to one of the following filter types:</dd>
+<dd>
+<ul>
+<li><strong>LP 12 dB.</strong> A resonant filter that attenuates frequencies above a specified cutoff frequency at a rate of 12 dB per octave. In this filter type, the frequency property represents the frequency to be used as the cutoff frequency, and the Q property controls the resonance of the effect, which is a linear gain to be applied at the cutoff frequency.</li>
+</ul>
+</dd>
+<dd>
+<ul>
+<li><strong>LP 24 dB.</strong> A resonant filter that attenuates frequencies above a specified cutoff frequency at a rate of 24 dB per octave. In this filter type, the frequency property represents the frequency to be used as the cutoff frequency, and the Q property controls the resonance of the effect, which is a linear gain to be applied at the cutoff frequency.</li>
+</ul>
+</dd>
+<dd>
+<ul>
+<li><strong>LP 48 dB.</strong> A resonant filter that attenuates frequencies above a specified cutoff frequency at a rate of 48 dB per octave. In this filter type, the frequency property represents the frequency to be used as the cutoff frequency, and the Q property controls the resonance of the effect, which is a linear gain to be applied at the cutoff frequency.</li>
+</ul>
+</dd>
+<dd>
+<ul>
+<li><strong>HP 12 dB.</strong> A resonant filter that attenuates frequencies below a specified cutoff frequency at a rate of 12 dB per octave. In this filter type, the frequency property represents the frequency to be used as the cutoff frequency, and the Q property controls the resonance of the effect, which is a linear gain to be applied at the cutoff frequency.</li>
+</ul>
+</dd>
+<dd>
+<ul>
+<li><strong>HP 24 dB.</strong>  A resonant filter that attenuates frequencies below a specified cutoff frequency at a rate of 24 dB per octave. In this filter type, the frequency property represents the frequency to be used as the cutoff frequency, and the Q property controls the resonance of the effect, which is a linear gain to be applied at the cutoff frequency.</li>
+</ul>
+</dd>
+<dd>
+<ul>
+<li><strong>HP 48 dB.</strong>  A resonant filter that attenuates frequencies below a specified cutoff frequency at a rate of 48 dB per octave. In this filter type, the frequency property represents the frequency to be used as the cutoff frequency, and the Q property controls the resonance of the effect, which is a linear gain to be applied at the cutoff frequency.</li>
+</ul>
+</dd>
+<dd>
+<ul>
+<li><strong>Lowshelf.</strong> A filter that boosts or attenuates lower frequencies. In this filter type, the gain property represents the maximum adjustment to be applied to the signal. The frequency property represents the frequency at which exactly half the boost or attenuation is to be applied.</li>
+</ul>
+</dd>
+<dd>
+<ul>
+<li><strong>Highshelf.</strong> A filter that boosts or attenuates higher frequencies. In this filter type, the gain property represents the maximum adjustment to be applied to the signal. The frequency property represents the frequency at which exactly half the boost or attenuation is to be applied.</li>
+</ul>
+</dd>
+<dd>
+<ul>
+<li><strong>Peaking.</strong> A filter that boosts or attenuates the frequencies surrounding and including a specified frequency. In this filter type, the gain property represents the maximum adjustment to be applied to the signal, and the frequency property represents the frequency to be adjusted. The Q property represents the bandwidth of the effect, which is to say, how broad or narrow the affected frequency range is.</li>
+</ul>
+</dd>
+<dd>
+<ul>
+<li><strong>Bandpass.</strong> A filter that attenuates frequencies that differ from a specified frequency. In this filter mode, frequency controls the specified frequency and Q controls how rapidly attenuation increases as the frequency moves away from the specified frequency.</li>
+</ul>
+</dd>
+<dd>
+<ul>
+<li><strong>Notch.</strong> A filter that attenuates a specified frequency and nearby frequencies. In this filter made, frequency controls the specified frequency and Q controls how rapidly attenuation decreases  as the frequency moves away from the specified frequency.</li>
+</ul>
+</dd>
+<dd>
+<ul>
+<li><strong>Allpass.</strong> A filter that modifies the phase response at the specified frequency without otherwise changing the signal. This filter is useful for reducing (or increasing) the audible phasing that can occur when the modified signal is mixed with other signals.</li>
+</ul>
+</dd>
+<dd>
+<ul>
+<li><strong>Off.</strong> A lack of filter.</li>
+</ul>
+</dd>
+<dt><strong>Freq. (A)</strong> (Number box)</dt>
+<dt><img alt="Freq. (A)" src="images/multiband-eq-freq-a-number-box.png" title="The Freq. (A) number box." /></dt>
+<dd>The frequency used by the A band's filter. This property only appears when the A band is displayed in the filter graphic.</dd>
+<dd>Range: 20 Hz to 22 kHz. Default value: 660 Hz.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Q (A)</strong> (Number box)</dt>
+<dt><img alt="Q (A)" src="images/multiband-eq-q-a-number-box.png" title="The Q (A) number box." /></dt>
+<dd>The Q value used by the A band's filter. This property only appears when the A band is displayed in the filter graphic. The exact function of the Q value depends on the filter type, as described above.</dd>
+<dd>Range: 0.1 to 10. Default value: 0.71.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Gain (A)</strong> (Dial)</dt>
+<dt><img alt="Gain (A)" src="images/multiband-eq-gain-a-dial.png" title="The Gain (A) dial." /></dt>
+<dd>The frequency used by the A band's filter. This property only appears when the A band is displayed in the filter graphic.</dd>
+<dd>Range: -30 dB to 30 dB. Default value: 0 dB.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Freq. (B)</strong> (Number box)</dt>
+<dt><img alt="Freq. (B)" src="images/multiband-eq-freq-b-number-box.png" title="The Freq. (B) number box." /></dt>
+<dd>The frequency used by the B band's filter. This property only appears when the B band is displayed in the filter graphic.</dd>
+<dd>Range: 20 Hz to 22 kHz. Default value: 40 Hz.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Q (B)</strong> (Number box)</dt>
+<dt><img alt="Q (B)" src="images/multiband-eq-q-b-number-box.png" title="The Q (B) number box." /></dt>
+<dd>The Q value used by the B band's filter. This property only appears when the B band is displayed in the filter graphic. The exact function of the Q value depends on the filter type, as described above.</dd>
+<dd>Range: 0.1 to 10. Default value: 0.71.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Gain (B)</strong> (Dial)</dt>
+<dt><img alt="Gain (B)" src="images/multiband-eq-gain-b-dial.png" title="The Gain (B) dial." /></dt>
+<dd>The frequency used by the B band's filter. This property only appears when the B band is displayed in the filter graphic.</dd>
+<dd>Range: -30 dB to 30 dB. Default value: 0 dB.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Freq. (C)</strong> (Number box)</dt>
+<dt><img alt="Freq. (C)" src="images/multiband-eq-freq-c-number-box.png" title="The Freq. (C) number box." /></dt>
+<dd>The frequency used by the C band's filter. This property only appears when the C band is displayed in the filter graphic.</dd>
+<dd>Range: 20 Hz to 22 kHz. Default value: 11 kHz.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Q (C)</strong> (Number box)</dt>
+<dt><img alt="Q (C)" src="images/multiband-eq-q-c-number-box.png" title="The Q (C) number box." /></dt>
+<dd>The Q value used by the C band's filter. This property only appears when the C band is displayed in the filter graphic. The exact function of the Q value depends on the filter type, as described above.</dd>
+<dd>Range: 0.1 to 10. Default value: 0.71.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Gain (C)</strong> (Dial)</dt>
+<dt><img alt="Gain (C)" src="images/multiband-eq-gain-c-dial.png" title="The Gain (C) dial." /></dt>
+<dd>The frequency used by the C band's filter. This property only appears when the C band is displayed in the filter graphic.</dd>
+<dd>Range: -30 dB to 30 dB. Default value: 0 dB.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Freq. (D)</strong> (Number box)</dt>
+<dt><img alt="Freq. (D)" src="images/multiband-eq-freq-d-number-box.png" title="The Freq. (D) number box." /></dt>
+<dd>The frequency used by the D band's filter. This property only appears when the D band is displayed in the filter graphic.</dd>
+<dd>Range: 20 Hz to 22 kHz. Default value: 160 Hz.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Q (D)</strong> (Number box)</dt>
+<dt><img alt="Q (D)" src="images/multiband-eq-q-d-number-box.png" title="The Q (D) number box." /></dt>
+<dd>The Q value used by the D band's filter. This property only appears when the D band is displayed in the filter graphic. The exact function of the Q value depends on the filter type, as described above.</dd>
+<dd>Range: 0.1 to 10. Default value: 0.71.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Gain (D)</strong> (Dial)</dt>
+<dt><img alt="Gain (D)" src="images/multiband-eq-gain-d-dial.png" title="The Gain (D) dial." /></dt>
+<dd>The frequency used by the D band's filter. This property only appears when the D band is displayed in the filter graphic.</dd>
+<dd>Range: -30 dB to 30 dB. Default value: 0 dB.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Freq. (E)</strong> (Number box)</dt>
+<dt><img alt="Freq. (E)" src="images/multiband-eq-freq-e-number-box.png" title="The Freq. (E) number box." /></dt>
+<dd>The frequency used by the E band's filter. This property only appears when the E band is displayed in the filter graphic.</dd>
+<dd>Range: 20 Hz to 22 kHz. Default value: 2.7 kHz.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Q (E)</strong> (Number box)</dt>
+<dt><img alt="Q (E)" src="images/multiband-eq-q-e-number-box.png" title="The Q (E) number box." /></dt>
+<dd>The Q value used by the E band's filter. This property only appears when the E band is displayed in the filter graphic. The exact function of the Q value depends on the filter type, as described above.</dd>
+<dd>Range: 0.1 to 10. Default value: 0.71.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Gain (E)</strong> (Dial)</dt>
+<dt><img alt="Gain (E)" src="images/multiband-eq-gain-e-dial.png" title="The Gain (E) dial." /></dt>
+<dd>The frequency used by the E band's filter. This property only appears when the E band is displayed in the filter graphic.</dd>
+<dd>Range: -30 dB to 30 dB. Default value: 0 dB.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+</dl>
+<h2 id="object-spatializer"><a href="#object-spatializer">18.13 Object Spatializer</a></h2>
+<p><img alt="An object spatializer effect" src="images/object-spatializer-effect.png" title="An object spatializer effect." /></p>
+<p>The object spatializer is a multi channel <a href="glossary.html#effect">effect</a> designed to work with 3D platform-specific <a href="glossary.html#spatialization">spatialization</a> technologies such as Windows Sonic, PlayStation VR, and Dolby Atmos. It functions by routing the <a href="glossary.html#signal">signal</a> and the event's 3D positional information directly to a hardware device, bypassing the proceeding <a href="glossary.html#signal-chain">signal chain</a>. If the platform-specific technology cannot service the object spatializer due to a lack of available hardware resources, the object spatializer will fallback to using a <a href="#spatializer">spatializer</a> effect instead. The object spatializer does not output any audio to the <a href="glossary.html#mixer">mixer</a>, and any effects placed after an object spatializer will not receive any input from it. Because it bypasses the mixer the output of object spatializers cannot be recorded with the <span class="dead-link" href="glossary.html#profiler">profiler</span class="dead-link">.</p>
+<p>The object spatializer effect is built on the FMOD Engine's <a href="https://fmod.com/docs/2.03/api/effects-reference.html#object-panner">object pan effect</a>.</p>
+<div class="admonition performance">
+<p><strong>Performance:</strong> Low overhead.</p>
+</div>
+<dl>
+<dt><strong>Distance Attenuation</strong> (Radio buttons and roll-off graph)</dt>
+<dt><img alt="Distance attenuation" src="images/spatializer-distance-attenuation.png" title="The distance attenuation controls." /></dt>
+<dd>This is the roll-off mode used to change the relationship between audio attenuation and distance. The available roll-off modes are:</dd>
+<dd>
+<ul>
+<li><strong>Linear Squared.</strong> Linear Squared roll-off keeps the volume unattenuated below the min distance, then attenuates to silence using a linear squared gradient to silence at the max distance. This gives it a faster roll-off near the min distance, and a slower roll-off nearer to the max distance than linear mode.</li>
+</ul>
+</dd>
+<dd>
+<p><img alt="Linear Squared" src="images/spatializer-distance-attenuation-linear-squared.png" title="The distance attenuation controls." /></p>
+</dd>
+<dd>
+<ul>
+<li><strong>Linear.</strong> Linear roll-off keeps the volume unattenuated below the min distance, then attenuates to silence using a linear gradient to silence at the max distance.</li>
+</ul>
+</dd>
+<dd>
+<p><img alt="Linear" src="images/spatializer-distance-attenuation-linear.png" title="The distance attenuation controls." /></p>
+</dd>
+<dd>
+<ul>
+<li><strong>Inverse.</strong> Inverse roll-off keeps the volume unattenuated below the min distance, then attenuates at a rate using min distance / distance as the gradient until it reaches max distance where it stops attenuating.</li>
+</ul>
+</dd>
+<dd>
+<p><img alt="Inverse" src="images/spatializer-distance-attenuation-inverse.png" title="The distance attenuation controls." /></p>
+</dd>
+<dd>
+<ul>
+<li><strong>Inverse Tapered.</strong> Inverse tapered is a combination of "inverse" roll-off and "linear squared" roll-off. From min distance onwards "inverse" is used, and then if the gain is lower with "linear squared", it will switch to that to ensure the gain hits silence at the max distance.</li>
+</ul>
+</dd>
+<dd>
+<p><img alt="Inverse tapered" src="images/spatializer-distance-attenuation-inverse-tapered.png" title="The distance attenuation controls." /></p>
+</dd>
+<dd>
+<ul>
+<li><strong>Off.</strong> No distance-based attenuation is applied.</li>
+</ul>
+</dd>
+<dd>
+<p><img alt="Off" src="images/spatializer-distance-attenuation-off.png" title="The distance attenuation controls." /></p>
+</dd>
+<dt><strong>Envelopment</strong> (Radio)</dt>
+<dt><img alt="Envelopment" src="images/spatializer-envelopment.png" title="The envelopment controls." /></dt>
+<dd>This determines the extent of the event at any distance from the listener.</dd>
+<dd>
+<ul>
+<li><strong>Auto.</strong> Auto mode sets min extent to 0 degrees and sets sound size to twice the object spatializer's min distance property, and is usually sufficient to prevent event instances from suddenly "flipping" from one side of the listener to the other when they pass the listener at close range.</li>
+</ul>
+</dd>
+<dd>
+<ul>
+<li><strong>User.</strong> User mode allows you to specify the object spatializer's sound size and min extent manually using the "sound size" and "min extent" controls.</li>
+</ul>
+</dd>
+<dd>
+<ul>
+<li><strong>Off.</strong> Off mode disables the "sound size" and "min extent" controls.</li>
+</ul>
+</dd>
+<dd>
+<p>Default value: Auto.</p>
+</dd>
+<dt><strong>Sound Size</strong> (Dial)</dt>
+<dt><img alt="Sound size" src="images/spatializer-sound-size-dial.png" title="The sound size dial." /></dt>
+<dd>The sound size has an effect on the panner's extent, based on how 'large' the sound is. A very small sound is concentrated more into a point source (a small extent) and a large sound is spread around the speakers more to convey a sense of envelopment (a large extent).</dd>
+<dd>Range: 0 to 10000. Default value: 0.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Min Extent</strong> (Dial)</dt>
+<dt><img alt="Min extent" src="images/spatializer-min-extent-dial.png" title="The min extent dial." /></dt>
+<dd>The min extent has an effect on the panner's extent, by acting as a clamp against the sound size's effect on it. If a sound size becomes small which can reduce the distribution of pan to a point source, the min extent can set an angle to guarantee that the object spatializer does not distribute the signal below this value.</dd>
+<dd>Range: 0 deg to 360 deg. Default value: 0 deg.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Distance Override</strong> (Drawer)</dt>
+<dt><img alt="Distance override collapsed" src="images/spatializer_distance_override_collapsed.png" title="The distance override drawer collapsed." /> <img alt="Distance override expanded" src="images/spatializer_distance_override_expanded.png" title="The distance override drawer expanded." /></dt>
+<dd>Drawer containing the "override" and "min &amp; max distance" controls.</dd>
+<dt><strong>Override</strong> (Radio)</dt>
+<dt><img alt="Override" src="images/spatializer-override.png" title="The distance override controls." /></dt>
+<dd>This can be used to override the event's <a href="event-macro-controls-reference.html#min-and-max-distance">min and max distance</a> property controls.</dd>
+<dd>
+<ul>
+<li><strong>On.</strong> On disables the event's min and max distance property controls and enables the "min &amp; max distance" slider, allowing you to specify a different min &amp; max distance for the effect.</li>
+</ul>
+</dd>
+<dd>
+<ul>
+<li><strong>Off.</strong> Off mode disables the Min &amp; Max slider and enables the event's min and max distance property controls.</li>
+</ul>
+</dd>
+<dd>
+<p>Default value: Off.</p>
+</dd>
+<dt><strong>Min &amp; Max Distance</strong> (Draggable slider)</dt>
+<dt><img alt="Min and max distance" src="images/spatializer-min-and-max-distance-slider.png" title="The min and max distance slider." /></dt>
+<dd>The min and max distance properties are used by spatializing effects in order to calculate attenuation falloff. Additionally, the value of the normalized distance property is calculated using the min and max distance property values. The min and max distance property controls are only interactive if "override" is set to "on".</dd>
+<dd>Range: 0 to 10000. Default range: [1,20].<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Send meters</strong> (Send meters)</dt>
+<dt><img alt="Send meters" src="images/object-spatializer-send-meters.png" title="Send meters." /></dt>
+<dd>These meters indicate the signal strength of each speaker channel of the signal sent to the platform-specific spatialization technology. The number of meters corresponds to the number of channels in the signal's channel format, and their order is determined by the metering channel order setting in the audio tab of the preferences window. Within each meter, the filled colored bar represents the RMS value of the corresponding speaker channel's signal in dB, and the line above it represents the peak value of that speaker channel.</dd>
+</dl>
+<h2 id="panner"><a href="#panner">18.14 Panner</a></h2>
+<p><img alt="A mono panner effect" src="images/panner-effect-mono.png" title="A mono panner effect." /> <img alt="A stereo panner effect" src="images/panner-effect-stereo.png" title="A stereo panner effect." /> <img alt="A 5.1 surround panner effect" src="images/panner-effect-five-point-one.png" title="A 5.1 surround panner effect." /> <img alt="A 7.1.4 surround panner effect" src="images/panner-effect-seven-point-one-point-four.png" title="A 7.1.4 surround panner effect." /></p>
+<p>The panner <a href="glossary.html#effect">effect</a> applies 2D panning to the <a href="glossary.html#signal">signal</a>, optionally alters its <a href="glossary.html#channel-format">speaker channel format</a>, and can also be used to mute any of the signal's individual <a href="glossary.html#speaker-channel">speaker channels</a>. This can be used to give the impression of spatialization even to 2D sounds, or to mask specific speaker channels out of the mix.</p>
+<p>Under-the-hood, the panner effect uses the same code as the <a href="glossary.html#track-output-panner">track output panner</a>, and so can process the signal in the exact same ways. Unlike the track output panner, however, the panner effect can be positioned in the middle of a track's signal chain, and can be made a <a href="glossary.html#shared-effect">shared effect</a> or included in an <span class="dead-link" href="glossary.html#effect-chain">effect chain</span class="dead-link">.</p>
+<p>The panner effect is built on the FMOD Engine's <a href="https://fmod.com/docs/2.03/api/effects-reference.html#pan">pan effect</a>.</p>
+<div class="admonition performance">
+<p><strong>Performance:</strong> Low overhead.</p>
+</div>
+<dl>
+<dt><strong>Channel format</strong> (Dropdown menu)</dt>
+<dt><img alt="Channel format" src="images/panner-channel-format.png" title="The channel format drop-down menu." /></dt>
+<dd>The channel format to which the effect <span class="dead-link" href="glossary.html#up-mix">up-mixes</span class="dead-link"> or <span class="dead-link" href="glossary.html#down-mix">down-mixes</span class="dead-link"> the signal, and thus the channel format of the effect's output signal. If this is set to "Automatic," the effect's channel format is preserved instead of altered. As all other controls that appear on this effect are specific to particular channel formats, this dropdown menu also determines which other controls appear on this effect in the <a href="glossary.html#deck">deck</a>.</dd>
+<dd>Default value: Automatic.</dd>
+<dt><strong>Level meters</strong> (Level meters)</dt>
+<dt><img alt="Level meters" src="images/panner-level-meters.png" title="Level meters." /></dt>
+<dd>These meters indicate the signal strength of each speaker channel of the signal. The number of meters corresponds to the number of channels in the signal's channel format, and their order is determined by the metering channel order setting in the audio tab of the preferences window. Within each meter, the filled colored bar represents the RMS value of the corresponding speaker channel's signal in dB, and the line above it represents the peak value of that speaker channel.</dd>
+<dt><strong>Pan</strong> (Dial)</dt>
+<dt><img alt="Pan" src="images/panner-pan-dial.png" title="The pan dial." /></dt>
+<dd>The panning to be applied to a stereo signal. This control only appears if the effect's channel format is set to stereo.</dd>
+<dd>Range: -100 to +100. Default value: 0.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Surround panner</strong> (Mouse-editable graphic)</dt>
+<dt><img alt="Surround panner l/r" src="images/panner-surround-l-r.png" title="The surround panner in L/R mode." /> <img alt="Surround panner" src="images/panner-surround-distributed.png" title="The surround panner in distributed mode." /></dt>
+<dd>The panning to be applied to the signal. This control only appears if the effect's channel format has more than two channels.</dd>
+<dd>If the channel format of the effect's input signal is anything other than stereo, the surround panner lets you pan the signal between all available speakers by clicking and dragging the white dot at its center. This alters the effect's "direction" and "extent" properties.</dd>
+<dd>If the effect's input signal's channel format is stereo, the surround panner has two possible modes for converting the stereo signal to surround. In "Stereo In: Distributed" mode, the surround panner lets you pan the signal between all available speakers by clicking and dragging the white dot at its center, as above. In "Stereo In: L/R" mode, the white dot represents the left speaker and the red dot represents the right speaker. Moving the empty circle pans the sound (altering the "axis" property), and moving the red or white dots adjusts the stereo width (altering the "width" property). To switch between these two modes, right click on the panner and select your choice of mode from the context menu.</dd>
+<dt><strong>Direction</strong> (Number box)</dt>
+<dt><img alt="Direction" src="images/panner-direction.png" title="The direction number box." /></dt>
+<dd>The direction in which the signal is panned. This control only appears if the effect's input signal has more than two channels, or if the input signal is stereo, the effect's channel format has more than two channels, and the surround panner is in "Stereo In: Distributed" mode.</dd>
+<dd>Range: -180 deg to +180 deg. Default value: 0 deg.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Extent</strong> (Number box)</dt>
+<dt><img alt="Extent" src="images/panner-extent.png" title="The extent number box." /></dt>
+<dd>The size of the arc over which sound is distributed in the output speaker circle. This control only appears if the input signal has more than two channels, or if the effect's input signal is stereo, the channel format has more than two channels, and the surround panner is in "Stereo In: Distributed" mode.</dd>
+<dd>Range: 0 deg to 360 deg. Default value: 360 deg.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Axis</strong> (Number box)</dt>
+<dt><img alt="Axis" src="images/panner-axis.png" title="The axis number box." /></dt>
+<dd>The orientation of the arc over which sound is distributed in the output speaker circle. This control only appears if the input signal is in stereo channel format, the effect's channel format has more than two channels, and the surround panner is in "Stereo In: L / R" mode.</dd>
+<dd>Range: -180 deg to +180 deg. Default value: 0 deg.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Width</strong> (Number box)</dt>
+<dt><img alt="Width" src="images/panner-width.png" title="The width number box." /></dt>
+<dd>The width of the pan distribution or size of the arc over which sound is distributed in the output speaker circle. This control only appears if the input signal is in stereo channel format, the effect's channel format has more than two channels, and the surround panner is in "Stereo In: L / R" mode.</dd>
+<dd>Range: -180 deg to +180 deg. Default value: 60 deg.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+</dl>
+<h2 id="parametric-eq"><a href="#parametric-eq">18.15 Parametric EQ</a></h2>
+<div class="admonition deprecated effect">
+<p>The Parametric EQ effect is no longer being actively developed and optimized. While it may still be used in FMOD Studio, we recommend instead using a <a href="effect-reference.html#multiband-eq">multiband EQ</a> effect and setting it to the peaking filter type.</p>
+</div>
+<p><img alt="A parametric EQ effect" src="images/param-eq-effect.png" title="A parametric EQ effect." /></p>
+<p>The FMOD parametric EQ effect is a single-band peaking equalizer filter <a href="glossary.html#effect">effect</a>. It allows you to amplify or attenuate a bandwidth surrounding and including a specified frequency. This allows you to emphasize or de-emphasize specific parts of a <a href="glossary.html#signal">signal</a>.</p>
+<p>The Parametric EQ effect is built on the FMOD Engine's <a href="https://fmod.com/docs/2.03/api/effects-reference.html#parametric-eq">Parametric EQ effect</a>.</p>
+<div class="admonition performance">
+<p><strong>Performance:</strong> Medium overhead.</p>
+</div>
+<dl>
+<dt><strong>Frequency</strong> (Dial)</dt>
+<dt><img alt="Frequency" src="images/parameq-frequency.png" title="The frequency control." /></dt>
+<dd>The center frequency of the band to be attenuated or amplified.</dd>
+<dd>Range: 20 Hz to 22 kHz. Default value: 2 kHz.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Gain</strong> (Dial)</dt>
+<dt><img alt="Gain" src="images/parameq-gain.png" title="The gain control." /></dt>
+<dd>The amount by which the frequency is attenuated or amplified. If set to 0 dB, the frequency is neither attenuated nor amplified.</dd>
+<dd>Range: -30 dB to 30 dB. Default value: 0 dB.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Bandwidth</strong> (Dial)</dt>
+<dt><img alt="Bandwidth" src="images/parameq-bandwidth.png" title="The bandwidth control." /></dt>
+<dd>How narrow or broad the affected frequency band is. Higher values represent a wider range of frequencies.</dd>
+<dd>Range: 0.2 to 5. Default value: 1.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+</dl>
+<h2 id="pitch-shifter"><a href="#pitch-shifter">18.16 Pitch Shifter</a></h2>
+<p><img alt="The pitch shifter effect" src="images/pitch-shifter-effect.png" title="A pitch shifter effect." /></p>
+<p>The pitch shifter <a href="glossary.html#effect">effect</a> alters the pitch of the <a href="glossary.html#signal">signal</a> without altering the speed at which it plays. To do this, it makes use of a fast Fourier transform (<a href="https://fmod.com/docs/2.03/api/effects-reference.html#fft">FFT</a>) algorithm to convert the signal from the time domain to the frequency domain, divides the signal into sinusoidal bands, then shifts those bands by a specified amount before converting the signal back from the frequency domain to the time domain.</p>
+<p>The pitch shifter effect is useful for handling signals that need to have their pitch adjusted while remaining synchronized with other signals, such as individual tracks within a music event.</p>
+<p>The pitch shifter effect is built on the FMOD Engine's <a href="https://fmod.com/docs/2.03/api/effects-reference.html#pitch-shifter">pitch shifter effect</a>.</p>
+<div class="admonition performance">
+<p><strong>Performance:</strong> High overhead. Larger FFT sizes and <a href="glossary.html#speaker-channel-format">speaker channel formats</a> with a larger number of <a href="glossary.html#speaker-channel">channels</a> both increase the overhead required by this effect, whereas smaller FFT sizes and speaker channel formats with fewer channels decrease it.</p>
+</div>
+<dl>
+<dt><strong>Pitch</strong> (Dial)</dt>
+<dt><img alt="Pitch" src="images/pitch-shifter-pitch-dial.png" title="The pitch dial." /></dt>
+<dd>The multiplier to be applied to the signal's frequency. Lower values decrease the pitch, whereas higher values increase it.</dd>
+<dd>Range: 0.5 x to 2.0 x. Default value: 0.5 x.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Overlap</strong> (Dial)</dt>
+<dt><img alt="Overlap" src="images/pitch-shifter-overlap-dial.png" title="The overlap dial." /></dt>
+<dd>This property exists for legacy reasons and is no longer used in current versions of FMOD Studio.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>FFT size</strong> (Dial)</dt>
+<dt><img alt="FFT Size" src="images/pitch-shifter-fft-size-dial.png" title="The fast Fourier transform size dial." /></dt>
+<dd>The size of the window processed by the FFT algorithm. Larger values tend to result in higher sound quality, but also increase the effect's resource cost.</dd>
+<dd>Range: 256 to 4096. Default value: 1024.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Max channel</strong> (Dial)</dt>
+<dt><img alt="Max channel" src="images/pitch-shifter-max-channel-dial.png" title="The max channel dial." /></dt>
+<dd>The maximum number of incoming speaker channels that the effect can process. Larger values require more memory to be allocated. If set lower than the number of channels in the signal's speaker channel format, no pitch adjustment is applied by the effect. Non-integer values are rounded down to the nearest integer.</dd>
+<dd>Range: 1 to 16. Default value: 0.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+</dl>
+<h2 id="reverb"><a href="#reverb">18.17 Reverb</a></h2>
+<p><img alt="The reverb effect" src="images/reverb-entire-effect.png" title="A reverb effect." /></p>
+<p>The reverb <a href="glossary.html#effect">effect</a> is used to simulate reverberation in an acoustic space.</p>
+<p><img alt="Reverb layout" src="images/dsp-sfxreverb.svg" title="A diagram of how the reverb effect affects the signal over time." /></p>
+<p>Reverberation is simulated by producing a number of reflected copies of the original <a href="glossary.html#signal">signal</a> (early reflections), followed by a diffused version of the original signal (late reflections/reverb) which decays over time.</p>
+<p>The reverb effect is built on the FMOD Engine's <a href="https://fmod.com/docs/2.03/api/effects-reference.html#sfx-reverb">reverb effect</a>.</p>
+<div class="admonition performance">
+<p><strong>Performance:</strong> Medium overhead.</p>
+</div>
+<dl>
+<dt><strong>Reverb time</strong> (Dial)</dt>
+<dt><img alt="Reverb time dial" src="images/reverb-reverb-time-dial.png" title="The reverb time dial." /></dt>
+<dd>The decay time of the late reverb.</dd>
+<dd>Range: 1 ms to 20 sec. Default value: 1.50 sec.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Early delay</strong> (Dial)</dt>
+<dt><img alt="Early delay dial" src="images/reverb-early-delay-dial.png" title="The early delay dial." /></dt>
+<dd>The amount of time that early reflections are delayed after the input signal.</dd>
+<dd>Range: 0 ms to 300 ms. Default value: 20.0 ms.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Late delay</strong> (Dial)</dt>
+<dt><img alt="Late delay dial" src="images/reverb-late-delay-dial.png" title="The late delay dial." /></dt>
+<dd>The amount of time the late reverb is delayed after the early reflections.</dd>
+<dd>Range: 1 ms to 100 ms. Default value: 40.0 ms.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>HF Decay</strong> (Dial)</dt>
+<dt><img alt="HF decay dial" src="images/reverb-hf-decay-dial.png" title="The HF decay dial." /></dt>
+<dd>The amount of time it takes for high-frequency content in the late reverb to decay, as a percentage of the total reverb time.</dd>
+<dd>Range: 10% to 100%. Default value: 50%.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>HF Reference</strong> (Dial)</dt>
+<dt><img alt="HF reference dial" src="images/reverb-hf-reference-dial.png" title="The HF reference dial." /></dt>
+<dd>The reference frequency for high-frequency decay in the late reverb.</dd>
+<dd>Range: 20 Hz to 20 kHz. Default value: 5.00 kHz.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Diffusion</strong> (Dial)</dt>
+<dt><img alt="Diffusion dial" src="images/reverb-diffusion-dial.png" title="The diffusion dial." /></dt>
+<dd>Controls the amount of diffusion in the late reverb signal.</dd>
+<dd>Range: 0% to 100%. Default value: 100%.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Density</strong> (Dial)</dt>
+<dt><img alt="Density dial" src="images/reverb-density-dial.png" title="The density dial." /></dt>
+<dd>Controls the density of reverberations in the late reverb signal.</dd>
+<dd>Range: 0% to 100%. Default value: 100%.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Low Gain</strong> (Dial)</dt>
+<dt><img alt="Low gain dial" src="images/reverb-low-gain-dial.png" title="The low gain dial." /></dt>
+<dd>The gain of the low-shelf filter that is applied to wet signal.</dd>
+<dd>Range: -36 dB to +12 dB. Default value: 0.00 dB.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Low Freq</strong> (Dial)</dt>
+<dt><img alt="Low freq dial" src="images/reverb-low-freq-dial.png" title="The low freq dial." /></dt>
+<dd>The transition frequency of the low-shelf that is applied to the wet signal.</dd>
+<dd>Range: 20 Hz to 20 kHz. Default value: 5.00 kHz.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>High Cut</strong> (Dial)</dt>
+<dt><img alt="High cut dial" src="images/reverb-high-cut-dial.png" title="The high cut dial." /></dt>
+<dd>The cutoff frequency of the low-pass filter that is applied to the wet signal.</dd>
+<dd>Range: 20 Hz to 20 kHz. Default value: 5.00 kHz.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Early/Late</strong> (Dial)</dt>
+<dt><img alt="Early/late dial" src="images/reverb-early-late-dial.png" title="The early/late dial." /></dt>
+<dd>Controls the blend ratio of early reflections to late reverb present in the wet signal.</dd>
+<dd>Range: 0% (Early) to 100% (Late). Default value: 50%.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Wet Level</strong> (Dial)</dt>
+<dt><img alt="Wet level" src="images/reverb-wet-level-dial.png" title="The wet level dial." /></dt>
+<dd>The level of signal processed by this effect to be included in the effect's output.</dd>
+<dd>Range: -oo dB to +10 dB. Default value: -6.00 dB.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Dry Level</strong> (Dial)</dt>
+<dt><img alt="Dry level" src="images/reverb-dry-level-dial.png" title="The dry level dial." /></dt>
+<dd>The level of the unprocessed input signal to be included in the effect's output.</dd>
+<dd>Range: -oo dB to +10 dB. Default value: 0.00 dB.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+</dl>
+<h2 id="send"><a href="#send">18.18 Send</a></h2>
+<p><img alt="A send effect" src="images/send_effect.png" /></p>
+<p>The send <a href="glossary.html#effect">effect</a> creates a duplicate of the <a href="glossary.html#signal">signal</a> and routes it to its partner effect the <span class="dead-link" href="effect-reference.html#return">return effect</span class="dead-link">. Sends exist in signal chains, and can be placed before or after specific effect modules in the chain in order to duplicate the signal before or after it is processed by those effects modules.</p>
+<p><img alt="A representation of the send effect" src="images/send_effect_diagram.png" /><br />
+<em>A DSP graph showing a send and return deviating the signal from its normal signal flow, sending the signal (visible as grey dashed arrow) from the send, and receiving it on the return.</em></p>
+<p>The send effect is built on the FMOD Engine's <a href="https://fmod.com/docs/2.03/api/effects-reference.html#return%api%">send effect</a>.</p>
+<div class="admonition performance">
+<p><strong>Performance:</strong> Low overhead.</p>
+</div>
+<dl>
+<dt><strong>Target</strong> (Label)</dt>
+<dt><img alt="Target label" src="images/send_effect_target.png" /></dt>
+<dd>The target partner DSP.</dd>
+<dt><strong>Level</strong> (Dial)</dt>
+<dt><img alt="Level dial" src="images/send_effect_dial.png" /></dt>
+<dd>Adjust the level of the send signal.</dd>
+<dd>Range: -oo to 10db. Default value: -oodB.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+</dl>
+<h2 id="sidechain"><a href="#sidechain">18.19 Sidechain</a></h2>
+<p><img alt="A sidechain effect" src="images/sidechain-entire-effect.png" title="A sidechain effect." /></p>
+<p>The sidechain <a href="glossary.html#effect">effect</a> creates a duplicate <a href="glossary.html#signal">signal</a> that may be used by an effect or modulator that can be sidechained, such as a <a href="effect-reference.html#compressor">compressor</a> effect or a <a href="modulator-reference.html#sidechain-modulator">sidechain modulator</a>.</p>
+<div class="admonition performance">
+<p><strong>Performance:</strong> Low overhead.</p>
+</div>
+<dl>
+<dt><strong>Level meters</strong> (Level meters)</dt>
+<dt><img alt="Level meters" src="images/sidechain-level-meters.png" title="Level meters." /></dt>
+<dd>These meters indicate the signal strength of each speaker channel of the duplicate sidechain signal. The number of meters corresponds to the number of channels in the signal's channel format, and their order is determined by the metering channel order setting in the audio tab of the preferences window. Within each meter, the filled colored bar represents the RMS value of the corresponding speaker channel's signal in dB, and the line above it represents the peak value of that speaker channel.</dd>
+<dt><strong>Level</strong> (Dial)</dt>
+<dt><img alt="Level dial" src="images/sidechain-level-dial.png" title="The level dial." /></dt>
+<dd>Adjusts the level of the duplicate sidechain signal.</dd>
+<dd>Range: -oo dB to 10 dB. Default value: 0 dB.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+</dl>
+<h2 id="spatializer"><a href="#spatializer">18.20 Spatializer</a></h2>
+<p><img alt="A spatializer effect" src="images/spatializerEffect.png" title="A spatializer effect." /></p>
+<p>The spatializer <a href="glossary.html#effect">effect</a> is a multi channel, multi speaker <a href="glossary.html#signal">signal</a> distribution effect that combines 2D and 3D panning controls with <a href="parameters.html#built-in-parameters">built-in parameters</a> to make the signal sound as if it came from a particular direction and distance.</p>
+<p>Spatializer effects always output the <a href="glossary.html#speaker-channel-format">speaker channel format</a> specified for the current <span class="dead-link" href="glossary.html#platform">platform</span class="dead-link"> in the "build" tab of the preferences dialog. This means that if a spatializer effect's input signal is in a different speaker channel format, the effect <span class="dead-link" href="glossary.html#up-mix">up-mixes</span class="dead-link"> or <span class="dead-link" href="glossary.html#down-mix">down-mixes</span class="dead-link"> the signal at its position in the signal chain.</p>
+<p>Under-the-hood, the spatializer effect uses the same code as the <a href="#panner">panner</a>, and so can process the signal in the exact same ways.</p>
+<p>The spatializer effect is built on the FMOD Engine's <a href="https://fmod.com/docs/2.03/api/effects-reference.html#pan">pan effect</a>.</p>
+<div class="admonition performance">
+<p><strong>Performance:</strong> Low overhead.</p>
+</div>
+<dl>
+<dt><strong>Distance Attenuation</strong> (Radio buttons and roll-off graph)</dt>
+<dt><img alt="Distance attenuation" src="images/spatializer-distance-attenuation.png" title="The distance attenuation controls." /></dt>
+<dd>This is the roll-off mode used to change the relationship between audio attenuation and distance. The available roll-off modes are:</dd>
+<dd>
+<ul>
+<li><strong>Linear Squared.</strong> Linear Squared roll-off keeps the volume unattenuated below the min distance, then attenuates to silence using a linear squared gradient to silence at the max distance. This gives it a faster roll-off near the min distance, and a slower roll-off nearer to the max distance than linear mode.</li>
+</ul>
+</dd>
+<dd>
+<p><img alt="Linear Squared" src="images/spatializer-distance-attenuation-linear-squared.png" title="The distance attenuation controls." /></p>
+</dd>
+<dd>
+<ul>
+<li><strong>Linear.</strong> Linear roll-off keeps the volume unattenuated below the min distance, then attenuates to silence using a linear gradient to silence at the max distance.</li>
+</ul>
+</dd>
+<dd>
+<p><img alt="Linear" src="images/spatializer-distance-attenuation-linear.png" title="The distance attenuation controls." /></p>
+</dd>
+<dd>
+<ul>
+<li><strong>Inverse.</strong> Inverse roll-off keeps the volume unattenuated below the min distance, then attenuates at a rate using min distance / distance as the gradient until it reaches max distance where it stops attenuating.</li>
+</ul>
+</dd>
+<dd>
+<p><img alt="Inverse" src="images/spatializer-distance-attenuation-inverse.png" title="The distance attenuation controls." /></p>
+</dd>
+<dd>
+<ul>
+<li><strong>Inverse Tapered.</strong> Inverse tapered is a combination of "inverse" roll-off and "linear squared" roll-off. From min distance onwards "inverse" is used, and then if the gain is lower with "linear squared", it will switch to that to ensure the gain hits silence at the max distance.</li>
+</ul>
+</dd>
+<dd>
+<p><img alt="Inverse tapered" src="images/spatializer-distance-attenuation-inverse-tapered.png" title="The distance attenuation controls." /></p>
+</dd>
+<dd>
+<ul>
+<li><strong>Off.</strong> No distance-based attenuation is applied.</li>
+</ul>
+</dd>
+<dd>
+<p><img alt="Off" src="images/spatializer-distance-attenuation-off.png" title="The distance attenuation controls." /></p>
+</dd>
+<dt><strong>Envelopment</strong> (Radio)</dt>
+<dt><img alt="Envelopment" src="images/spatializer-envelopment.png" title="The envelopment controls." /></dt>
+<dd>This determines the extent of the event at any distance from the listener.</dd>
+<dd>
+<ul>
+<li><strong>Auto.</strong> Auto mode sets min extent to 0 degrees and sets sound size to twice the spatializer's min distance property, and is usually sufficient to prevent event instances from suddenly "flipping" from one side of the listener to the other when they pass the listener at close range.</li>
+</ul>
+</dd>
+<dd>
+<ul>
+<li><strong>User.</strong> User mode allows you to specify the object spatializer's sound size and min extent manually using the "sound size" and "min extent" controls.</li>
+</ul>
+</dd>
+<dd>
+<ul>
+<li><strong>Off.</strong> Off mode disables the "sound size" and "min extent" controls.</li>
+</ul>
+</dd>
+<dd>
+<p>Default value: Auto.</p>
+</dd>
+<dt><strong>Sound Size</strong> (Dial)</dt>
+<dt><img alt="Sound size" src="images/spatializer-sound-size-dial.png" title="The sound size dial." /></dt>
+<dd>The sound size has an effect on the panner's extent, based on how 'large' the sound is. A very small sound is concentrated more into a point source (a small extent) and a large sound is spread around the speakers more to convey a sense of envelopment (a large extent).</dd>
+<dd>Range: 0 to 10000. Default value: 0.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Min Extent</strong> (Dial)</dt>
+<dt><img alt="Min extent" src="images/spatializer-min-extent-dial.png" title="The min extent dial." /></dt>
+<dd>The min extent has an effect on the panner's extent, by acting as a clamp against the sound size's effect on it. If a sound size becomes small which can reduce the distribution of pan to a point source, the min extent can set an angle to guarantee that the spatializer does not distribute the signal below this value.</dd>
+<dd>Range: 0 deg to 360 deg. Default value: 0 deg.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Distance Override</strong> (Drawer)</dt>
+<dt><img alt="Distance override collapsed" src="images/spatializer_distance_override_collapsed.png" title="The distance override drawer collapsed." /> <img alt="Distance override expanded" src="images/spatializer_distance_override_expanded.png" title="The distance override drawer expanded." /></dt>
+<dd>Drawer containing the "override" and "min &amp; max distance" controls.</dd>
+<dt><strong>Override</strong> (Radio)</dt>
+<dt><img alt="Override" src="images/spatializer-override.png" title="The distance override controls." /></dt>
+<dd>This can be used to override the event's <a href="event-macro-controls-reference.html#min-and-max-distance">min and max distance</a> property controls.</dd>
+<dd>
+<ul>
+<li><strong>On.</strong> On disables the event's min and max distance property controls and enables the "min &amp; max distance" slider, allowing you to specify a different min &amp; max distance for the effect.</li>
+</ul>
+</dd>
+<dd>
+<ul>
+<li><strong>Off.</strong> Off mode disables the Min &amp; Max slider and enables the event's min and max distance property controls.</li>
+</ul>
+</dd>
+<dd>
+<p>Default value: Off.</p>
+</dd>
+<dt><strong>Min &amp; Max Distance</strong> (Draggable slider)</dt>
+<dt><img alt="Min and max distance" src="images/spatializer-min-and-max-distance-slider.png" title="The min and max distance slider." /></dt>
+<dd>The min and max distance properties are used by spatializing effects in order to calculate attenuation falloff. Additionally, the value of the normalized distance property is calculated using the min and max distance property values. The min and max distance property controls are only interactive if "override" is set to "on".</dd>
+<dd>Range: 0 to 10000. Default range: [1,20].<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>2D Pan Mix</strong> (Drawer)</dt>
+<dt><img alt="2D pan mix" src="images/spatializer-2d-pan-mix-drawer.png" title="The 2d pan mix drawer collapsed." /> <img alt="2D pan mix expanded" src="images/spatializer-2d-pan-mix-drawer-expanded.png" title="The 2d pan mix drawer expanded." /></dt>
+<dd>Drawer containing the "mix", "panner", "direction", "extent", "axis", and "width" controls.</dd>
+<dt><strong>Mix</strong> (Dial)</dt>
+<dt><img alt="Mix" src="images/spatializer-mix-dial.png" title="The mix dial." /></dt>
+<dd>Allows you to blend between the manually defined "panner" settings and the automatic panning based on the playing event's position relative to the listener. At 0% the manually defined "panner" settings are ignored, and at 100% the automatic panning is ignored.</dd>
+<dd>Range: 0% to 100%. Default value: 0%.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Panner</strong> (Mouse-editable graphic)</dt>
+<dt><img alt="Panner L/R" src="images/spatializer-panner-l-r.png" title="The panner in L/R mode." /></dt>
+<dd><em>The panner in L/R mode.</em></dd>
+<dt><img alt="Panner L/R" src="images/spatializer-panner-distributed.png" title="The panner in distributed mode." /></dt>
+<dd><em>The panner in distributed mode.</em></dd>
+<dd>The surround panner lets you pan the signal between all available speakers by clicking and dragging the white dot at its center. This alters the effect's "direction" and "extent" properties.</dd>
+<dd>If the effect's input signal's channel format is stereo, the surround panner has two possible modes for converting the stereo signal to surround. In "Stereo In: Distributed" mode, the surround panner lets you pan the signal between all available speakers by clicking and dragging the white dot at its center, as above. In "Stereo In: L/R" mode, the white dot represents the left speaker and the red dot represents the right speaker. Moving the empty circle pans the sound (altering the "axis" property), and moving the red or white dots adjusts the stereo width (altering the "width" property). To switch between these two modes, right-click on the panner and select your choice of mode from the context menu.</dd>
+<dt><strong>Direction</strong> (Number box)</dt>
+<dt><img alt="Direction" src="images/spatializer-direction.png" title="The direction number box." /></dt>
+<dd>The direction in which the signal is panned. This control only appears if either:</dd>
+<dd>
+<ul>
+<li>The input signal is not stereo.</li>
+</ul>
+</dd>
+<dd>
+<ul>
+<li>The input signal is stereo and the spatializer's panner is in "Stereo In: Distributed" mode.</li>
+</ul>
+</dd>
+<dd>
+<p>Range: -180 deg to +180 deg. Default value: 0 deg.<br />
+<strong>Automatable and Modulatable.</strong></p>
+</dd>
+<dt><strong>Extent</strong> (Number box)</dt>
+<dt><img alt="Extent" src="images/spatializer-extent.png" title="The extent number box." /></dt>
+<dd>The size of the arc over which sound is distributed in the output speaker circle. This control only appears if either:</dd>
+<dd>
+<ul>
+<li>The input signal is not stereo.</li>
+</ul>
+</dd>
+<dd>
+<ul>
+<li>The input signal is stereo and the spatializer's panner is in "Stereo In: Distributed" mode.</li>
+</ul>
+</dd>
+<dd>
+<p>Range: 0 deg to 360 deg. Default value: 360 deg.<br />
+<strong>Automatable and Modulatable.</strong></p>
+</dd>
+<dt><strong>Axis</strong> (Number box)</dt>
+<dt><img alt="Axis" src="images/spatializer-axis.png" title="The axis number box." /></dt>
+<dd>The orientation of the arc over which sound is distributed in the output speaker circle. This control only appears if the input signal is stereo and the spatializer's panner is in "Stereo In: L / R" mode.</dd>
+<dd>Range: -180 deg to +180 deg. Default value: 0 deg.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Width</strong> (Number box)</dt>
+<dt><img alt="Width" src="images/spatializer-width.png" title="The width number box." /></dt>
+<dd>The width of the pan distribution or size of the arc over which sound is distributed in the output speaker circle. This control only appears if the input signal is stereo and the spatializer's panner is in "Stereo In: L / R" mode.</dd>
+<dd>Range: -180 deg to +180 deg. Default value: 60 deg.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>LFE</strong> (Slider)</dt>
+<dt><img alt="LFE" src="images/spatializer-lfe-slider.png" title="The LFE slider." /></dt>
+<dd>The LFE slider controls the volume being sent to the LFE (subwoofer).<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Level meters</strong> (Level meters)</dt>
+<dt><img alt="Level meters" src="images/spatializer-level-meters.png" title="Level meters." /></dt>
+<dd>These meters indicate the signal strength of each speaker channel of the signal output by the effect. Spatializer effects always output the channel format specified for the platform in the "build" tab of the preferences dialog.</dd>
+<dd>The number of meters corresponds to the number of channels in the signal's channel format, and their order is determined by the metering channel order setting in the audio tab of the preferences window. Within each meter, the filled colored bar represents the RMS value of the corresponding speaker channel's signal in dB, and the line above it represents the peak value of that speaker channel.</dd>
+</dl>
+<h2 id="transceiver"><a href="#transceiver">18.21 Transceiver</a></h2>
+<p><img alt="A transceiver effect set to receive mode" src="images/transceiver_effect_receive.png" /><img alt="A transceiver effect set to transmit mode" src="images/transceiver_effect_transmit.png" /></p>
+<p>Like the <a href="#send">Send</a> and <span class="dead-link" href="#return">Return</span class="dead-link"> effects, the transceiver effect allows <a href="glossary.html#signal">signals</a> to be routed from one place in the <a href="mixing.html">mix</a> to another.</p>
+<p>There are 32 separate channels to which a transceiver can transmit an audio signal to or receive audio from.<br />
+A transceiver can be set to:</p>
+<ul>
+<li>Receive mode, where signal from the selected channel is received at a variable gain, similar to a return.</li>
+<li>Transmit mode, where it transmits a duplicate of the signal at its position in the mix, with a variable gain, to the selected channel, similar to a send.</li>
+</ul>
+<p>This allows transceivers to be used in a variety of different ways. A common application is for one transmitting transceiver's signal to be received by an unlimited number of receiving transceivers, making that signal audible in multiple different parts of the mix. In a 3D world, this could allow one expensive emitter (i.e.: a stream) to be broadcast to different 3D locations around the world simultaneously, at low CPU cost.</p>
+<p><img alt="Transceiver" src="images/transceiver_effect_diagram.svg" /><br />
+<em>Sounds being transmitted by 2 transceivers in transmit mode, one sound transmitting to channel 0, and the other to channel 1. There is then a 3D scene with 5 transceivers tuned to either channel 0 or 1, which lets them broadcast the transmitted signal from different locations simultaneously.</em></p>
+<p>Characteristics of the transceiver effect:</p>
+<ul>
+<li>Upon receiving the signal on the receive side, it is buffered and therefore will incur one mix block of latency.</li>
+<li>Multiple transmitters sending to the same channel are mixed together.</li>
+</ul>
+<p>The Transceiver effect is built on the FMOD Engine's <a href="https://fmod.com/docs/2.03/api/effects-reference.html#transceiver">transceiver</a> effect.</p>
+<div class="admonition performance">
+<p><strong>Performance:</strong> Low overhead.<br />
+To reduce memory overhead, aim to use the same transmit speaker mode for a channel.</p>
+</div>
+<dl>
+<dt><strong>Mode</strong> (Radio buttons)</dt>
+<dt><img alt="Mode" src="images/transceiver_effect_mode_radio_buttons.png" /></dt>
+<dd>Current transceiver mode. This can be either receive or transmit.</dd>
+<dt><strong>Channel</strong> (Dial)</dt>
+<dt><img alt="Channel" src="images/transceiver_effect_channel_dial.png" /></dt>
+<dd>Dial to control the receiver channel. Can be set to receive or transmit.</dd>
+<dd>Range: 0 to 31. Default value: 0.</dd>
+<dt><strong>Level</strong> (Dial)</dt>
+<dt><img alt="Level" src="images/transceiver_effect_level_dial.png" /></dt>
+<dd>Adjust the level of the signal to be sent in transmit mode, or received in receive mode.</dd>
+<dd>Range: -oo to 10dB. Default value: 0 dB.<br />
+<strong>Automatable and Modulatable.</strong></dd>
+<dt><strong>Speaker Mode</strong> (Dropdown menu)</dt>
+<dt><img alt="Speaker mode" src="images/transceiver_effect_speaker_mode_dropdown.png" /></dt>
+<dd>Exposed in transmit mode, controls the speaker layout to be transmitted. This can be auto, mono, stereo or surround. Speaker mode is the speaker mode chosen in the <a href="getting-events-into-your-game.html#platform-settings">Platform Settings</a>.</dd>
+<dt><strong>Level Meters</strong> (Level meters)</dt>
+<dt><img alt="Level meters" src="images/sidechain-level-meters.png" /></dt>
+<dd>These meters indicate the signal strength of each speaker channel either being transmitted or received. The meter layout is determined by the <a href="glossary.html#channel-format">channel format</a> of the audio track. Within each meter, the filled colored bar represents the RMS value of the corresponding speaker channel's signal in dB, and the line above it represents the peak value of that speaker channel.</dd>
+</dl></div>
+
+<p class="manual-footer">FMOD Studio User Manual 2.03.15 (2026-09-21). &copy; 2026 Firelight Technologies Pty Ltd.</p>
+</div>
+</body>
+</html>
+

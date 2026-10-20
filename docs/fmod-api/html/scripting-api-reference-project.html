@@ -1,0 +1,369 @@
+<html>
+<head>
+<title>Scripting API Reference | Project</title>
+<link rel="stylesheet" href="style/docs.css">
+<link rel="stylesheet" href="style/code_highlight.css">
+<script type="text/javascript" src="scripts/language-selector.js"></script></head>
+<body>
+<div class="docs-body">
+<div class="manual-toc">
+<p>FMOD Studio User Manual 2.03</p>
+<ul>
+<li><a href="welcome-to-fmod-studio.html">Welcome to FMOD Studio</a></li>
+<li><a href="fmod-studio-concepts.html">FMOD Studio Concepts</a></li>
+<li><a href="organizing-the-project.html">Organizing the Project</a></li>
+<li><a href="authoring-events.html">Authoring Events</a></li>
+<li><a href="working-with-instruments.html">Working with Instruments</a></li>
+<li><a href="managing-assets.html">Managing Assets</a></li>
+<li><a href="parameters.html">Parameters</a></li>
+<li><a href="getting-events-into-your-game.html">Getting Events into Your Game</a></li>
+<li><a href="mixing.html">Mixing</a></li>
+<li><a href="the-sandbox.html">The Sandbox</a></li>
+<li><a href="editing-during-live-update.html">Editing During Live Update</a></li>
+<li><a href="profiling.html">Profiling</a></li>
+<li><a href="dialogue-and-localization.html">Dialogue and Localization</a></li>
+<li><a href="using-source-control.html">Using Source Control</a></li>
+<li><a href="supporting-downloadable-and-user-generated-content.html">Supporting Downloadable and User-generated Content</a></li>
+<li><a href="advanced-topics.html">Advanced Topics</a></li>
+<li><a href="quick-start-tutorial.html">Quick Start Tutorial</a></li>
+<li><a href="effect-reference.html">Effect Reference</a></li>
+<li><a href="event-macro-controls-reference.html">Event Macros Drawer Reference</a></li>
+<li><a href="instrument-reference.html">Instrument Reference</a></li>
+<li><a href="keyboard-shortcut-reference.html">Keyboard Shortcut Reference</a></li>
+<li><a href="modulator-reference.html">Modulator Reference</a></li>
+<li><a href="parameters-reference.html">Parameters Reference</a></li>
+<li><a href="plugin-reference.html">Plug-in Reference</a></li>
+<li><a href="scripting-terminal-reference.html">Scripting</a></li>
+<li class="manual-current-chapter manual-inactive-chapter"><a href="scripting-api-reference.html">Scripting API Reference</a><ul class="subchapters"><li><a href="scripting-api-reference-globals.html">Globals</a></li><li><a href="scripting-api-reference-menu.html">Menu</a></li><li class="manual-current-chapter manual-active-chapter"><a href="scripting-api-reference-project.html">Project</a></li><li><a href="scripting-api-reference-project-entity.html">Project.Entity</a></li><li><a href="scripting-api-reference-project-managedobject.html">Project.ManagedObject</a></li><li><a href="scripting-api-reference-project-model.html">Project.Model</a></li><li><a href="scripting-api-reference-project-model-asset.html">Project.Model.Asset</a></li><li><a href="scripting-api-reference-project-model-automatableobject.html">Project.Model.AutomatableObject</a></li><li><a href="scripting-api-reference-project-model-automationcurve.html">Project.Model.AutomationCurve</a></li><li><a href="scripting-api-reference-project-model-automator.html">Project.Model.Automator</a></li><li><a href="scripting-api-reference-project-model-bank.html">Project.Model.Bank</a></li><li><a href="scripting-api-reference-project-model-event.html">Project.Model.Event</a></li><li><a href="scripting-api-reference-project-model-folder.html">Project.Model.Folder</a></li><li><a href="scripting-api-reference-project-model-mixereffect.html">Project.Model.MixerEffect</a></li><li><a href="scripting-api-reference-project-model-mixerstrip.html">Project.Model.MixerStrip</a></li><li><a href="scripting-api-reference-project-model-modulator.html">Project.Model.Modulator</a></li><li><a href="scripting-api-reference-project-model-parameter.html">Project.Model.Parameter</a></li><li><a href="scripting-api-reference-project-model-sound.html">Project.Model.Sound</a></li><li><a href="scripting-api-reference-project-model-track.html">Project.Model.Track</a></li><li><a href="scripting-api-reference-project-model-triggerable.html">Project.Model.Triggerable</a></li><li><a href="scripting-api-reference-project-workspace.html">Project.Workspace</a></li><li><a href="scripting-api-reference-system.html">System</a></li><li><a href="scripting-api-reference-ui.html">UI</a></li><li><a href="scripting-api-reference-window.html">Window</a></li></ul></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="glossary.html">Glossary</a></li>
+<li><a href="appendix-a-celeste.html">Appendix: Celeste Getting Started Guide</a></li>
+<li><a href="appendix-b-reaper-integration.html">Appendix: Reaper Integration</a></li>
+</ul>
+</div>
+<div class="manual-content studio">
+<h1>26. Scripting API Reference | Project</h1>
+<p>The <code>studio.project</code> module provides access to objects within the project model.</p>
+<p><strong>Methods:</strong></p>
+<ul>
+<li><span><a class="apilink" href="scripting-api-reference-project.html#projectbuild" title="Builds all the banks to all the platforms listed in the build tab of the preferences dialog.">project.build</a> Builds all the banks to all the platforms listed in the build tab of the preferences dialog.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project.html#projectcreate" title="Returns a new instance of a ManagedObject of the given entity name.">project.create</a> Returns a new instance of a <code>ManagedObject</code> of the given entity name.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project.html#projectdeleteobject" title="Deletes the ManagedObject and its references, if any, from the project.">project.deleteObject</a> Deletes the <code>ManagedObject</code> and its references, if any, from the project.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project.html#projectexportguids" title="Exports project &quot;guids.txt&quot;.">project.exportGUIDs</a> Exports project "guids.txt".</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project.html#projectfindavailableplugins" title="Returns an array of strings that lists all available plugins.">project.findAvailablePlugins</a> Returns an array of strings that lists all available plugins.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project.html#projectimportaudiofile" title="Imports an audio asset into the project.">project.importAudioFile</a> Imports an audio asset into the project.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project.html#projectlookup" title="Lookup a ManagedObject by path or GUID.">project.lookup</a> Lookup a <code>ManagedObject</code> by path or GUID.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project.html#projectsave" title="Saves the project.">project.save</a> Saves the project.</span></li>
+</ul>
+<p><strong>Callbacks:</strong></p>
+<ul>
+<li><span><a class="apilink" href="scripting-api-reference-project.html#projectaudiofileimportedconnect" title="Sets a function to be called when an audio file is imported, with the signature function(audioFile).">project.audioFileImportedConnect</a> Sets a function to be called when an audio file is imported, with the signature <code>function(audioFile)</code>.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project.html#projectaudiofileimporteddisconnect" title="Disconnects the connectFunction once it is no longer needed.">project.audioFileImportedDisconnect</a> Disconnects the <code>connectFunction</code> once it is no longer needed.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project.html#projectbuildendedconnect" title="Sets a function to be called after banks are built, with the signature function(success).">project.buildEndedConnect</a> Sets a function to be called after banks are built, with the signature <code>function(success)</code>.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project.html#projectbuildendeddisconnect" title="Disconnects the connectFunction once it is no longer needed.">project.buildEndedDisconnect</a> Disconnects the <code>connectFunction</code> once it is no longer needed.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project.html#projectbuildstartedconnect" title="Sets a function to be called before banks are built, with the signature function().">project.buildStartedConnect</a> Sets a function to be called before banks are built, with the signature <code>function()</code>.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project.html#projectbuildstarteddisconnect" title="Disconnects the connectFunction once it is no longer needed.">project.buildStartedDisconnect</a> Disconnects the <code>connectFunction</code> once it is no longer needed.</span></li>
+</ul>
+<p><strong>Properties:</strong></p>
+<ul>
+<li><span><a class="apilink" href="scripting-api-reference-project.html#projectfilepath" title="The absolute path to the project's &quot;.fspro` file on disk.">project.filepath</a> The absolute path to the project's ".fspro` file on disk.</span></li>
+</ul>
+<p><strong>Types:</strong></p>
+<ul>
+<li><span><a class="apilink" href="scripting-api-reference-project.html#projectdistancerollofftype" title="An enum corresponding to different distance attenuation roll-off types available to spatial effects.">project.distanceRolloffType</a> An enum corresponding to different distance attenuation roll-off types available to spatial effects.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project.html#projectparametertype" title="An enum corresponding to different model.Parameter types available.">project.parameterType</a> An enum corresponding to different <code>model.Parameter</code> types available.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project.html#projectregionloopmode" title="An enum corresponding to different loop modes of a loop region.">project.regionLoopMode</a> An enum corresponding to different loop modes of a loop region.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project.html#parameterdefinition" title="Describes a model.Parameter.">parameterDefinition</a> Describes a <code>model.Parameter</code>.</span></li>
+</ul>
+<h2 api="function" id="projectbuild"><a href="#projectbuild">project.build</a></h2>
+<p>Builds all the banks to all the platforms listed in the build tab of the preferences dialog.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">project</span><span class="p">.</span><span class="nx">build</span><span class="p">();</span>
+
+<span class="nx">project</span><span class="p">.</span><span class="nx">build</span><span class="p">(</span>
+    <span class="nx">build_options</span>
+<span class="p">)</span>
+</pre></div>
+
+<dl>
+<dt>build_options</dt>
+<dd>Builds the project with options object <code>{ banks, platforms }</code>.</dd>
+</dl>
+<p>Returns <code>true</code> if the operation succeeds, or <code>false</code> otherwise. Building individual banks also builds and updates your project's <a href="glossary.html#master-bank">master banks</a> and <span class="dead-link" href="glossary.html#master-bank-strings">master bank strings</span class="dead-link"> files.</p>
+<p>Example:</p>
+<div class="highlight language-javascript"><pre><span></span><span class="c1">// Single banks</span>
+    <span class="nx">studio</span><span class="p">.</span><span class="nx">project</span><span class="p">.</span><span class="nx">build</span><span class="p">({</span> <span class="nx">banks</span><span class="o">:</span> <span class="s1">&#39;Weapons&#39;</span> <span class="p">});</span> <span class="c1">// Build the &quot;Weapons&quot; bank to all platforms</span>
+    <span class="nx">studio</span><span class="p">.</span><span class="nx">project</span><span class="p">.</span><span class="nx">build</span><span class="p">({</span> <span class="nx">banks</span><span class="o">:</span> <span class="s1">&#39;Music&#39;</span><span class="p">,</span> <span class="nx">platforms</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;Desktop&#39;</span><span class="p">,</span> <span class="s1">&#39;PlayStation 4&#39;</span><span class="p">]</span> <span class="p">});</span> <span class="c1">// Build the &quot;Music&quot; bank for only the &quot;Desktop&quot; and &quot;PlayStation 4&quot; platforms</span>
+
+<span class="c1">// Multiple banks</span>
+    <span class="nx">studio</span><span class="p">.</span><span class="nx">project</span><span class="p">.</span><span class="nx">build</span><span class="p">({</span> <span class="nx">banks</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;Weapons&#39;</span><span class="p">,</span> <span class="s1">&#39;Characters&#39;</span><span class="p">],</span> <span class="nx">platforms</span><span class="o">:</span> <span class="s1">&#39;Desktop&#39;</span> <span class="p">});</span> <span class="c1">// Build the &quot;Weapons&quot; and &quot;Characters&quot; banks only for the &quot;Desktop&quot; platform</span>
+    <span class="nx">studio</span><span class="p">.</span><span class="nx">project</span><span class="p">.</span><span class="nx">build</span><span class="p">({</span> <span class="nx">banks</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;Weapons&#39;</span><span class="p">,</span> <span class="s1">&#39;Music&#39;</span><span class="p">],</span> <span class="nx">platforms</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;Desktop&#39;</span><span class="p">,</span> <span class="s1">&#39;PlayStation 4&#39;</span><span class="p">]</span> <span class="p">});</span> <span class="c1">// Build the &quot;Weapons&quot; and &quot;Music&quot; banks to the &quot;Desktop&quot; and &quot;PlayStation 4&quot; platforms</span>
+
+<span class="c1">// Platforms</span>
+    <span class="nx">studio</span><span class="p">.</span><span class="nx">project</span><span class="p">.</span><span class="nx">build</span><span class="p">({</span> <span class="nx">platforms</span><span class="o">:</span> <span class="s1">&#39;Desktop&#39;</span> <span class="p">});</span> <span class="c1">// Builds all banks for the &quot;Desktop&quot; platform</span>
+    <span class="nx">studio</span><span class="p">.</span><span class="nx">project</span><span class="p">.</span><span class="nx">build</span><span class="p">({</span> <span class="nx">platforms</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;Desktop&#39;</span><span class="p">,</span> <span class="s1">&#39;PlayStation 4&#39;</span><span class="p">]</span> <span class="p">});</span> <span class="c1">// Builds all banks for the &quot;Desktop&quot; and &quot;PlayStation 4&quot; platforms</span>
+</pre></div>
+
+<h2 api="function" id="projectcreate"><a href="#projectcreate">project.create</a></h2>
+<p>Returns a new instance of a <a class="apilink" href="scripting-api-reference-project-managedobject.html#managedobject">ManagedObject</a> of the given entity name.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">project</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span>
+    <span class="nx">entityName</span>
+<span class="p">)</span>
+</pre></div>
+
+<dl>
+<dt>entityName</dt>
+<dd>The name of the entity to create.</dd>
+</dl>
+<p>This will create any required child objects for the object (e.g. creating an <code>Event</code> will create and attach its <code>EventMixer</code>).</p>
+<h2 api="function" id="projectdeleteobject"><a href="#projectdeleteobject">project.deleteObject</a></h2>
+<p>Deletes the <a class="apilink" href="scripting-api-reference-project-managedobject.html#managedobject">ManagedObject</a> and its references, if any, from the project.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">project</span><span class="p">.</span><span class="nx">deleteObject</span><span class="p">(</span>
+    <span class="nx">managedObject</span>
+<span class="p">)</span>
+</pre></div>
+
+<dl>
+<dt>managedObject</dt>
+<dd>The managed object to delete.</dd>
+</dl>
+<p>Returns <code>true</code> if the operation succeeds, or <code>false</code> otherwise.<br />
+This is the equivalent to deleting an item in the user interface.</p>
+<h2 api="function" id="projectexportguids"><a href="#projectexportguids">project.exportGUIDs</a></h2>
+<p>Exports project "guids.txt".</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">project</span><span class="p">.</span><span class="nx">exportGUIDs</span><span class="p">()</span>
+</pre></div>
+
+<p>Returns <code>true</code> if the operation succeeds, or <code>false</code> otherwise.</p>
+<h2 api="function" id="projectfindavailableplugins"><a href="#projectfindavailableplugins">project.findAvailablePlugins</a></h2>
+<p>Returns an array of strings that lists all available plugins.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">project</span><span class="p">.</span><span class="nx">findAvailablePlugins</span><span class="p">()</span>
+</pre></div>
+
+<h2 api="function" id="projectimportaudiofile"><a href="#projectimportaudiofile">project.importAudioFile</a></h2>
+<p>Imports an audio asset into the project.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">project</span><span class="p">.</span><span class="nx">importAudioFile</span><span class="p">(</span>
+    <span class="nx">filePath</span>
+<span class="p">)</span>
+</pre></div>
+
+<dl>
+<dt>filePath</dt>
+<dd>The absolute path to the file's location.</dd>
+</dl>
+<p>Returns an <a class="apilink" href="scripting-api-reference-project-model-asset.html#modelaudiofile">model.AudioFile</a>, <a class="apilink" href="scripting-api-reference-project-managedobject.html#managedobject">ManagedObject</a>, or <code>null</code> if importing failed. The file is always imported into the root audio bin folder. Use the <code>AudioFile.container</code> relationship to reassign it to another folder.</p>
+<h2 api="function" id="projectlookup"><a href="#projectlookup">project.lookup</a></h2>
+<p>Lookup a <a class="apilink" href="scripting-api-reference-project-managedobject.html#managedobject">ManagedObject</a> by path or GUID.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">project</span><span class="p">.</span><span class="nx">lookup</span><span class="p">(</span>
+    <span class="nx">idOrPath</span>
+<span class="p">)</span>
+</pre></div>
+
+<dl>
+<dt>idOrPath</dt>
+<dd>GUID or path of the ManageObject.</dd>
+</dl>
+<p>Returns a <a class="apilink" href="scripting-api-reference-project-managedobject.html#managedobject">ManagedObject</a> found by GUID or path.</p>
+<p>Example:</p>
+<div class="highlight language-javascript"><pre><span></span><span class="kd">var</span> <span class="nx">item</span> <span class="o">=</span> <span class="nx">project</span><span class="p">.</span><span class="nx">lookup</span><span class="p">(</span><span class="s2">&quot;{3a731ab3-ce6d-453d-862e-32050cecf68a}&quot;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">event</span> <span class="o">=</span> <span class="nx">project</span><span class="p">.</span><span class="nx">lookup</span><span class="p">(</span><span class="s2">&quot;event:/path/to/eventname&quot;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">eventFolder</span> <span class="o">=</span> <span class="nx">project</span><span class="p">.</span><span class="nx">lookup</span><span class="p">(</span><span class="s2">&quot;event:/path/to/foldername&quot;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">bank</span> <span class="o">=</span> <span class="nx">project</span><span class="p">.</span><span class="nx">lookup</span><span class="p">(</span><span class="s2">&quot;bank:/path/to/bank&quot;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">snapshot</span> <span class="o">=</span> <span class="nx">project</span><span class="p">.</span><span class="nx">lookup</span><span class="p">(</span><span class="s2">&quot;snapshot:/snapshotname&quot;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">vca</span> <span class="o">=</span> <span class="nx">project</span><span class="p">.</span><span class="nx">lookup</span><span class="p">(</span><span class="s2">&quot;vca:/vcaname&quot;</span><span class="p">);</span>
+</pre></div>
+
+<p>Paths are formatted using the pattern <code>type:/path/to/item</code>, where <code>type</code> is one of:</p>
+<ul>
+<li><code>event</code></li>
+<li><code>snapshot</code></li>
+<li><code>bank</code></li>
+<li><code>bus</code></li>
+<li><code>vca</code></li>
+<li><code>asset</code></li>
+<li><code>parameter</code></li>
+<li><code>effect</code></li>
+<li><code>tag</code></li>
+<li><code>profilersession</code></li>
+</ul>
+<p>Paths can also be used to find container items, such as finding a folder in the event hierarchy.</p>
+<h2 api="function" id="projectsave"><a href="#projectsave">project.save</a></h2>
+<p>Saves the project.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">project</span><span class="p">.</span><span class="nx">save</span><span class="p">()</span>
+
+<span class="nx">project</span><span class="p">.</span><span class="nx">save</span><span class="p">(</span>
+    <span class="nx">filepath</span>
+<span class="p">)</span>
+</pre></div>
+
+<p>Returns <code>true</code> if the operation succeeds, or <code>false</code> otherwise.</p>
+<h2 api="function" id="projectaudiofileimportedconnect"><a href="#projectaudiofileimportedconnect">project.audioFileImportedConnect</a></h2>
+<p>Sets a function to be called when an audio file is imported, with the signature <code>function(audioFile)</code>.</p>
+<p>The <code>audioFile</code> argument is a <a class="apilink" href="scripting-api-reference-project-model-asset.html#modelaudiofile">model.AudioFile</a> object.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">project</span><span class="p">.</span><span class="nx">audioFileImportedConnect</span><span class="p">(</span>
+    <span class="nx">callback</span>
+<span class="p">)</span>
+</pre></div>
+
+<dl>
+<dt>callback</dt>
+<dd>A callback function that will be called when an audio file import has completed.</dd>
+</dl>
+<h2 api="function" id="projectaudiofileimporteddisconnect"><a href="#projectaudiofileimporteddisconnect">project.audioFileImportedDisconnect</a></h2>
+<p>Disconnects the <code>connectFunction</code> once it is no longer needed.</p>
+<p>It is important to disconnect the connected signals when they are no longer needed, otherwise they can accumulate and cause unexpected behavior.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">project</span><span class="p">.</span><span class="nx">audioFileImportedDisconnect</span><span class="p">(</span>
+    <span class="nx">connectFunction</span>
+<span class="p">)</span>
+</pre></div>
+
+<dl>
+<dt>connectionFunction</dt>
+<dd>The callback to disconnect from audio file imported notification.</dd>
+</dl>
+<h2 api="function" id="projectbuildendedconnect"><a href="#projectbuildendedconnect">project.buildEndedConnect</a></h2>
+<p>Sets a function to be called after banks are built, with the signature <code>function(success)</code>.</p>
+<p>The <code>success</code> argument will be <code>false</code> if a build error occurs or the build is cancelled by the user, and <code>true</code> otherwise.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">project</span><span class="p">.</span><span class="nx">buildEndedConnect</span><span class="p">(</span>
+    <span class="nx">callback</span>
+<span class="p">)</span>
+</pre></div>
+
+<dl>
+<dt>callback</dt>
+<dd>A callback function that will be called when the build has ended.</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight language-javascript"><pre><span></span><span class="kd">function</span> <span class="nx">buildEnd</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;Build about to end&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">studio</span><span class="p">.</span><span class="nx">project</span><span class="p">.</span><span class="nx">buildEndedConnect</span><span class="p">(</span><span class="nx">buildEnd</span><span class="p">);</span>
+</pre></div>
+
+<h2 api="function" id="projectbuildendeddisconnect"><a href="#projectbuildendeddisconnect">project.buildEndedDisconnect</a></h2>
+<p>Disconnects the <code>connectFunction</code> once it is no longer needed.</p>
+<p>It is important to disconnect the connected signals when they are no longer needed, otherwise they can accumulate and cause unexpected behavior.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">project</span><span class="p">.</span><span class="nx">buildEndedDisconnect</span><span class="p">(</span>
+    <span class="nx">connectFunction</span>
+<span class="p">)</span>
+</pre></div>
+
+<dl>
+<dt>connectionFunction</dt>
+<dd>The callback to disconnect from build ended notification.</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight language-javascript"><pre><span></span><span class="kd">function</span> <span class="nx">buildEnd</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;Build about to end&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">studio</span><span class="p">.</span><span class="nx">project</span><span class="p">.</span><span class="nx">buildEndedDisconnect</span><span class="p">(</span><span class="nx">buildEnd</span><span class="p">);</span>
+</pre></div>
+
+<h2 api="function" id="projectbuildstartedconnect"><a href="#projectbuildstartedconnect">project.buildStartedConnect</a></h2>
+<p>Sets a function to be called before banks are built, with the signature <code>function()</code>.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">project</span><span class="p">.</span><span class="nx">buildStartedConnect</span><span class="p">(</span>
+    <span class="nx">callback</span>
+<span class="p">)</span>
+</pre></div>
+
+<dl>
+<dt>callback</dt>
+<dd>A callback function that will be called when the build has started.</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight language-javascript"><pre><span></span><span class="kd">function</span> <span class="nx">buildStart</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;Build about to start&quot;</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="nx">studio</span><span class="p">.</span><span class="nx">project</span><span class="p">.</span><span class="nx">buildStartedConnect</span><span class="p">(</span><span class="nx">buildStart</span><span class="p">);</span>
+</pre></div>
+
+<h2 api="function" id="projectbuildstarteddisconnect"><a href="#projectbuildstarteddisconnect">project.buildStartedDisconnect</a></h2>
+<p>Disconnects the <code>connectFunction</code> once it is no longer needed.</p>
+<p>It is important to disconnect the connected signals when they are no longer needed, otherwise they can accumulate and cause unexpected behavior.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">project</span><span class="p">.</span><span class="nx">buildStartedDisconnect</span><span class="p">(</span>
+    <span class="nx">connectFunction</span>
+<span class="p">)</span>
+</pre></div>
+
+<dl>
+<dt>connectionFunction</dt>
+<dd>The callback to disconnect from build started notification.</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight language-javascript"><pre><span></span><span class="kd">function</span> <span class="nx">buildStart</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;Build about to start&quot;</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="nx">studio</span><span class="p">.</span><span class="nx">project</span><span class="p">.</span><span class="nx">buildStartedDisconnect</span><span class="p">(</span><span class="nx">buildStart</span><span class="p">);</span>
+</pre></div>
+
+<h2 api="function" id="projectfilepath"><a href="#projectfilepath">project.filePath</a></h2>
+<p>The absolute path to the project's ".fspro` file on disk.</p>
+<h2 api="function" id="projectdistancerollofftype"><a href="#projectdistancerollofftype">project.distanceRolloffType</a></h2>
+<p>An enum corresponding to different distance attenuation roll-off types available to spatial effects.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">distanceRolloffType</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">LinearSquared</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nx">Linear</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="nx">Inverse</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="nx">InverseTapered</span><span class="o">:</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="nx">Custom</span><span class="o">:</span> <span class="mi">4</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+
+<h2 api="function" id="projectparametertype"><a href="#projectparametertype">project.parameterType</a></h2>
+<p>An enum corresponding to different <a class="apilink" href="scripting-api-reference-project-model-parameter.html#modelparameter">model.Parameter</a> types available.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">parameterType</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">Invalid</span><span class="o">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+    <span class="nx">User</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nx">UserDiscrete</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="nx">UserEnumeration</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="nx">Distance</span><span class="o">:</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="nx">Direction</span><span class="o">:</span> <span class="mi">4</span><span class="p">,</span>
+    <span class="nx">Elevation</span><span class="o">:</span> <span class="mi">5</span><span class="p">,</span>
+    <span class="nx">EventConeAngle</span><span class="o">:</span> <span class="mi">6</span><span class="p">,</span>
+    <span class="nx">EventOrientation</span><span class="o">:</span> <span class="mi">7</span><span class="p">,</span>
+    <span class="nx">Speed</span><span class="o">:</span> <span class="mi">8</span><span class="p">,</span>
+    <span class="nx">SpeedAbsolute</span><span class="o">:</span> <span class="mi">9</span><span class="p">,</span>
+    <span class="nx">DistanceNormalized</span><span class="o">:</span> <span class="mi">10</span>
+<span class="p">}</span>
+</pre></div>
+
+<h2 api="function" id="projectregionloopmode"><a href="#projectregionloopmode">project.regionLoopMode</a></h2>
+<p>An enum corresponding to different loop modes of a loop region.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">regionLoopMode</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">None</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nx">Looping</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="nx">Magnet</span><span class="o">:</span> <span class="mi">2</span>
+<span class="p">}</span>
+</pre></div>
+
+<h2 api="function" id="parameterdefinition"><a href="#parameterdefinition">parameterDefinition</a></h2>
+<p>Describes a <a class="apilink" href="scripting-api-reference-project-model-parameter.html#modelparameter">model.Parameter</a>.</p>
+<div class="highlight language-javascript"><pre><span></span>    <span class="nx">name</span><span class="o">:</span> <span class="p">[</span><span class="nx">string</span><span class="p">],</span>
+    <span class="nx">type</span><span class="o">:</span> <span class="p">[</span><span class="nx">number</span><span class="p">],</span>
+    <span class="nx">min</span><span class="o">:</span> <span class="p">[</span><span class="nx">number</span><span class="p">],</span>
+    <span class="nx">max</span><span class="o">:</span> <span class="p">[</span><span class="nx">number</span><span class="p">],</span>
+    <span class="nx">enumerationLabels</span><span class="o">:</span> <span class="p">[</span><span class="nx">array</span><span class="p">]</span>
+</pre></div>
+
+<dl>
+<dt>name</dt>
+<dd>The name of the parameter.</dd>
+<dt>type</dt>
+<dd>The <a class="apilink" href="scripting-api-reference-project.html#projectparametertype">project.parameterType</a> of the parameter.</dd>
+<dt>min</dt>
+<dd>The minimum value of the parameter range.</dd>
+<dt>max</dt>
+<dd>The maximum value of the parameter range.</dd>
+<dt>enumerationLabels</dt>
+<dd>A string array of labels to apply to each index of the parameter. (Type UserEnumeration only).</dd>
+</dl>
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/studio/scripting-api-reference-project-model-event.html#eventaddgameparameter">Event.addGameParamater</a>, <a href="https://fmod.com/docs/2.03/studio/scripting-api-reference-project-workspace.html#workspaceaddgameparameter">workspace.addGameParameter</a></p></div>
+
+<p class="manual-footer">FMOD Studio User Manual 2.03.15 (2026-09-21). &copy; 2026 Firelight Technologies Pty Ltd.</p>
+</div>
+</body>
+</html>
+

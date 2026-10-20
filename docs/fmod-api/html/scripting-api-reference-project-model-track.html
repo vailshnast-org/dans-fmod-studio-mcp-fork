@@ -1,0 +1,223 @@
+<html>
+<head>
+<title>Scripting API Reference | Project.Model.Track</title>
+<link rel="stylesheet" href="style/docs.css">
+<link rel="stylesheet" href="style/code_highlight.css">
+<script type="text/javascript" src="scripts/language-selector.js"></script></head>
+<body>
+<div class="docs-body">
+<div class="manual-toc">
+<p>FMOD Studio User Manual 2.03</p>
+<ul>
+<li><a href="welcome-to-fmod-studio.html">Welcome to FMOD Studio</a></li>
+<li><a href="fmod-studio-concepts.html">FMOD Studio Concepts</a></li>
+<li><a href="organizing-the-project.html">Organizing the Project</a></li>
+<li><a href="authoring-events.html">Authoring Events</a></li>
+<li><a href="working-with-instruments.html">Working with Instruments</a></li>
+<li><a href="managing-assets.html">Managing Assets</a></li>
+<li><a href="parameters.html">Parameters</a></li>
+<li><a href="getting-events-into-your-game.html">Getting Events into Your Game</a></li>
+<li><a href="mixing.html">Mixing</a></li>
+<li><a href="the-sandbox.html">The Sandbox</a></li>
+<li><a href="editing-during-live-update.html">Editing During Live Update</a></li>
+<li><a href="profiling.html">Profiling</a></li>
+<li><a href="dialogue-and-localization.html">Dialogue and Localization</a></li>
+<li><a href="using-source-control.html">Using Source Control</a></li>
+<li><a href="supporting-downloadable-and-user-generated-content.html">Supporting Downloadable and User-generated Content</a></li>
+<li><a href="advanced-topics.html">Advanced Topics</a></li>
+<li><a href="quick-start-tutorial.html">Quick Start Tutorial</a></li>
+<li><a href="effect-reference.html">Effect Reference</a></li>
+<li><a href="event-macro-controls-reference.html">Event Macros Drawer Reference</a></li>
+<li><a href="instrument-reference.html">Instrument Reference</a></li>
+<li><a href="keyboard-shortcut-reference.html">Keyboard Shortcut Reference</a></li>
+<li><a href="modulator-reference.html">Modulator Reference</a></li>
+<li><a href="parameters-reference.html">Parameters Reference</a></li>
+<li><a href="plugin-reference.html">Plug-in Reference</a></li>
+<li><a href="scripting-terminal-reference.html">Scripting</a></li>
+<li class="manual-current-chapter manual-inactive-chapter"><a href="scripting-api-reference.html">Scripting API Reference</a><ul class="subchapters"><li><a href="scripting-api-reference-globals.html">Globals</a></li><li><a href="scripting-api-reference-menu.html">Menu</a></li><li><a href="scripting-api-reference-project.html">Project</a></li><li><a href="scripting-api-reference-project-entity.html">Project.Entity</a></li><li><a href="scripting-api-reference-project-managedobject.html">Project.ManagedObject</a></li><li><a href="scripting-api-reference-project-model.html">Project.Model</a></li><li><a href="scripting-api-reference-project-model-asset.html">Project.Model.Asset</a></li><li><a href="scripting-api-reference-project-model-automatableobject.html">Project.Model.AutomatableObject</a></li><li><a href="scripting-api-reference-project-model-automationcurve.html">Project.Model.AutomationCurve</a></li><li><a href="scripting-api-reference-project-model-automator.html">Project.Model.Automator</a></li><li><a href="scripting-api-reference-project-model-bank.html">Project.Model.Bank</a></li><li><a href="scripting-api-reference-project-model-event.html">Project.Model.Event</a></li><li><a href="scripting-api-reference-project-model-folder.html">Project.Model.Folder</a></li><li><a href="scripting-api-reference-project-model-mixereffect.html">Project.Model.MixerEffect</a></li><li><a href="scripting-api-reference-project-model-mixerstrip.html">Project.Model.MixerStrip</a></li><li><a href="scripting-api-reference-project-model-modulator.html">Project.Model.Modulator</a></li><li><a href="scripting-api-reference-project-model-parameter.html">Project.Model.Parameter</a></li><li><a href="scripting-api-reference-project-model-sound.html">Project.Model.Sound</a></li><li class="manual-current-chapter manual-active-chapter"><a href="scripting-api-reference-project-model-track.html">Project.Model.Track</a></li><li><a href="scripting-api-reference-project-model-triggerable.html">Project.Model.Triggerable</a></li><li><a href="scripting-api-reference-project-workspace.html">Project.Workspace</a></li><li><a href="scripting-api-reference-system.html">System</a></li><li><a href="scripting-api-reference-ui.html">UI</a></li><li><a href="scripting-api-reference-window.html">Window</a></li></ul></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="glossary.html">Glossary</a></li>
+<li><a href="appendix-a-celeste.html">Appendix: Celeste Getting Started Guide</a></li>
+<li><a href="appendix-b-reaper-integration.html">Appendix: Reaper Integration</a></li>
+</ul>
+</div>
+<div class="manual-content studio">
+<h1>26. Scripting API Reference | Project.Model.Track</h1>
+<p><strong>Types:</strong></p>
+<ul>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-track.html#modelaudiotrack" title="The base class for tracks that can contain instruments.">model.AudioTrack</a> The base class for tracks that can contain <a href="glossary.html#instrument">instruments</a>.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-track.html#modelgrouptrack" title="A track within an event that is associated with a mixer group.">model.GroupTrack</a> A <a href="glossary.html#track">track</a> within an event that is associated with a mixer group.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-track.html#modelmarkertrack" title="A logic track containing logic markers.">model.MarkerTrack</a> A <a href="glossary.html#logic-track">logic track</a> containing <a href="glossary.html#logic-marker">logic markers</a>.</span></li>
+</ul>
+<p><strong>Extension Methods:</strong></p>
+<ul>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-track.html#audiotrackaddautomationtrack" title="Creates an automation track for a given property of an automatable object.">AudioTrack.addAutomationTrack</a> Creates an <span class="dead-link" href="glossary.html#automation-track">automation track</span class="dead-link"> for a given property of an automatable object.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-track.html#grouptrackaddsound" title="Adds an instrument to the track on the model.Parameter specified.">GroupTrack.addSound</a> Adds an <a href="glossary.html#instrument">instrument</a> to the track on the <code>model.Parameter</code> specified.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-track.html#groupbusgetitem" title="Retrieves the mixer bus at the relative path specified.">GroupBus.getItem</a> Retrieves the mixer <a href="glossary.html#bus">bus</a> at the relative path specified.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-track.html#markertrackaddnamedmarker" title="Adds a destination marker to the marker track at the given position.">MarkerTrack.addNamedMarker</a> Adds a <a href="glossary.html#destination-marker">destination marker</a> to the <a href="glossary.html#logic-track">marker track</a> at the given position.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-track.html#markertrackaddregion" title="Adds a destination region to the marker track at the given position with the given length.">MarkerTrack.addRegion</a> Adds a <a href="glossary.html#destination-region">destination region</a> to the <a href="glossary.html#logic-track">marker track</a> at the given position with the given length.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-track.html#markertrackaddsustainpoint" title="Adds a sustain point to the track at the given position.">MarkerTrack.addSustainPoint</a> Adds a <a href="glossary.html#sustain-point">sustain point</a> to the track at the given position.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-track.html#markertrackaddtransitionmarker" title="Adds a transition marker to the track at the given position.">MarkerTrack.addTransitionMarker</a> Adds a <a href="glossary.html#transition-marker">transition marker</a> to the track at the given position.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-track.html#markertrackaddtransitionregion" title="Adds a transition region to the track at the given position with the given length.">MarkerTrack.addTransitionRegion</a> Adds a <a href="glossary.html#transition-region">transition region</a> to the track at the given position with the given length.</span></li>
+</ul>
+<h2 api="function" id="modelaudiotrack"><a href="#modelaudiotrack">model.AudioTrack</a></h2>
+<p>The base class for tracks that can contain <a href="glossary.html#instrument">instruments</a>.</p>
+<p><strong>See Also:</strong> <a class="apilink" href="scripting-api-reference-project-model-sound.html#modelsound">model.Sound</a></p>
+<h2 api="function" id="modelgrouptrack"><a href="#modelgrouptrack">model.GroupTrack</a></h2>
+<p>A <a href="glossary.html#track">track</a> within an event that is associated with a mixer group.</p>
+<p><strong>See Also:</strong> <a class="apilink" href="scripting-api-reference-project-model-event.html#modelevent">model.Event</a>, <a class="apilink" href="scripting-api-reference-project-model-mixerstrip.html#modelmixergroup">model.MixerGroup</a></p>
+<h2 api="function" id="modelmarkertrack"><a href="#modelmarkertrack">model.MarkerTrack</a></h2>
+<p>A <a href="glossary.html#logic-track">logic track</a> containing <a href="glossary.html#logic-marker">logic markers</a>.</p>
+<h2 api="function" id="audiotrackaddautomationtrack"><a href="#audiotrackaddautomationtrack">AudioTrack.addAutomationTrack</a></h2>
+<p>Creates an <span class="dead-link" href="glossary.html#automation-track">automation track</span class="dead-link"> for a given property of an automatable object.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">AudioTrack</span><span class="p">.</span><span class="nx">addAutomationTrack</span><span class="p">(</span>
+    <span class="nx">automatableObject</span><span class="p">,</span>
+    <span class="nx">propertyName</span>
+<span class="p">)</span>
+</pre></div>
+
+<dl>
+<dt>automatableObject</dt>
+<dd>Any <a class="apilink" href="scripting-api-reference-project-model-automatableobject.html#modelautomatableobject">model.AutomatableObject</a> of the track such as a <a class="apilink" href="scripting-api-reference-project-model-sound.html#modelsound">model.Sound</a>, a <a class="apilink" href="scripting-api-reference-project-model-mixereffect.html#modelmixereffect">model.MixerEffect</a>, or the <a class="apilink" href="scripting-api-reference-project-model-mixerstrip.html#modelmixerbus">model.MixerBus</a> of the track itself.</dd>
+<dt>propertyName</dt>
+<dd>Any valid automatable property of the specified <a class="apilink" href="scripting-api-reference-project-model-automatableobject.html#modelautomatableobject">model.AutomatableObject</a>.</dd>
+</dl>
+<p>Returns the <span class="dead-link" href="glossary.html#automation-track">automation track</span class="dead-link"> <a class="apilink" href="scripting-api-reference-project-managedobject.html#managedobject">ManagedObject</a>.</p>
+<p>Automation can be present even if the automation track is hidden.</p>
+<p>Example:</p>
+<div class="highlight language-javascript"><pre><span></span><span class="c1">// adds an automation track for a master track&#39;s volume</span>
+<span class="kd">var</span> <span class="nx">event</span> <span class="o">=</span> <span class="nx">studio</span><span class="p">.</span><span class="nx">project</span><span class="p">.</span><span class="nx">workspace</span><span class="p">.</span><span class="nx">addEvent</span><span class="p">(</span><span class="s2">&quot;New Event&quot;</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">masterTrack</span> <span class="o">=</span> <span class="nx">event</span><span class="p">.</span><span class="nx">masterTrack</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">automationTrack</span> <span class="o">=</span> <span class="nx">masterTrack</span><span class="p">.</span><span class="nx">addAutomationTrack</span><span class="p">(</span><span class="nx">masterTrack</span><span class="p">.</span><span class="nx">mixerGroup</span><span class="p">,</span> <span class="s2">&quot;volume&quot;</span><span class="p">);</span>
+
+<span class="c1">// adds an automation track for a gain effect&#39;s gain</span>
+<span class="kd">var</span> <span class="nx">gainEffect</span> <span class="o">=</span> <span class="nx">masterTrack</span><span class="p">.</span><span class="nx">mixerGroup</span><span class="p">.</span><span class="nx">effectChain</span><span class="p">.</span><span class="nx">addEffect</span><span class="p">(</span><span class="s2">&quot;GainEffect&quot;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">automationTrack2</span> <span class="o">=</span> <span class="nx">masterTrack</span><span class="p">.</span><span class="nx">addAutomationTrack</span><span class="p">(</span><span class="nx">gainEffect</span><span class="p">,</span> <span class="s2">&quot;gain&quot;</span><span class="p">);</span>
+</pre></div>
+
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/studio/authoring-events.html#tracks">Tracks</a></p>
+<h2 api="function" id="grouptrackaddsound"><a href="#grouptrackaddsound">GroupTrack.addSound</a></h2>
+<p>Adds an <a href="glossary.html#instrument">instrument</a> to the track on the <a class="apilink" href="scripting-api-reference-project-model-parameter.html#modelparameter">model.Parameter</a> specified.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">GroupTrack</span><span class="p">.</span><span class="nx">addSound</span><span class="p">(</span>
+    <span class="nx">parameter</span><span class="p">,</span>
+    <span class="nx">soundType</span><span class="p">,</span>
+    <span class="nx">start</span><span class="p">,</span>
+    <span class="nx">length</span>
+<span class="p">)</span>
+</pre></div>
+
+<dl>
+<dt>parameter</dt>
+<dd>The <a href="https://fmod.com/docs/2.03/studio/glossary.html#parameter-sheet">parameter sheet</a> to add the sound to.</dd>
+<dt>soundType</dt>
+<dd>The type of the <a class="apilink" href="scripting-api-reference-project-model-sound.html#modelsound">model.Sound</a>. Must be <a class="apilink" href="scripting-api-reference-project-model-sound.html#modelsinglesound">model.SingleSound</a>, <a class="apilink" href="scripting-api-reference-project-model-sound.html#modelmultisound">model.MultiSound</a>, or <a class="apilink" href="scripting-api-reference-project-model-sound.html#modelprogrammersound">model.ProgrammerSound</a>.</dd>
+<dt>start</dt>
+<dd>The numerical position of the new <a class="apilink" href="scripting-api-reference-project-model-sound.html#modelsound">model.Sound</a>. The value must be within the <a href="glossary.html#parameter">parameter</a>'s range.</dd>
+<dt>length</dt>
+<dd>The numerical length of the new <a class="apilink" href="scripting-api-reference-project-model-sound.html#modelsound">model.Sound</a>.</dd>
+</dl>
+<p>Returns the <a class="apilink" href="scripting-api-reference-project-model-sound.html#modelsound">model.Sound</a> <a class="apilink" href="scripting-api-reference-project-managedobject.html#managedobject">ManagedObject</a>.</p>
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/studio/authoring-events.html#tracks">Tracks</a></p>
+<h2 api="function" id="groupbusgetitem"><a href="#groupbusgetitem">GroupBus.getItem</a></h2>
+<p>Retrieves the mixer <a href="glossary.html#bus">bus</a> at the relative path specified.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">GroupBus</span><span class="p">.</span><span class="nx">getItem</span><span class="p">(</span>
+    <span class="nx">path</span>
+<span class="p">)</span>
+</pre></div>
+
+<dl>
+<dt>path</dt>
+<dd>Relative path of the entity to get the <a class="apilink" href="scripting-api-reference-project-model-mixerstrip.html#modelmixerbus">model.MixerBus</a> of.</dd>
+</dl>
+<p>Returns the <a class="apilink" href="scripting-api-reference-project-model-mixerstrip.html#modelmixerbus">model.MixerBus</a> at the relative <code>path</code> specified. Returns <code>undefined</code> if the bus cannot be found.</p>
+<p>Example:</p>
+<div class="highlight language-javascript"><pre><span></span><span class="kd">var</span> <span class="nx">bus</span> <span class="o">=</span> <span class="nx">studio</span><span class="p">.</span><span class="nx">project</span><span class="p">.</span><span class="nx">workspace</span><span class="p">.</span><span class="nx">mixer</span><span class="p">.</span><span class="nx">masterBus</span><span class="p">.</span><span class="nx">getItem</span><span class="p">(</span><span class="s2">&quot;sfx/player&quot;</span><span class="p">);</span>
+</pre></div>
+
+<h2 api="function" id="markertrackaddnamedmarker"><a href="#markertrackaddnamedmarker">MarkerTrack.addNamedMarker</a></h2>
+<p>Adds a <a href="glossary.html#destination-marker">destination marker</a> to the <a href="glossary.html#logic-track">marker track</a> at the given position.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">MarkerTrack</span><span class="p">.</span><span class="nx">addNamedMarker</span><span class="p">(</span>
+    <span class="nx">name</span><span class="p">,</span>
+    <span class="nx">position</span>
+<span class="p">)</span>
+</pre></div>
+
+<dl>
+<dt>name</dt>
+<dd>The <code>string</code> value to assign the marker when created.</dd>
+<dt>position</dt>
+<dd>The numerical position to place marker.</dd>
+</dl>
+<p>Returns the named marker <a class="apilink" href="scripting-api-reference-project-managedobject.html#managedobject">ManagedObject</a>.</p>
+<h2 api="function" id="markertrackaddregion"><a href="#markertrackaddregion">MarkerTrack.addRegion</a></h2>
+<p>Adds a <a href="glossary.html#destination-region">destination region</a> to the <a href="glossary.html#logic-track">marker track</a> at the given position with the given length.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">MarkerTrack</span><span class="p">.</span><span class="nx">addRegion</span><span class="p">(</span>
+    <span class="nx">position</span><span class="p">,</span>
+    <span class="nx">length</span><span class="p">,</span>
+    <span class="nx">name</span><span class="p">,</span>
+    <span class="nx">loopMode</span>
+<span class="p">)</span>
+</pre></div>
+
+<dl>
+<dt>start</dt>
+<dd>The numerical start position of the new region.</dd>
+<dt>length</dt>
+<dd>The numerical length of the new region.</dd>
+<dt>name</dt>
+<dd>The <code>string</code> value to assign the new region.</dd>
+<dt>loopMode</dt>
+<dd>A number representing the region's loop mode. Defaults to <code>project.regionLoopMode.Looping</code> if <code>loopMode</code> is <code>undefined</code>. The loop mode can be set by passing in a valid <code>loopMode</code> argument, as described by the <a class="apilink" href="scripting-api-reference-project.html#projectregionloopmode">Project.regionLoopMode</a> enum.</dd>
+</dl>
+<p>Returns the newly created region's <a class="apilink" href="scripting-api-reference-project-managedobject.html#managedobject">ManagedObject</a>.</p>
+<h2 api="function" id="markertrackaddsustainpoint"><a href="#markertrackaddsustainpoint">MarkerTrack.addSustainPoint</a></h2>
+<p>Adds a <a href="glossary.html#sustain-point">sustain point</a> to the track at the given position.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">MarkerTrack</span><span class="p">.</span><span class="nx">addSustainPoint</span><span class="p">(</span>
+    <span class="nx">position</span>
+<span class="p">)</span>
+</pre></div>
+
+<dl>
+<dt>position</dt>
+<dd>The numerical position to place the new sustain point at.</dd>
+</dl>
+<p>Returns the <code>SustainPoint</code> <a class="apilink" href="scripting-api-reference-project-managedobject.html#managedobject">ManagedObject</a>.</p>
+<h2 api="function" id="markertrackaddtransitionmarker"><a href="#markertrackaddtransitionmarker">MarkerTrack.addTransitionMarker</a></h2>
+<p>Adds a <a href="glossary.html#transition-marker">transition marker</a> to the track at the given position.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">MarkerTrack</span><span class="p">.</span><span class="nx">addTransitionMarker</span><span class="p">(</span>
+    <span class="nx">position</span><span class="p">,</span>
+    <span class="nx">destination</span>
+<span class="p">)</span>
+</pre></div>
+
+<dl>
+<dt>position</dt>
+<dd>The numerical position to place the new transition marker at.</dd>
+<dt>destination</dt>
+<dd>A <a class="apilink" href="scripting-api-reference-project-managedobject.html#managedobject">ManagedObject</a> of type <code>NamedMarker</code> or <code>LoopRegion</code>.</dd>
+</dl>
+<p>Returns the newly created <code>TransitionMarker</code> <a class="apilink" href="scripting-api-reference-project-managedobject.html#managedobject">ManagedObject</a>.</p>
+<h2 api="function" id="markertrackaddtransitionregion"><a href="#markertrackaddtransitionregion">MarkerTrack.addTransitionRegion</a></h2>
+<p>Adds a <a href="glossary.html#transition-region">transition region</a> to the track at the given position with the given length.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">MarkerTrack</span><span class="p">.</span><span class="nx">addTransitionRegion</span><span class="p">(</span>
+    <span class="nx">position</span><span class="p">,</span>
+    <span class="nx">length</span><span class="p">,</span>
+    <span class="nx">destination</span>
+<span class="p">)</span>
+</pre></div>
+
+<dl>
+<dt>position</dt>
+<dd>The numerical position to place the new transition region at.</dd>
+<dt>length</dt>
+<dd>The numerical length of the new transition region.</dd>
+<dt>destination</dt>
+<dd>Either a <code>NamedMarker</code> or a <code>LoopRegion</code>.</dd>
+</dl>
+<p>Returns the <code>TransitionRegion</code> <a class="apilink" href="scripting-api-reference-project-managedobject.html#managedobject">ManagedObject</a>.</p></div>
+
+<p class="manual-footer">FMOD Studio User Manual 2.03.15 (2026-09-21). &copy; 2026 Firelight Technologies Pty Ltd.</p>
+</div>
+</body>
+</html>
+

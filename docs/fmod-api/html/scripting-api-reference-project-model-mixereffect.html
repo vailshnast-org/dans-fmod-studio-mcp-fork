@@ -1,0 +1,252 @@
+<html>
+<head>
+<title>Scripting API Reference | Project.Model.MixerEffect</title>
+<link rel="stylesheet" href="style/docs.css">
+<link rel="stylesheet" href="style/code_highlight.css">
+<script type="text/javascript" src="scripts/language-selector.js"></script></head>
+<body>
+<div class="docs-body">
+<div class="manual-toc">
+<p>FMOD Studio User Manual 2.03</p>
+<ul>
+<li><a href="welcome-to-fmod-studio.html">Welcome to FMOD Studio</a></li>
+<li><a href="fmod-studio-concepts.html">FMOD Studio Concepts</a></li>
+<li><a href="organizing-the-project.html">Organizing the Project</a></li>
+<li><a href="authoring-events.html">Authoring Events</a></li>
+<li><a href="working-with-instruments.html">Working with Instruments</a></li>
+<li><a href="managing-assets.html">Managing Assets</a></li>
+<li><a href="parameters.html">Parameters</a></li>
+<li><a href="getting-events-into-your-game.html">Getting Events into Your Game</a></li>
+<li><a href="mixing.html">Mixing</a></li>
+<li><a href="the-sandbox.html">The Sandbox</a></li>
+<li><a href="editing-during-live-update.html">Editing During Live Update</a></li>
+<li><a href="profiling.html">Profiling</a></li>
+<li><a href="dialogue-and-localization.html">Dialogue and Localization</a></li>
+<li><a href="using-source-control.html">Using Source Control</a></li>
+<li><a href="supporting-downloadable-and-user-generated-content.html">Supporting Downloadable and User-generated Content</a></li>
+<li><a href="advanced-topics.html">Advanced Topics</a></li>
+<li><a href="quick-start-tutorial.html">Quick Start Tutorial</a></li>
+<li><a href="effect-reference.html">Effect Reference</a></li>
+<li><a href="event-macro-controls-reference.html">Event Macros Drawer Reference</a></li>
+<li><a href="instrument-reference.html">Instrument Reference</a></li>
+<li><a href="keyboard-shortcut-reference.html">Keyboard Shortcut Reference</a></li>
+<li><a href="modulator-reference.html">Modulator Reference</a></li>
+<li><a href="parameters-reference.html">Parameters Reference</a></li>
+<li><a href="plugin-reference.html">Plug-in Reference</a></li>
+<li><a href="scripting-terminal-reference.html">Scripting</a></li>
+<li class="manual-current-chapter manual-inactive-chapter"><a href="scripting-api-reference.html">Scripting API Reference</a><ul class="subchapters"><li><a href="scripting-api-reference-globals.html">Globals</a></li><li><a href="scripting-api-reference-menu.html">Menu</a></li><li><a href="scripting-api-reference-project.html">Project</a></li><li><a href="scripting-api-reference-project-entity.html">Project.Entity</a></li><li><a href="scripting-api-reference-project-managedobject.html">Project.ManagedObject</a></li><li><a href="scripting-api-reference-project-model.html">Project.Model</a></li><li><a href="scripting-api-reference-project-model-asset.html">Project.Model.Asset</a></li><li><a href="scripting-api-reference-project-model-automatableobject.html">Project.Model.AutomatableObject</a></li><li><a href="scripting-api-reference-project-model-automationcurve.html">Project.Model.AutomationCurve</a></li><li><a href="scripting-api-reference-project-model-automator.html">Project.Model.Automator</a></li><li><a href="scripting-api-reference-project-model-bank.html">Project.Model.Bank</a></li><li><a href="scripting-api-reference-project-model-event.html">Project.Model.Event</a></li><li><a href="scripting-api-reference-project-model-folder.html">Project.Model.Folder</a></li><li class="manual-current-chapter manual-active-chapter"><a href="scripting-api-reference-project-model-mixereffect.html">Project.Model.MixerEffect</a></li><li><a href="scripting-api-reference-project-model-mixerstrip.html">Project.Model.MixerStrip</a></li><li><a href="scripting-api-reference-project-model-modulator.html">Project.Model.Modulator</a></li><li><a href="scripting-api-reference-project-model-parameter.html">Project.Model.Parameter</a></li><li><a href="scripting-api-reference-project-model-sound.html">Project.Model.Sound</a></li><li><a href="scripting-api-reference-project-model-track.html">Project.Model.Track</a></li><li><a href="scripting-api-reference-project-model-triggerable.html">Project.Model.Triggerable</a></li><li><a href="scripting-api-reference-project-workspace.html">Project.Workspace</a></li><li><a href="scripting-api-reference-system.html">System</a></li><li><a href="scripting-api-reference-ui.html">UI</a></li><li><a href="scripting-api-reference-window.html">Window</a></li></ul></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="glossary.html">Glossary</a></li>
+<li><a href="appendix-a-celeste.html">Appendix: Celeste Getting Started Guide</a></li>
+<li><a href="appendix-b-reaper-integration.html">Appendix: Reaper Integration</a></li>
+</ul>
+</div>
+<div class="manual-content studio">
+<h1>26. Scripting API Reference | Project.Model.MixerEffect</h1>
+<p><strong>Types:</strong></p>
+<ul>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-mixereffect.html#modelchannelmixeffect" title="An effect that allows custom gain and mixing of each individual channel.">model.ChannelMixEffect</a> An <a href="glossary.html#effect">effect</a> that allows custom gain and mixing of each individual channel.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-mixereffect.html#modelchoruseffect" title="An effect that uses an LFO modulated delay to create a shimmering sound.">model.ChorusEffect</a> An <a href="glossary.html#effect">effect</a> that uses an LFO modulated delay to create a shimmering sound.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-mixereffect.html#modelcompressoreffect" title="An effect that reduces the dynamic range of a signal by attenuating peaks in volume.">model.CompressorEffect</a> An <a href="glossary.html#effect">effect</a> that reduces the dynamic range of a <a href="glossary.html#signal">signal</a> by attenuating peaks in volume.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-mixereffect.html#modelconvolutionreverbeffect" title="An effect that convolves the incoming signal with a user-provided impulse response.">model.ConvolutionReverbEffect</a> An <a href="glossary.html#effect">effect</a> that convolves the incoming <a href="glossary.html#signal">signal</a> with a user-provided impulse response.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-mixereffect.html#modeldelayeffect" title="An effect that repeats a signal after a user-specified amount of time.">model.DelayEffect</a> An <a href="glossary.html#effect">effect</a> that repeats a <a href="glossary.html#signal">signal</a> after a user-specified amount of time.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-mixereffect.html#modelflangereffect" title="An effect that uses an LFO modulated delay to create a swirling sound.">model.FlangerEffect</a> An <a href="glossary.html#effect">effect</a> that uses an LFO modulated delay to create a swirling sound.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-mixereffect.html#modelgaineffect" title="An effect that attenuates or amplifies a signal.">model.GainEffect</a> An <a href="glossary.html#effect">effect</a> that attenuates or amplifies a <a href="glossary.html#signal">signal</a>.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-mixereffect.html#modelhighpasseffect" title="An effect that attenuates the low frequencies of a signal.">model.HighpassEffect</a> An <a href="glossary.html#effect">effect</a> that attenuates the low frequencies of a <a href="glossary.html#signal">signal</a>.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-mixereffect.html#modelhighpasssimpleeffect" title="An effect that attenuates the low frequencies of a signal.">model.HighpassSimpleEffect</a> An <a href="glossary.html#effect">effect</a> that attenuates the low frequencies of a <a href="glossary.html#signal">signal</a>.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-mixereffect.html#modelitechoeffect" title="A stereo delay effect that repeats a signal after a user-specified amount of time.">model.ITEchoEffect</a> A stereo delay effect that repeats a <a href="glossary.html#signal">signal</a> after a user-specified amount of time.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-mixereffect.html#modellimitereffect" title="An effect that reduces the dynamic range of a signal by attenuating peaks in volume.">model.LimiterEffect</a> An <a href="glossary.html#effect">effect</a> that reduces the dynamic range of a <a href="glossary.html#signal">signal</a> by attenuating peaks in volume.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-mixereffect.html#modelloudnessmeter" title="An effect that displays standardized loudness metrics for an input signal.">model.LoudnessMeter</a> An <a href="glossary.html#effect">effect</a> that displays standardized loudness metrics for an input <a href="glossary.html#signal">signal</a>.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-mixereffect.html#modellowpasseffect" title="An effect that attenuates the high frequencies of a signal.">model.LowpassEffect</a> An <a href="glossary.html#effect">effect</a> that attenuates the high frequencies of a <a href="glossary.html#signal">signal</a>.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-mixereffect.html#modellowpasssimpleeffect" title="An effect that attenuates the high frequencies of a signal.">model.LowpassSimpleEffect</a> An <a href="glossary.html#effect">effect</a> that attenuates the high frequencies of a <a href="glossary.html#signal">signal</a>.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-mixereffect.html#modelmixerbuseffectchain" title="A mixer bus's signal chain.">model.MixerBusEffectChain</a> A <a href="glossary.html#bus">mixer bus</a>'s <a href="glossary.html#signal-chain">signal chain</a>.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-mixereffect.html#modelmixerbusfader" title="The mixer bus's fader within the signal chain.">model.MixerBusFader</a> The mixer <a href="glossary.html#bus">bus</a>'s fader within the <a href="glossary.html#signal-chain">signal chain</a>.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-mixereffect.html#modelmixerbuspanner" title="An effect that modifies the mix balance of a signal in relation to each speaker.">model.MixerBusPanner</a> An <a href="glossary.html#effect">effect</a> that modifies the mix balance of a <a href="glossary.html#signal">signal</a> in relation to each speaker.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-mixereffect.html#modelmixereffect" title="The base class for a signal processing unit.">model.MixerEffect</a> The base class for a <a href="glossary.html#signal">signal</a> processing unit.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-mixereffect.html#modelmixersend" title="An effect that sends the incoming signal to a return, and allows the signal to flow on through the signal chain.">model.MixerSend</a> An <a href="glossary.html#effect">effect</a> that sends the incoming <a href="glossary.html#signal">signal</a> to a return, and allows the signal to flow on through the signal chain.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-mixereffect.html#modelmultibandeqeffect" title="An effect that attenuates or amplifies multiple bands of a signal.">model.MultibandEqEffect</a> An <a href="glossary.html#effect">effect</a> that attenuates or amplifies multiple bands of a <a href="glossary.html#signal">signal</a>.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-mixereffect.html#modelobjectspatialisereffect" title="An object based spatializer effect.">model.ObjectSpatialiserEffect</a> An object based spatializer <a href="glossary.html#effect">effect</a>.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-mixereffect.html#modelpannereffect" title="An effect that modifies the mix balance of a signal in relation to each speaker.">model.PannerEffect</a> An <a href="glossary.html#effect">effect</a> that modifies the mix balance of a <a href="glossary.html#signal">signal</a> in relation to each speaker.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-mixereffect.html#modelparameqeffect" title="An effect that attenuates or amplifies a single band of a signal.">model.ParamEqEffect</a> An <a href="glossary.html#effect">effect</a> that attenuates or amplifies a single band of a <a href="glossary.html#signal">signal</a>.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-mixereffect.html#modelpitchshiftereffect" title="An effect that modifies the pitch of the signal.">model.PitchShifterEffect</a> An <a href="glossary.html#effect">effect</a> that modifies the pitch of the <a href="glossary.html#signal">signal</a>.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-mixereffect.html#modelsfxreverbeffect" title="An effect that uses a series of delays to apply reverb to a signal.">model.SFXReverbEffect</a> An <a href="glossary.html#effect">effect</a> that uses a series of delays to apply reverb to a <a href="glossary.html#signal">signal</a>.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-mixereffect.html#modelsidechain" title="An effect that makes a signal available as an input for effect, parameter, or event property modulation.">model.Sidechain</a> An <a href="glossary.html#effect">effect</a> that makes a <a href="glossary.html#signal">signal</a> available as an input for effect, parameter, or <a href="glossary.html#event-property">event property</a> modulation.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-mixereffect.html#modelspatialeffect" title="The base class for spatializer effects.">model.SpatialEffect</a> The base class for <a href="https://fmod.com/docs/2.03/studio/glossary.html#spatializer-effect">spatializer effects</a>.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-mixereffect.html#modelspatialisereffect" title="An effect that simulates the positioning of a sound in 3D space.">model.SpatialiserEffect</a> An <a href="glossary.html#effect">effect</a> that simulates the positioning of a sound in 3D space.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-mixereffect.html#modelthreeeqeffect" title="An effect that attenuates or amplifies the lower, middle, and upper bands of a signal.">model.ThreeEQEffect</a> An <a href="glossary.html#effect">effect</a> that attenuates or amplifies the lower, middle, and upper bands of a <a href="glossary.html#signal">signal</a>.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-mixereffect.html#modeltransceivereffect" title="An effect that can transmit or receive a signal on one of thirty-two different transceiver channels.">model.TransceiverEffect</a> An <a href="glossary.html#effect">effect</a> that can transmit or receive a <a href="glossary.html#signal">signal</a> on one of thirty-two different transceiver channels.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-mixereffect.html#modeltremoloeffect" title="An effect that modulates the volume of a signal with an LFO to create a rhythmic beating sound.">model.TremoloEffect</a> An <a href="glossary.html#effect">effect</a> that modulates the volume of a <a href="glossary.html#signal">signal</a> with an LFO to create a rhythmic beating sound.</span></li>
+</ul>
+<p><strong>Extension Methods:</strong></p>
+<ul>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-mixereffect.html#mixerbuseffectchainaddeffect" title="Creates an effect and adds it to the end of the chain.">MixerBusEffectChain.addEffect</a> Creates an <a href="glossary.html#effect">effect</a> and adds it to the end of the chain.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-mixereffect.html#convolutionreverbeffectsetirfromfilepath" title="Sets the impulse response for a convolution reverb effect.">ConvolutionReverbEffect.setIRFromFilePath</a> Sets the impulse response for a convolution reverb effect.</span></li>
+</ul>
+<h2 api="function" id="modelchannelmixeffect"><a href="#modelchannelmixeffect">model.ChannelMixEffect</a></h2>
+<p>An <a href="glossary.html#effect">effect</a> that allows custom gain and mixing of each individual channel.</p>
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/api/effects-reference.html#channel-mix">Channel Mix</a></p>
+<h2 api="function" id="modelchoruseffect"><a href="#modelchoruseffect">model.ChorusEffect</a></h2>
+<p>An <a href="glossary.html#effect">effect</a> that uses an LFO modulated delay to create a shimmering sound.</p>
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/api/effects-reference.html#chorus">Chorus</a></p>
+<h2 api="function" id="modelcompressoreffect"><a href="#modelcompressoreffect">model.CompressorEffect</a></h2>
+<p>An <a href="glossary.html#effect">effect</a> that reduces the dynamic range of a <a href="glossary.html#signal">signal</a> by attenuating peaks in volume.</p>
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/api/effects-reference.html#compressor">Compressor</a></p>
+<h2 api="function" id="modelconvolutionreverbeffect"><a href="#modelconvolutionreverbeffect">model.ConvolutionReverbEffect</a></h2>
+<p>An <a href="glossary.html#effect">effect</a> that convolves the incoming <a href="glossary.html#signal">signal</a> with a user-provided impulse response.</p>
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/api/effects-reference.html#convolution-reverb">Convolution Reverb</a></p>
+<h2 api="function" id="modeldelayeffect"><a href="#modeldelayeffect">model.DelayEffect</a></h2>
+<p>An <a href="glossary.html#effect">effect</a> that repeats a <a href="glossary.html#signal">signal</a> after a user-specified amount of time.</p>
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/api/effects-reference.html#delay">Delay</a></p>
+<h2 api="function" id="modelflangereffect"><a href="#modelflangereffect">model.FlangerEffect</a></h2>
+<p>An <a href="glossary.html#effect">effect</a> that uses an LFO modulated delay to create a swirling sound.</p>
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/api/effects-reference.html#flange">Flange</a></p>
+<h2 api="function" id="modelgaineffect"><a href="#modelgaineffect">model.GainEffect</a></h2>
+<p>An <a href="glossary.html#effect">effect</a> that attenuates or amplifies a <a href="glossary.html#signal">signal</a>.</p>
+<h2 api="function" id="modelhighpasseffect"><a href="#modelhighpasseffect">model.HighpassEffect</a></h2>
+<p>An <a href="glossary.html#effect">effect</a> that attenuates the low frequencies of a <a href="glossary.html#signal">signal</a>.</p>
+<p>This effect differs from <a class="apilink" href="scripting-api-reference-project-model-mixereffect.html#modelhighpasssimpleeffect">model.HighpassSimpleEffect</a> by having a "Resonance" control.</p>
+<div class="admonition warning">
+<p><strong>Development Status</strong>. Deprecated and will be removed in a future release</p>
+</div>
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/api/effects-reference.html#high-pass">High Pass</a></p>
+<h2 api="function" id="modelhighpasssimpleeffect"><a href="#modelhighpasssimpleeffect">model.HighpassSimpleEffect</a></h2>
+<p>An <a href="glossary.html#effect">effect</a> that attenuates the low frequencies of a <a href="glossary.html#signal">signal</a>.</p>
+<div class="admonition warning">
+<p><strong>Development Status</strong>. Deprecated and will be removed in a future release.</p>
+</div>
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/api/effects-reference.html#high-pass-simple">High Pass Simple</a></p>
+<h2 api="function" id="modelitechoeffect"><a href="#modelitechoeffect">model.ITEchoEffect</a></h2>
+<p>A stereo delay effect that repeats a <a href="glossary.html#signal">signal</a> after a user-specified amount of time.</p>
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/api/effects-reference.html#it-echo">IT Echo</a></p>
+<h2 api="function" id="modellimitereffect"><a href="#modellimitereffect">model.LimiterEffect</a></h2>
+<p>An <a href="glossary.html#effect">effect</a> that reduces the dynamic range of a <a href="glossary.html#signal">signal</a> by attenuating peaks in volume.</p>
+<p>The attenuation ratio of this effect is more extreme than that of a <a class="apilink" href="scripting-api-reference-project-model-mixereffect.html#modelcompressoreffect">model.CompressorEffect</a>.</p>
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/api/effects-reference.html#limiter">Limiter</a></p>
+<h2 api="function" id="modelloudnessmeter"><a href="#modelloudnessmeter">model.LoudnessMeter</a></h2>
+<p>An <a href="glossary.html#effect">effect</a> that displays standardized loudness metrics for an input <a href="glossary.html#signal">signal</a>.</p>
+<h2 api="function" id="modellowpasseffect"><a href="#modellowpasseffect">model.LowpassEffect</a></h2>
+<p>An <a href="glossary.html#effect">effect</a> that attenuates the high frequencies of a <a href="glossary.html#signal">signal</a>.</p>
+<p>This effect differs from <a class="apilink" href="scripting-api-reference-project-model-mixereffect.html#modelhighpasssimpleeffect">model.HighpassSimpleEffect</a> by having a "Resonance" control.</p>
+<div class="admonition warning">
+<p><strong>Development Status</strong>. Deprecated and will be removed in a future release</p>
+</div>
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/api/effects-reference.html#low-pass">Low Pass</a></p>
+<h2 api="function" id="modellowpasssimpleeffect"><a href="#modellowpasssimpleeffect">model.LowpassSimpleEffect</a></h2>
+<p>An <a href="glossary.html#effect">effect</a> that attenuates the high frequencies of a <a href="glossary.html#signal">signal</a>.</p>
+<div class="admonition warning">
+<p><strong>Development Status</strong>. Deprecated and will be removed in a future release</p>
+</div>
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/api/effects-reference.html#low-pass-simple">Low Pass Simple</a></p>
+<h2 api="function" id="modelmixerbuseffectchain"><a href="#modelmixerbuseffectchain">model.MixerBusEffectChain</a></h2>
+<p>A <a href="glossary.html#bus">mixer bus</a>'s <a href="glossary.html#signal-chain">signal chain</a>.</p>
+<p>A single <a class="apilink" href="scripting-api-reference-project-model-mixereffect.html#modelmixerbusfader">model.MixerBusFader</a> is required to be placed within the chain.</p>
+<p><strong>See Also:</strong> <a class="apilink" href="scripting-api-reference-project-model-mixerstrip.html#modelmixerbus">model.MixerBus</a></p>
+<h2 api="function" id="modelmixerbusfader"><a href="#modelmixerbusfader">model.MixerBusFader</a></h2>
+<p>The mixer <a href="glossary.html#bus">bus</a>'s fader within the <a href="glossary.html#signal-chain">signal chain</a>.</p>
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/api/effects-reference.html#fader">Fader</a>, <a class="apilink" href="scripting-api-reference-project-model-mixerstrip.html#modelmixerbus">model.MixerBus</a></p>
+<h2 api="function" id="modelmixerbuspanner"><a href="#modelmixerbuspanner">model.MixerBusPanner</a></h2>
+<p>An <a href="glossary.html#effect">effect</a> that modifies the mix balance of a <a href="glossary.html#signal">signal</a> in relation to each speaker.</p>
+<p>This effect appears automatically in the <a href="glossary.html#deck">deck</a> when the <a href="glossary.html#event">event</a>'s speaker configuration is set to stereo or higher, and cannot be manually added or removed.</p>
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/studio/mixing.html#the-panner">The Panner</a></p>
+<h2 api="function" id="modelmixereffect"><a href="#modelmixereffect">model.MixerEffect</a></h2>
+<p>The base class for a <a href="glossary.html#signal">signal</a> processing unit.</p>
+<p>Mixer effects encapsulate the functionality of <a href="https://fmod.com/docs/2.03/api/core-guide.html#dsp-effects-support-for-plugins">DSP effects</a>.</p>
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/studio/fmod-studio-concepts.html#effects">Effect</a></p>
+<h2 api="function" id="modelmixersend"><a href="#modelmixersend">model.MixerSend</a></h2>
+<p>An <a href="glossary.html#effect">effect</a> that sends the incoming <a href="glossary.html#signal">signal</a> to a return, and allows the signal to flow on through the signal chain.</p>
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/studio/mixing.html#sends-and-return-buses">Sends and Return Buses</a>, <a href="https://fmod.com/docs/2.03/api/effects-reference.html#send">Send</a>, <a class="apilink" href="scripting-api-reference-project-model-mixerstrip.html#modelmixerreturn">model.MixerReturn</a></p>
+<h2 api="function" id="modelmultibandeqeffect"><a href="#modelmultibandeqeffect">model.MultibandEqEffect</a></h2>
+<p>An <a href="glossary.html#effect">effect</a> that attenuates or amplifies multiple bands of a <a href="glossary.html#signal">signal</a>.</p>
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/api/effects-reference.html#multiband-equalizer">Multiband Equalizer</a></p>
+<h2 api="function" id="modelobjectspatialisereffect"><a href="#modelobjectspatialisereffect">model.ObjectSpatialiserEffect</a></h2>
+<p>An object based spatializer <a href="glossary.html#effect">effect</a>.</p>
+<p>The <a href="glossary.html#signal">signal</a> routed to this effect is directed straight to the hardware output.</p>
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/studio/advanced-topics.html#the-fmod-object-spatializer-effect">The FMOD Object Spatializer Effect</a>, <a href="https://fmod.com/docs/2.03/api/effects-reference.html#object-panner">Object Panner</a></p>
+<h2 api="function" id="modelpannereffect"><a href="#modelpannereffect">model.PannerEffect</a></h2>
+<p>An <a href="glossary.html#effect">effect</a> that modifies the mix balance of a <a href="glossary.html#signal">signal</a> in relation to each speaker.</p>
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/api/effects-reference.html#pan">Pan</a></p>
+<h2 api="function" id="modelparameqeffect"><a href="#modelparameqeffect">model.ParamEqEffect</a></h2>
+<p>An <a href="glossary.html#effect">effect</a> that attenuates or amplifies a single band of a <a href="glossary.html#signal">signal</a>.</p>
+<div class="admonition warning">
+<p><strong>Development Status</strong>. Deprecated and will be removed in a future release.</p>
+</div>
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/api/effects-reference.html#parametric-eq">Parametric EQ</a></p>
+<h2 api="function" id="modelpitchshiftereffect"><a href="#modelpitchshiftereffect">model.PitchShifterEffect</a></h2>
+<p>An <a href="glossary.html#effect">effect</a> that modifies the pitch of the <a href="glossary.html#signal">signal</a>.</p>
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/api/effects-reference.html#pitch-shifter">Pitch Shifter</a></p>
+<h2 api="function" id="modelsfxreverbeffect"><a href="#modelsfxreverbeffect">model.SFXReverbEffect</a></h2>
+<p>An <a href="glossary.html#effect">effect</a> that uses a series of delays to apply reverb to a <a href="glossary.html#signal">signal</a>.</p>
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/api/effects-reference.html#sfx-reverb">SFX Reverb</a></p>
+<h2 api="function" id="modelsidechain"><a href="#modelsidechain">model.Sidechain</a></h2>
+<p>An <a href="glossary.html#effect">effect</a> that makes a <a href="glossary.html#signal">signal</a> available as an input for effect, parameter, or <a href="glossary.html#event-property">event property</a> modulation.</p>
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/studio/modulator-reference.html#sidechain-modulator">Sidechain Modulator</a>, <a href="https://fmod.com/docs/2.03/studio/glossary.html#sidechain-effect">Sidechain Effect</a>, <a class="apilink" href="scripting-api-reference-project-model-modulator.html#modelsidechainmodulator">model.SidechainModulator</a></p>
+<h2 api="function" id="modelspatialeffect"><a href="#modelspatialeffect">model.SpatialEffect</a></h2>
+<p>The base class for <a href="https://fmod.com/docs/2.03/studio/glossary.html#spatializer-effect">spatializer effects</a>.</p>
+<h2 api="function" id="modelspatialisereffect"><a href="#modelspatialisereffect">model.SpatialiserEffect</a></h2>
+<p>An <a href="glossary.html#effect">effect</a> that simulates the positioning of a sound in 3D space.</p>
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/studio/advanced-topics.html#the-fmod-spatializer-effect">The FMOD Spatializer Effect</a>, <a href="https://fmod.com/docs/2.03/api/effects-reference.html#pan">Pan</a></p>
+<h2 api="function" id="modelthreeeqeffect"><a href="#modelthreeeqeffect">model.ThreeEQEffect</a></h2>
+<p>An <a href="glossary.html#effect">effect</a> that attenuates or amplifies the lower, middle, and upper bands of a <a href="glossary.html#signal">signal</a>.</p>
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/api/effects-reference.html#three-eq">Three EQ</a></p>
+<h2 api="function" id="modeltransceivereffect"><a href="#modeltransceivereffect">model.TransceiverEffect</a></h2>
+<p>An <a href="glossary.html#effect">effect</a> that can transmit or receive a <a href="glossary.html#signal">signal</a> on one of thirty-two different transceiver channels.</p>
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/api/effects-reference.html#transceiver">Transceiver</a></p>
+<h2 api="function" id="modeltremoloeffect"><a href="#modeltremoloeffect">model.TremoloEffect</a></h2>
+<p>An <a href="glossary.html#effect">effect</a> that modulates the volume of a <a href="glossary.html#signal">signal</a> with an LFO to create a rhythmic beating sound.</p>
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/api/effects-reference.html#tremolo">Tremolo</a></p>
+<h2 api="function" id="mixerbuseffectchainaddeffect"><a href="#mixerbuseffectchainaddeffect">MixerBusEffectChain.addEffect</a></h2>
+<p>Creates an <a href="glossary.html#effect">effect</a> and adds it to the end of the chain.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">MixerBusEffectChain</span><span class="p">.</span><span class="nx">addEffect</span><span class="p">(</span>
+    <span class="nx">effectDefinition</span>
+<span class="p">)</span>
+</pre></div>
+
+<dl>
+<dt>effectDefinition</dt>
+<dd>Either an <code>EffectPreset</code>, a <a class="apilink" href="scripting-api-reference-project-model-mixereffect.html#modelmixereffect">model.MixerEffect</a> that is a <a href="glossary.html#shared-effect">shared effect</a>, or one of the following strings:<br />
+- <code>ThreeEQEffect</code><br />
+- <code>ChannelMixEffect</code><br />
+- <code>ChorusEffect</code><br />
+- <code>CompressorEffect</code><br />
+- <code>ConvolutionReverbEffect</code><br />
+- <code>DistortionEffect</code><br />
+- <code>DelayEffect</code><br />
+- <code>FlangerEffect</code><br />
+- <code>GainEffect</code><br />
+- <code>LimiterEffect</code><br />
+- <code>MultibandEqEffect</code><br />
+- <code>PitchShifterEffect</code><br />
+- <code>SFXReverbEffect</code><br />
+- <code>TransceiverEffect</code><br />
+- <code>TremoloEffect</code><br />
+- <code>HighpassEffect</code><br />
+- <code>HighpassSimpleEffect</code><br />
+- <code>LowpassEffect</code><br />
+- <code>LowpassSimpleEffect</code><br />
+- <code>ParamEqEffect</code><br />
+- <code>SpatialiserEffect</code><br />
+- <code>ObjectSpatialiserEffect</code><br />
+- <code>LoudnessMeter</code></dd>
+</dl>
+<p>Returns the effect <a class="apilink" href="scripting-api-reference-project-managedobject.html#managedobject">ManagedObject</a>.</p>
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/studio/glossary.html#signal-chain">Signal Chain</a></p>
+<h2 api="function" id="convolutionreverbeffectsetirfromfilepath"><a href="#convolutionreverbeffectsetirfromfilepath">ConvolutionReverbEffect.setIRFromFilePath</a></h2>
+<p>Sets the impulse response for a convolution reverb effect.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">ConvolutionReverbEffect</span><span class="p">.</span><span class="nx">setIRFromFilePath</span><span class="p">(</span>
+    <span class="nx">filePath</span>
+<span class="p">)</span>
+</pre></div>
+
+<dl>
+<dt>filePath</dt>
+<dd>The absolute path to an audio data file.</dd>
+</dl>
+<h2 api="function" id="modeldistortioneffect"><a href="#modeldistortioneffect">model.DistortionEffect</a></h2>
+<p>An <a href="glossary.html#effect">effect</a> that applies clipping to a <a href="glossary.html#signal">signal</a> to affect the harmonic envelope.</p>
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/api/effects-reference.html#distortion">Distortion</a></p></div>
+
+<p class="manual-footer">FMOD Studio User Manual 2.03.15 (2026-09-21). &copy; 2026 Firelight Technologies Pty Ltd.</p>
+</div>
+</body>
+</html>
+

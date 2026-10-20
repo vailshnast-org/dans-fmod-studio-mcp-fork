@@ -1,0 +1,341 @@
+<html>
+<head>
+<title>Plug-in Reference</title>
+<link rel="stylesheet" href="style/docs.css">
+<link rel="stylesheet" href="style/code_highlight.css">
+<script type="text/javascript" src="scripts/language-selector.js"></script></head>
+<body>
+<div class="docs-body">
+<div class="manual-toc">
+<p>FMOD Studio User Manual 2.03</p>
+<ul>
+<li><a href="welcome-to-fmod-studio.html">Welcome to FMOD Studio</a></li>
+<li><a href="fmod-studio-concepts.html">FMOD Studio Concepts</a></li>
+<li><a href="organizing-the-project.html">Organizing the Project</a></li>
+<li><a href="authoring-events.html">Authoring Events</a></li>
+<li><a href="working-with-instruments.html">Working with Instruments</a></li>
+<li><a href="managing-assets.html">Managing Assets</a></li>
+<li><a href="parameters.html">Parameters</a></li>
+<li><a href="getting-events-into-your-game.html">Getting Events into Your Game</a></li>
+<li><a href="mixing.html">Mixing</a></li>
+<li><a href="the-sandbox.html">The Sandbox</a></li>
+<li><a href="editing-during-live-update.html">Editing During Live Update</a></li>
+<li><a href="profiling.html">Profiling</a></li>
+<li><a href="dialogue-and-localization.html">Dialogue and Localization</a></li>
+<li><a href="using-source-control.html">Using Source Control</a></li>
+<li><a href="supporting-downloadable-and-user-generated-content.html">Supporting Downloadable and User-generated Content</a></li>
+<li><a href="advanced-topics.html">Advanced Topics</a></li>
+<li><a href="quick-start-tutorial.html">Quick Start Tutorial</a></li>
+<li><a href="effect-reference.html">Effect Reference</a></li>
+<li><a href="event-macro-controls-reference.html">Event Macros Drawer Reference</a></li>
+<li><a href="instrument-reference.html">Instrument Reference</a></li>
+<li><a href="keyboard-shortcut-reference.html">Keyboard Shortcut Reference</a></li>
+<li><a href="modulator-reference.html">Modulator Reference</a></li>
+<li><a href="parameters-reference.html">Parameters Reference</a></li>
+<li class="manual-current-chapter manual-active-chapter"><a href="plugin-reference.html">Plug-in Reference</a><ul>
+<li><a href="#loading-plug-ins">Loading plug-ins</a></li>
+<li><a href="#using-plug-ins">Using plug-ins</a></li>
+<li><a href="#trial-plug-ins">Trial plug-ins</a></li>
+<li><a href="#plug-in-scripting-api">Plug-in Scripting API</a><ul>
+<li><a href="#api-functions">API functions</a><ul>
+<li><a href="#studiopluginsregisterplugindescriptionidentifier-plugindescription">studio.plugins.registerPluginDescription(identifier, pluginDescription)</a></li>
+<li><a href="#plugindescriptioncompanyname">pluginDescription.companyName</a></li>
+<li><a href="#plugindescriptionproductname">pluginDescription.productName</a></li>
+<li><a href="#plugindescriptionparameters">pluginDescription.parameters</a></li>
+<li><a href="#plugindescriptiondefaultconfigurations">pluginDescription.defaultConfigurations</a></li>
+<li><a href="#plugindescriptiondeckui">pluginDescription.deckUi</a></li>
+<li><a href="#studiouideckwidgettype">studio.ui.deckWidgetType</a></li>
+<li><a href="#studiouidatadropmode">studio.ui.dataDropMode</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#updating-plug-ins">Updating plug-ins</a></li>
+</ul>
+</li>
+<li><a href="scripting-terminal-reference.html">Scripting</a></li>
+<li><a href="scripting-api-reference.html">Scripting API Reference</a></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="glossary.html">Glossary</a></li>
+<li><a href="appendix-a-celeste.html">Appendix: Celeste Getting Started Guide</a></li>
+<li><a href="appendix-b-reaper-integration.html">Appendix: Reaper Integration</a></li>
+</ul>
+</div>
+<div class="manual-content studio">
+<h1>24. Plug-in Reference</h1>
+<p><a href="glossary.html#fmod-studio">FMOD Studio</a> and the <a href="glossary.html#fmod-studio-api">Studio API</a> support loading DSP plug-ins created using the FMOD Studio Plug-in SDK. Please see the <a href="https://fmod.com/docs/2.03/api/white-papers-dsp-plugin-api.html">FMOD Studio Plug-in SDK documentation</a> for more information about authoring DSP plug-ins for FMOD.</p>
+<h2 id="loading-plug-ins"><a href="#loading-plug-ins">24.1 Loading plug-ins</a></h2>
+<p>Plug-in libraries are automatically loaded from the following locations:</p>
+<ul>
+<li>System plug-in directory:<ul>
+<li><strong>Windows:</strong> <code>%localappdata%/FMOD Studio/Plugins</code></li>
+<li><strong>Mac:</strong> <code>~/Library/Preferences/FMOD Studio/Plugins</code></li>
+<li><strong>Linux:</strong> <code>~/.config/fmod-studio/Plugins</code></li>
+</ul>
+</li>
+<li>Built-in plug-in directory:<ul>
+<li><strong>Windows:</strong> <code>%fmod_install_directory%/Plugins</code></li>
+<li><strong>Mac:</strong> <code>%fmod_bundle%/Plugins</code></li>
+<li><strong>Linux:</strong> <code>%fmod_install_directory%/Plugins</code></li>
+</ul>
+</li>
+<li>User plug-in directory<ul>
+<li>Available in the assets tab of the <span class="dead-link" href="preferences-reference.html">preferences</span class="dead-link"> dialog.</li>
+</ul>
+</li>
+<li>Project plug-in directory:<ul>
+<li><code>%project_root_directory%/Plugins</code></li>
+</ul>
+</li>
+</ul>
+<p>Changing the user plug-in directory, will cause all plug-ins to be reloaded. Warnings are added to the <span class="dead-link" href="glossary.html#log">log</span class="dead-link"> for plug-ins that fail to load. This can be viewed from the <span class="dead-link" href="glossary.html#logging-tab">Logging</span class="dead-link"> tab of the Console window.</p>
+<h2 id="using-plug-ins"><a href="#using-plug-ins">24.2 Using plug-ins</a></h2>
+<p>Once a DSP plug-in is loaded, it can be used within the project. Plug-ins with zero input channels, often referred to as generators, can be added as plug-in <a href="glossary.html#instrument">instruments</a>.</p>
+<p><img alt="Add Plug-in Instrument" src="images/addPluginInstrument.png" /></p>
+<p>Plug-ins that process input <a href="glossary.html#signal">signals</a> can be added as plug-in <a href="glossary.html#effect">effects</a>.</p>
+<p><img alt="Add Plug-in Effect" src="images/addPluginEffect.png" /></p>
+<p>By default, the appearance of plug-ins in <a href="glossary.html#fmod-studio">FMOD Studio</a> is based on the <a href="https://fmod.com/docs/2.03/api/plugin-api-dsp.html#fmod_dsp_description">FMOD_DSP_DESCRIPTION</a> and attached <a href="https://fmod.com/docs/2.03/api/plugin-api-dsp.html#fmod_dsp_parameter_desc">FMOD_DSP_PARAMETER_DESC</a>. This includes the plug-in's name, available properties, and <a href="glossary.html#deck">deck</a> layout.</p>
+<p>It is possible to change the appearance of a plug-in using the <a href="#plug-in-scripting-api">plug-in scripting API</a>.</p>
+<h2 id="trial-plug-ins"><a href="#trial-plug-ins">24.3 Trial plug-ins</a></h2>
+<p>A trial plug-in is an effect that has been developed by a third party developer.</p>
+<p>Trial plug-in effects can be auditioned in <a href="glossary.html#fmod-studio">FMOD Studio</a>, but .bank files that include trial plug-in effects cannot be loaded at runtime.</p>
+<p>The files required to use these plug-in effects in your game must be purchased and loaded using the Studio API. Contact sales@fmod.com to find more information on how to purchase these third party plug-ins.</p>
+<h2 id="plug-in-scripting-api"><a href="#plug-in-scripting-api">24.4 Plug-in Scripting API</a></h2>
+<p>To customize the appearance of a plug-in, the <code>FMOD_DSP_DESCRIPTION</code> can be augmented by adding a javascript file that sits alongside the plug-in library. This file must end in the <code>.plugin.js</code> extension. The javascript file can then make use of the plug-in scripting API, which can be used to register plug-in descriptions for one or more plug-ins using the <a href="#studiopluginsregisterplugindescriptionidentifier-plugindescription">studio.plugins.registerPluginDescription()</a> function. For example:</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">studio</span><span class="p">.</span><span class="nx">plugins</span><span class="p">.</span><span class="nx">registerPluginDescription</span><span class="p">(</span><span class="s2">&quot;Acme_Explosion&quot;</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">companyName</span><span class="o">:</span> <span class="s2">&quot;Acme&quot;</span><span class="p">,</span>
+    <span class="nx">productName</span><span class="o">:</span> <span class="s2">&quot;Explosion Generator&quot;</span><span class="p">,</span>
+    <span class="nx">deckUi</span><span class="o">:</span> <span class="p">{</span>
+        <span class="c1">// deck widget layout</span>
+    <span class="p">},</span>
+<span class="p">});</span>
+</pre></div>
+
+<p>By registering a plugin description, the appearance of a plug-in can be customized accordingly.</p>
+<p>Plug-in script files are reloaded when plug-in libraries are reloaded, or when selecting "Scripts &gt; Reload".</p>
+<div class="admonition warning">
+<p>It is recommended that <code>FMOD_DSP_DESCRIPTION.name</code> and <code>FMOD_DSP_PARAMETER_DESC.name</code> fields are not changed after deployment of a plug-in library, as <a href="glossary.html#fmod-studio">FMOD Studio</a> uses these names as identifiers for the corresponding DSPs.</p>
+</div>
+<h3 id="api-functions"><a href="#api-functions">24.4.1 API functions</a></h3>
+<h4 id="studiopluginsregisterplugindescriptionidentifier-plugindescription"><a href="#studiopluginsregisterplugindescriptionidentifier-plugindescription">studio.plugins.registerPluginDescription(identifier, pluginDescription)</a></h4>
+<p>Registers a plug-in description. The <code>identifier</code> must match the <code>FMOD_DSP_DESCRIPTION.name</code>.</p>
+<p>The <code>pluginDescription</code> argument is an object with attributes as described below. All attributes of the <code>pluginDescription</code> are optional.</p>
+<h4 id="plugindescriptioncompanyname"><a href="#plugindescriptioncompanyname">pluginDescription.companyName</a></h4>
+<p>A <code>string</code> corresponding to the author of the plug-in. Plug-ins with the same company name are grouped in the same menu in context menus.</p>
+<h4 id="plugindescriptionproductname"><a href="#plugindescriptionproductname">pluginDescription.productName</a></h4>
+<p>A <code>string</code> corresponding to the name of the plug-in.</p>
+<h4 id="plugindescriptionparameters"><a href="#plugindescriptionparameters">pluginDescription.parameters</a></h4>
+<p>An <code>Object</code> which maps each <code>FMOD_DSP_PARAMETER_DESC.name</code> to a description <code>Object</code>. Each DSP parameter description <code>Object</code> contains the following optional attributes:</p>
+<ul>
+<li><code>displayName</code>: The label shown above property controls bound to this DSP parameter.</li>
+<li><code>enumeration</code>: The labeled values available for this DSP parameter. Each label corresponds to an integer value, with the first label being equal to 0, and each subsequent label value increasing incrementally.</li>
+</ul>
+<p>For example:</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">parameters</span><span class="o">:</span> <span class="p">{</span>
+    <span class="s2">&quot;gain&quot;</span><span class="o">:</span> <span class="p">{</span>
+        <span class="c1">// FMOD_DSP_PARAMETER_DESC.name is &quot;gain&quot;</span>
+        <span class="nx">displayName</span><span class="o">:</span> <span class="s2">&quot;Volume&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;freq&quot;</span><span class="o">:</span> <span class="p">{</span>
+        <span class="c1">// FMOD_DSP_PARAMETER_DESC.name is &quot;freq&quot;</span>
+        <span class="nx">displayName</span><span class="o">:</span> <span class="s2">&quot;Frequency&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;outputMode&quot;</span><span class="o">:</span> <span class="p">{</span>
+        <span class="c1">// FMOD_DSP_PARAMETER_DESC.name is &quot;outputMode&quot;</span>
+        <span class="nx">displayName</span><span class="o">:</span> <span class="s2">&quot;Output&quot;</span><span class="p">,</span>
+        <span class="nx">enumeration</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;Mono&quot;</span><span class="p">,</span> <span class="s2">&quot;Stereo&quot;</span><span class="p">,</span> <span class="s2">&quot;Surround&quot;</span><span class="p">],</span> <span class="c1">// Mono = 0, Stereo = 1, Surround = 2</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;pattern&quot;</span><span class="o">:</span> <span class="p">{</span>
+        <span class="c1">// FMOD_DSP_PARAMETER_DESC.name is &quot;pattern&quot;</span>
+        <span class="nx">displayName</span><span class="o">:</span> <span class="s2">&quot;Pattern&quot;</span><span class="p">,</span>
+        <span class="nx">enumeration</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;Rain&quot;</span><span class="p">,</span> <span class="s2">&quot;Hail&quot;</span><span class="p">,</span> <span class="s2">&quot;Shine&quot;</span><span class="p">],</span> <span class="c1">// Rain = 0, Hail = 1, Shine = 2</span>
+    <span class="p">},</span>
+<span class="p">},</span>
+</pre></div>
+
+<h4 id="plugindescriptiondefaultconfigurations"><a href="#plugindescriptiondefaultconfigurations">pluginDescription.defaultConfigurations</a></h4>
+<p>An <code>Array</code> containing <code>Object</code>s which describe default configurations for the plug-in parameters. These can be accessed from the context menu of the plug-in in the <a href="glossary.html#deck">deck</a>.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">defaultConfigurations</span><span class="o">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="nx">name</span><span class="o">:</span><span class="s2">&quot;Quiet&quot;</span><span class="p">,</span>
+        <span class="nx">parameterValues</span><span class="o">:</span> <span class="p">{</span>
+            <span class="s2">&quot;gain&quot;</span><span class="o">:</span> <span class="o">-</span><span class="mi">20</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="nx">name</span><span class="o">:</span><span class="s2">&quot;Bright&quot;</span><span class="p">,</span>
+        <span class="nx">parameterValues</span><span class="o">:</span> <span class="p">{</span>
+            <span class="s2">&quot;gain&quot;</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;freq&quot;</span><span class="o">:</span> <span class="mi">5000</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+<span class="p">],</span>
+</pre></div>
+
+<h4 id="plugindescriptiondeckui"><a href="#plugindescriptiondeckui">pluginDescription.deckUi</a></h4>
+<p>An <code>Object</code> describing the user interface for the plug-in when displayed in the <a href="glossary.html#deck">deck</a>. For example:</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">deckUi</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">deckWidgetType</span><span class="o">:</span> <span class="nx">studio</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">deckWidgetType</span><span class="p">.</span><span class="nx">Layout</span><span class="p">,</span>
+    <span class="nx">layout</span><span class="o">:</span> <span class="nx">studio</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">layoutType</span><span class="p">.</span><span class="nx">VBoxLayout</span><span class="p">,</span>
+    <span class="nx">spacing</span><span class="o">:</span> <span class="mi">6</span><span class="p">,</span>
+    <span class="nx">items</span><span class="o">:</span> <span class="p">[</span>
+        <span class="p">{</span> <span class="nx">deckWidgetType</span><span class="o">:</span> <span class="nx">studio</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">deckWidgetType</span><span class="p">.</span><span class="nx">Pixmap</span><span class="p">,</span> <span class="nx">filePath</span><span class="o">:</span> <span class="nx">__dirname</span> <span class="o">+</span> <span class="s2">&quot;/company_logo.png&quot;</span><span class="p">,</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="nx">deckWidgetType</span><span class="o">:</span> <span class="nx">studio</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">deckWidgetType</span><span class="p">.</span><span class="nx">Button</span><span class="p">,</span> <span class="nx">binding</span><span class="o">:</span> <span class="s2">&quot;invert&quot;</span><span class="p">,</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="nx">deckWidgetType</span><span class="o">:</span> <span class="nx">studio</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">deckWidgetType</span><span class="p">.</span><span class="nx">Dial</span><span class="p">,</span> <span class="nx">color</span><span class="o">:</span> <span class="s2">&quot;#e31a1c&quot;</span><span class="p">,</span> <span class="nx">binding</span><span class="o">:</span> <span class="s2">&quot;freq&quot;</span><span class="p">,</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="nx">deckWidgetType</span><span class="o">:</span> <span class="nx">studio</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">deckWidgetType</span><span class="p">.</span><span class="nx">Dropdown</span><span class="p">,</span> <span class="nx">binding</span><span class="o">:</span> <span class="s2">&quot;mode&quot;</span><span class="p">,</span> <span class="nx">buttonWidth</span><span class="o">:</span> <span class="mi">44</span><span class="p">,</span> <span class="p">},</span>
+    <span class="p">],</span>
+<span class="p">},</span>
+</pre></div>
+
+<p>The layout of the deck panel is based on a deck widget description object, which contains the following attributes:</p>
+<ul>
+<li><code>widgetType</code>: A <a href="#studiouideckwidgettype">studio.ui.deckWidgetType</a>. A required attribute.</li>
+<li><code>minimumWidth</code>: The minimum width in pixels for a widget (<code>number</code>).</li>
+<li><code>minimumHeight</code>: The minimum height in pixels for a widget (<code>number</code>).</li>
+<li><code>maximumWidth</code>: The maximum width in pixels for a widget (<code>number</code>).</li>
+<li><code>maximumHeight</code>: The maximum height in pixels for a widget (<code>number</code>).</li>
+<li><code>sizePolicy</code>: A <a href="scripting-api-reference-ui.html#uisizepolicy">studio.ui.sizePolicy</a>.</li>
+</ul>
+<p>Applicable to <code>deckWidgetType.Layout</code>:</p>
+<ul>
+<li><code>layout</code>: A <a href="scripting-api-reference-ui.html#uilayouttype">studio.ui.layoutType</a>. A required attribute.</li>
+<li><code>items</code>: An <code>Array</code> of deck widget descriptions to nest in this layout.</li>
+<li><code>contentsMargins</code>: Describes the margins around a layout. An <code>Object</code> with the format <code>{ left:[number], top:[number], right:[number], bottom:[number] }</code>.</li>
+<li><code>spacing</code>: The spacing between items in pixels (<code>number</code>).</li>
+<li><code>isFramed</code>: Setting this to <code>true</code> will cause a background to be drawn for the layout. This is useful when using a layout to visually group many related widgets.</li>
+</ul>
+<p>Applicable to items within a <code>layoutType.HBoxLayout</code> or <code>layoutType.VBoxLayout</code>:</p>
+<ul>
+<li><code>stretchFactor</code>: Determines how much space an item consumes relative to its siblings (<code>number</code>).</li>
+<li><code>alignment</code>: A <a href="scripting-api-reference-ui.html#uialignment">studio.ui.alignment</a>.</li>
+</ul>
+<p>Applicable to items within a <code>layoutType.GridLayout</code>:</p>
+<ul>
+<li><code>row</code>: Row index in grid (<code>number</code>).</li>
+<li><code>column</code>: Column index in grid (<code>number</code>).</li>
+<li><code>rowSpan</code>: <code>number</code> of rows for item to span.</li>
+<li><code>columnSpan</code>: <code>number</code> of columns for item to span.</li>
+<li><code>alignment</code>: A <a href="scripting-api-reference-ui.html#uialignment">studio.ui.alignment</a>.</li>
+</ul>
+<p>Applicable to <code>deckWidgetType.Label</code>:</p>
+<ul>
+<li><code>text</code>: Text to display (<code>string</code>).</li>
+</ul>
+<p>Applicable to <code>deckWidgetType.Pixmap</code>:</p>
+<ul>
+<li><code>filePath</code>: An absolute path to an image on disk. Most common image file formats are supported. An file path relative to the current script can be retrieved by using <a href="scripting-api-reference-globals.html#__dirname">__dirname</a>, for example <code>__dirname + "/image.png"</code>.</li>
+</ul>
+<p>Applicable to <code>deckWidgetType.Dial</code>:</p>
+<ul>
+<li><code>binding</code>: The DSP property name to bind to. This must match an <code>FMOD_DSP_PARAMETER_DESC.name</code>. Required.</li>
+<li><code>color</code>: The bezel color of the dial as a <code>string</code>. Hex colors are supported, for example <code>"#aa2266"</code>.</li>
+</ul>
+<p>Applicable to <code>deckWidgetType.Fader</code>:</p>
+<ul>
+<li><code>binding</code>: The DSP property name to bind to. This must match an <code>FMOD_DSP_PARAMETER_DESC.name</code>. Required.</li>
+<li><code>color</code>: The color of the fader's automation indicator dot as a <code>string</code>. Hex colors are supported, for example <code>"#aa2266"</code>.</li>
+</ul>
+<p>Applicable to <code>deckWidgetType.MinMaxFader</code>:</p>
+<ul>
+<li><code>minimumBinding</code>: The DSP property name to bind to for the minimum value of the range. This must match an <code>FMOD_DSP_PARAMETER_DESC.name</code>. Required.</li>
+<li><code>maximumBinding</code>: The DSP property name to bind to for the maximum value of the range. This must match an <code>FMOD_DSP_PARAMETER_DESC.name</code>. Required.</li>
+<li><code>text</code>: The text to display in the label above the the fader.</li>
+<li><code>color</code>: The color of the fader's automation indicator dot as a <code>string</code>. Hex colors are supported, for example <code>"#aa2266"</code>.</li>
+</ul>
+<p>Applicable to <code>deckWidgetType.NumberBox</code>:</p>
+<ul>
+<li><code>binding</code>: The DSP property name to bind to. This must match an <code>FMOD_DSP_PARAMETER_DESC.name</code>. Required.</li>
+<li><code>color</code>: The background color of the number box as a <code>string</code>. Hex colors are supported, for example <code>"#aa2266"</code>.</li>
+</ul>
+<p>Applicable to <code>deckWidgetType.Dropdown</code>:</p>
+<ul>
+<li><code>binding</code>: The DSP property name to bind to. This must match an <code>FMOD_DSP_PARAMETER_DESC.name</code>. Required.</li>
+</ul>
+<p>Applicable to <code>deckWidgetType.Button</code>:</p>
+<ul>
+<li><code>binding</code>: The DSP property name to bind to. This must match an <code>FMOD_DSP_PARAMETER_DESC.name</code>. Required.</li>
+<li><code>text</code>: The text to display on the button.</li>
+<li><code>buttonWidth</code>: The width of the button image in pixels.</li>
+</ul>
+<p>Applicable to <code>deckWidgetType.ButtonGroup</code>:</p>
+<ul>
+<li><code>binding</code>: The DSP property name to bind to. This must match an <code>FMOD_DSP_PARAMETER_DESC.name</code>. Required.</li>
+<li><code>buttonWidth</code>: The width of each button in the button group, in pixels.</li>
+<li><code>buttons</code>: An <code>Array</code> of <code>Object</code>s with the following format <code>{ text:[string], row:[number], column:[number]</code>. Each item allows for specific button <code>text</code> to be set, and a particular button <code>row</code> and <code>column</code> to be assigned.</li>
+</ul>
+<p>Applicable to <code>deckWidgetType.DataDrop</code>:</p>
+<ul>
+<li><code>binding</code>: The DSP property name to bind to. This must match an <code>FMOD_DSP_PARAMETER_DESC.name</code>. Required.</li>
+<li><code>fileNameFilters</code>: A <code>string</code> describing the supported file name filters that can be dropped on this widget. Multiple filters can be specified, separated by spaces (e.g. <code>"*.wav *.raw *.mp4"</code>).</li>
+<li><code>dataMode</code>: A <a href="#studiouidatadropmode">studio.ui.dataDropMode</a>. Defaults to <code>studio.ui.dataDropMode.File</code>.</li>
+</ul>
+<p>Applicable to <code>deckWidgetType.DistanceRolloffGraph</code>:</p>
+<ul>
+<li><code>minimumDistanceBinding</code>: The DSP property name to bind to for the minimum value of the distance range. This must match an <code>FMOD_DSP_PARAMETER_DESC.name</code>. Required.</li>
+<li><code>maximumDistanceBinding</code>: The DSP property name to bind to for the maximum value of the distance range. This must match an <code>FMOD_DSP_PARAMETER_DESC.name</code>. Required.</li>
+<li><code>text</code>: A <code>string</code> to display above the widget. The default value will be "Distance Attenuation". Optional.</li>
+<li><code>rolloffTypeBinding</code>: The DSP property name to bind to for the roll-off type. This must match an <code>FMOD_DSP_PARAMETER_DESC.name</code>. Required.</li>
+<li><code>rolloffTypes</code>: An <code>Object</code> which maps values available for the <code>rolloffTypeBinding</code> specified to the available <a class="apilink" href="scripting-api-reference-project.html#projectdistancerollofftype">project.distanceRolloffType</a> roll-offs. For example:</li>
+</ul>
+<div class="highlight language-javascript"><pre><span></span>    <span class="nx">rolloffTypes</span><span class="o">:</span> <span class="p">{</span>
+        <span class="o">-</span><span class="mi">1</span><span class="o">:</span> <span class="nx">studio</span><span class="p">.</span><span class="nx">project</span><span class="p">.</span><span class="nx">distanceRolloffType</span><span class="p">.</span><span class="nx">Custom</span><span class="p">,</span>
+        <span class="mi">0</span><span class="o">:</span> <span class="nx">studio</span><span class="p">.</span><span class="nx">project</span><span class="p">.</span><span class="nx">distanceRolloffType</span><span class="p">.</span><span class="nx">Linear</span><span class="p">,</span>
+        <span class="mi">1</span><span class="o">:</span> <span class="nx">studio</span><span class="p">.</span><span class="nx">project</span><span class="p">.</span><span class="nx">distanceRolloffType</span><span class="p">.</span><span class="nx">LinearSquared</span><span class="p">,</span>
+    <span class="p">},</span>
+</pre></div>
+
+<p>Applicable to <code>deckWidgetType.PolarDirectivityGraph</code>:</p>
+<ul>
+<li><code>directivityBinding</code>: The DSP property name to bind to representing the polar directivity. This must match an <code>FMOD_DSP_PARAMETER_DESC.name</code>. The assigned property should be in the range of 0 to 1. Required.</li>
+<li><code>sharpnessBinding</code>: The DSP property name to bind to representing the polar sharpness. This must match an <code>FMOD_DSP_PARAMETER_DESC.name</code>. The assigned property should have a range starting at 1. Required.</li>
+</ul>
+<p>Applicable to <code>deckWidgetType.Flyout</code>:</p>
+<ul>
+<li><code>layout</code>: A <a href="scripting-api-reference-ui.html#uilayouttype">studio.ui.layoutType</a>. A required attribute.</li>
+<li><code>items</code>: An <code>Array</code> of deck widget descriptions to nest in this layout.</li>
+<li><code>contentsMargins</code>: Describes the margins around a layout. An <code>Object</code> with the format <code>{ left:[number], top:[number], right:[number], bottom:[number] }</code>.</li>
+<li><code>spacing</code>: The spacing between items in pixels (<code>number</code>).</li>
+<li><code>text</code>: The text label of the widget (<code>string</code>).</li>
+<li><code>toolTip</code>: The tool tip to display when the mouse hovers over the widget (<code>string</code>).</li>
+</ul>
+<h4 id="studiouideckwidgettype"><a href="#studiouideckwidgettype">studio.ui.deckWidgetType</a></h4>
+<p>An enum corresponding to different deck widget types available for a <code>pluginDescription.deckUi</code> widget. For bindable controls (e.g. dials, faders), properties with the appropriate <a href="https://fmod.com/docs/2.03/api/plugin-api-dsp.html#fmod_dsp_parameter_type">FMOD_DSP_PARAMETER_TYPE</a> should be selected. Possible values are:</p>
+<ul>
+<li><code>Spacer</code>: A blank widget.</li>
+<li><code>Layout</code>: A container widget. Must specify a corresponding layout type.</li>
+<li><code>Label</code>: A text label.</li>
+<li><code>Pixmap</code>: An image.</li>
+<li><code>Dial</code>: A dial control. Appropriate for <code>FMOD_DSP_PARAMETER_TYPE_FLOAT</code> and <code>FMOD_DSP_PARAMETER_TYPE_INT</code>.</li>
+<li><code>Fader</code>: A slider control. Appropriate for <code>FMOD_DSP_PARAMETER_TYPE_FLOAT</code> and <code>FMOD_DSP_PARAMETER_TYPE_INT</code>.</li>
+<li><code>MinMaxFader</code>: A range-based horizontal slider control. Appropriate for two <code>FMOD_DSP_PARAMETER_TYPE_FLOAT</code> parameters which represent a minimum and maximum value range.</li>
+<li><code>NumberBox</code>: A number box control. Appropriate for <code>FMOD_DSP_PARAMETER_TYPE_FLOAT</code> and <code>FMOD_DSP_PARAMETER_TYPE_INT</code>.</li>
+<li><code>Dropdown</code>: A drop-down control. Appropriate for <code>FMOD_DSP_PARAMETER_TYPE_INT</code>.</li>
+<li><code>Button</code>: A button control. Appropriate for <code>FMOD_DSP_PARAMETER_TYPE_INT</code> (with two values) and <code>FMOD_DSP_PARAMETER_TYPE_BOOL</code>.</li>
+<li><code>ButtonGroup</code>: A button group control. Appropriate for <code>FMOD_DSP_PARAMETER_TYPE_INT</code>.</li>
+<li><code>DataDrop</code>: A data control. Appropriate for <code>FMOD_DSP_PARAMETER_TYPE_DATA</code>.</li>
+<li><code>SidechainInput</code>: A sidechain input selector. Appropriate for plug-in effects that have an <code>FMOD_DSP_PARAMETER_TYPE_DATA</code> parameter with the <code>FMOD_DSP_PARAMETER_DATA_TYPE_SIDECHAIN</code> data type.</li>
+<li><code>InputMeter</code>: An input meter for a plug-in effect. This widget is incompatible with plug-in instruments.</li>
+<li><code>OutputMeter</code>: An output meter for a plug-in effect. This widget is incompatible with plug-in instruments.</li>
+<li><code>GainReductionMeter</code>: A gain reduction meter (GRM) for a plug-in effect. This widget is incompatible with plug-in instruments.</li>
+<li><code>DistanceRolloffGraph</code>: A graph displaying the roll-off applied for a given <a class="apilink" href="scripting-api-reference-project.html#projectdistancerollofftype">project.distanceRolloffType</a> as well as a button group control to the right for selecting the roll-off to apply. This widget requires two <code>FMOD_DSP_PARAMETER_TYPE_FLOAT</code> parameters which represent a minimum and maximum distance range, and an <code>FMOD_DSP_PARAMETER_TYPE_INT</code> representing the selected roll-off. </li>
+<li><code>PolarDirectivityGraph</code>: A graph displaying polar directivity. Appropriate for two <code>FMOD_DSP_PARAMETER_TYPE_FLOAT</code> parameters which represent a sharpness value and directivity value.</li>
+<li><code>Flyout</code>: A collapsible container widget. Must specify a corresponding layout type.</li>
+</ul>
+<h4 id="studiouidatadropmode"><a href="#studiouidatadropmode">studio.ui.dataDropMode</a></h4>
+<p>An enum corresponding to the different types of input methods available for a <code>deckWidgetType.DataDrop</code> widget. Possible values are:</p>
+<ul>
+<li><code>File</code>: File can be dropped on the widget or selected via a file browser.</li>
+<li><code>Text</code>: Text can be entered via a text input prompt.</li>
+</ul>
+<h2 id="updating-plug-ins"><a href="#updating-plug-ins">24.5 Updating plug-ins</a></h2>
+<p>When working with custom DSP plug-ins, there may be times when <a href="advanced-topics.html#migrating-fmod-designer-projects">migrating from an FMOD Designer project</a>, <a href="advanced-topics.html#migrating-fmod-studio-projects">migrating to a newer version of FMOD Studio</a>, or the DSP's description gets updated which can cause DSPs to need repairing in the <a href="glossary.html#fmod-studio">FMOD Studio</a> project.</p>
+<p>When an issue has been detected, the effect plug-in module or plug-in instrument is faded with a dashed yellow outline.</p>
+<p><img alt="Effect plug-in issue detected" src="images/effectPluginIssue.png" /></p>
+<p>FMOD Studio supports repairing or removing DSP plug-in instances when a plug-in description changes or a plug-in DLL has been removed. This can be done by clicking on the deck widget of the corresponding plug-in instance. Plug-ins can be repaired or removed per instance or across an entire project.</p>
+<p><img alt="Repairing a plug-in" src="images/repairPlugin.png" /></p></div>
+
+<p class="manual-footer">FMOD Studio User Manual 2.03.15 (2026-09-21). &copy; 2026 Firelight Technologies Pty Ltd.</p>
+</div>
+</body>
+</html>
+

@@ -1,0 +1,295 @@
+<html>
+<head>
+<title>Scripting API Reference | Project.Model.Event</title>
+<link rel="stylesheet" href="style/docs.css">
+<link rel="stylesheet" href="style/code_highlight.css">
+<script type="text/javascript" src="scripts/language-selector.js"></script></head>
+<body>
+<div class="docs-body">
+<div class="manual-toc">
+<p>FMOD Studio User Manual 2.03</p>
+<ul>
+<li><a href="welcome-to-fmod-studio.html">Welcome to FMOD Studio</a></li>
+<li><a href="fmod-studio-concepts.html">FMOD Studio Concepts</a></li>
+<li><a href="organizing-the-project.html">Organizing the Project</a></li>
+<li><a href="authoring-events.html">Authoring Events</a></li>
+<li><a href="working-with-instruments.html">Working with Instruments</a></li>
+<li><a href="managing-assets.html">Managing Assets</a></li>
+<li><a href="parameters.html">Parameters</a></li>
+<li><a href="getting-events-into-your-game.html">Getting Events into Your Game</a></li>
+<li><a href="mixing.html">Mixing</a></li>
+<li><a href="the-sandbox.html">The Sandbox</a></li>
+<li><a href="editing-during-live-update.html">Editing During Live Update</a></li>
+<li><a href="profiling.html">Profiling</a></li>
+<li><a href="dialogue-and-localization.html">Dialogue and Localization</a></li>
+<li><a href="using-source-control.html">Using Source Control</a></li>
+<li><a href="supporting-downloadable-and-user-generated-content.html">Supporting Downloadable and User-generated Content</a></li>
+<li><a href="advanced-topics.html">Advanced Topics</a></li>
+<li><a href="quick-start-tutorial.html">Quick Start Tutorial</a></li>
+<li><a href="effect-reference.html">Effect Reference</a></li>
+<li><a href="event-macro-controls-reference.html">Event Macros Drawer Reference</a></li>
+<li><a href="instrument-reference.html">Instrument Reference</a></li>
+<li><a href="keyboard-shortcut-reference.html">Keyboard Shortcut Reference</a></li>
+<li><a href="modulator-reference.html">Modulator Reference</a></li>
+<li><a href="parameters-reference.html">Parameters Reference</a></li>
+<li><a href="plugin-reference.html">Plug-in Reference</a></li>
+<li><a href="scripting-terminal-reference.html">Scripting</a></li>
+<li class="manual-current-chapter manual-inactive-chapter"><a href="scripting-api-reference.html">Scripting API Reference</a><ul class="subchapters"><li><a href="scripting-api-reference-globals.html">Globals</a></li><li><a href="scripting-api-reference-menu.html">Menu</a></li><li><a href="scripting-api-reference-project.html">Project</a></li><li><a href="scripting-api-reference-project-entity.html">Project.Entity</a></li><li><a href="scripting-api-reference-project-managedobject.html">Project.ManagedObject</a></li><li><a href="scripting-api-reference-project-model.html">Project.Model</a></li><li><a href="scripting-api-reference-project-model-asset.html">Project.Model.Asset</a></li><li><a href="scripting-api-reference-project-model-automatableobject.html">Project.Model.AutomatableObject</a></li><li><a href="scripting-api-reference-project-model-automationcurve.html">Project.Model.AutomationCurve</a></li><li><a href="scripting-api-reference-project-model-automator.html">Project.Model.Automator</a></li><li><a href="scripting-api-reference-project-model-bank.html">Project.Model.Bank</a></li><li class="manual-current-chapter manual-active-chapter"><a href="scripting-api-reference-project-model-event.html">Project.Model.Event</a></li><li><a href="scripting-api-reference-project-model-folder.html">Project.Model.Folder</a></li><li><a href="scripting-api-reference-project-model-mixereffect.html">Project.Model.MixerEffect</a></li><li><a href="scripting-api-reference-project-model-mixerstrip.html">Project.Model.MixerStrip</a></li><li><a href="scripting-api-reference-project-model-modulator.html">Project.Model.Modulator</a></li><li><a href="scripting-api-reference-project-model-parameter.html">Project.Model.Parameter</a></li><li><a href="scripting-api-reference-project-model-sound.html">Project.Model.Sound</a></li><li><a href="scripting-api-reference-project-model-track.html">Project.Model.Track</a></li><li><a href="scripting-api-reference-project-model-triggerable.html">Project.Model.Triggerable</a></li><li><a href="scripting-api-reference-project-workspace.html">Project.Workspace</a></li><li><a href="scripting-api-reference-system.html">System</a></li><li><a href="scripting-api-reference-ui.html">UI</a></li><li><a href="scripting-api-reference-window.html">Window</a></li></ul></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="glossary.html">Glossary</a></li>
+<li><a href="appendix-a-celeste.html">Appendix: Celeste Getting Started Guide</a></li>
+<li><a href="appendix-b-reaper-integration.html">Appendix: Reaper Integration</a></li>
+</ul>
+</div>
+<div class="manual-content studio">
+<h1>26. Scripting API Reference | Project.Model.Event</h1>
+<p><strong>Types:</strong></p>
+<ul>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-event.html#modelevent" title="An arrangement of instruments that can be played by the game.">model.Event</a> An arrangement of <a href="glossary.html#instrument">instruments</a> that can be played by the game.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-event.html#modelsnapshot" title="An instanceable unit of changes to the project mix.">model.Snapshot</a> An instanceable unit of changes to the project mix.</span></li>
+</ul>
+<p><strong>Extension Methods:</strong></p>
+<ul>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-event.html#eventaddgameparameter" title="Adds a game parameter to the event.">Event.addGameParameter</a> Adds a <a href="glossary.html#parameter">game parameter</a> to the event.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-event.html#eventaddgrouptrack" title="Adds an audio track with the given name to the event.">Event.addGroupTrack</a> Adds an <a href="glossary.html#audio-track">audio track</a> with the given name to the event.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-event.html#eventaddmarkertrack" title="Adds a marker track to the event.">Event.addMarkerTrack</a> Adds a <span class="dead-link" href="glossary.html#marker-track">marker track</span class="dead-link"> to the event.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-event.html#eventaddreturntrack" title="Adds a return track with the given name to the event.">Event.addReturnTrack</a> Adds a <a href="glossary.html#return-track">return track</a> with the given name to the event.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-event.html#eventget3dattributes" title="Retrieves the 3D attributes of an event.">Event.get3DAttributes</a> Retrieves the 3D attributes of an event.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-event.html#eventgetcursorposition" title="Retrieves the cursor position.">Event.getCursorPosition</a> Retrieves the <a href="glossary.html#cursor">cursor</a> position.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-event.html#eventgetparameterpresets" title="Retrieves an array of all the parameters in your project that are referenced by the event.">Event.getParameterPresets</a> Retrieves an array of all the <a href="glossary.html#parameter">parameters</a> in your project that are referenced by the <a href="glossary.html#event">event</a>.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-event.html#eventgetpath" title="Retrieves the event's unique path identifier.">Event.getPath</a> Retrieves the <a href="glossary.html#event">event</a>'s unique path identifier.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-event.html#eventgetplayheadposition" title="Retrieves the playback position of a given parameter.">Event.getPlayheadPosition</a> Retrieves the <a href="glossary.html#playback-position">playback position</a> of a given <a href="glossary.html#parameter">parameter</a>.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-event.html#eventis3d" title="Reports whether an event is 3D.">Event.is3D</a> Reports whether an <a href="glossary.html#event">event</a> is <a href="glossary.html#3d-event">3D</a>.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-event.html#eventisoneshot" title="Reports whether an event is a one-shot.">Event.isOneShot</a> Reports whether an <a href="glossary.html#event">event</a> is a one-shot.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-event.html#eventispaused" title="Reports whether an event instance is paused.">Event.isPaused</a> Reports whether an <a href="glossary.html#event-instance">event instance</a> is paused.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-event.html#eventisplaying" title="Reports whether an event instance is playing.">Event.isPlaying</a> Reports whether an <a href="glossary.html#event-instance">event instance</a> is playing.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-event.html#eventisrecording" title="Reports whether an event instance is being recorded in a profiler session.">Event.isRecording</a> Reports whether an <a href="glossary.html#event-instance">event instance</a> is being recorded in a <span class="dead-link" href="glossary.html#profiler-session">profiler session</span class="dead-link">.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-event.html#eventisstopping" title="Reports whether an event instance is stopping.">Event.isStopping</a> Reports whether an <a href="glossary.html#event-instance">event instance</a> is stopping.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-event.html#eventkeyoff" title="Sends the keyoff command to a currently playing event instance.">Event.keyOff</a> Sends the keyoff command to a currently playing <a href="glossary.html#event-instance">event instance</a>.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-event.html#eventreturntostart" title="Moves the playback position to the cursor position if called while the event instance is playing, stopping, or paused, or to the start of the timeline while the event instance is stopped.">Event.returnToStart</a> Moves the <a href="glossary.html#playback-position">playback position</a> to the <a href="glossary.html#cursor">cursor position</a> if called while the <a href="glossary.html#event-instance">event instance</a> is playing, stopping, or paused, or to the start of the <a href="glossary.html#timeline">timeline</a> while the event instance is stopped.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-event.html#eventset3dattributes" title="Sets the 3D attributes of an event instance being auditioned based on a 3D attributes object.">Event.set3DAttributes</a> Sets the <a href="https://fmod.com/docs/2.03/api/core-api-common.html#fmod_3d_attributes">3D attributes</a> of an <a href="glossary.html#event-instance">event instance</a> being <a href="glossary.html#audition">auditioned</a> based on a 3D attributes object.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-event.html#eventsetcursorposition" title="Sets the cursor position to a number.">Event.setCursorPosition</a> Sets the <a href="glossary.html#cursor">cursor</a> position to a number.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-event.html#eventstopimmediate" title="Stops an event instance immediately, skipping the stopping event state.">Event.stopImmediate</a> Stops an <a href="glossary.html#event-instance">event instance</a> immediately, skipping the stopping <a href="glossary.html#event-state">event state</a>.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-event.html#eventstopnonimmediate" title="Commands a playing event instance to enter the stopping event state.">Event.stopNonImmediate</a> Commands a playing <a href="glossary.html#event-instance">event instance</a> to enter the stopping <a href="glossary.html#event-state">event state</a>.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-event.html#eventtogglepause" title="Toggles the pause state of an event instance.">Event.togglePause</a> Toggles the pause <a href="glossary.html#event-state">state</a> of an <a href="glossary.html#event-instance">event instance</a>.</span></li>
+<li><span><a class="apilink" href="scripting-api-reference-project-model-event.html#eventtogglerecording" title="Toggles the recording state for a profiler session.">Event.toggleRecording</a> Toggles the recording state for a profiler session.</span></li>
+</ul>
+<h2 api="function" id="modelevent"><a href="#modelevent">model.Event</a></h2>
+<p>An arrangement of <a href="glossary.html#instrument">instruments</a> that can be played by the game.</p>
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/studio/glossary.html#event">Event</a></p>
+<h2 api="function" id="modelsnapshot"><a href="#modelsnapshot">model.Snapshot</a></h2>
+<p>An instanceable unit of changes to the project mix.</p>
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/studio/mixing.html#snapshots-and-the-tracks-view">Snapshots and the Tracks VIew</a></p>
+<h2 api="function" id="eventaddgameparameter"><a href="#eventaddgameparameter">Event.addGameParameter</a></h2>
+<p>Adds a <a href="glossary.html#parameter">game parameter</a> to the event.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">Event</span><span class="p">.</span><span class="nx">addGameParameter</span><span class="p">(</span>
+    <span class="nx">parameterDefinition</span>
+<span class="p">)</span>
+</pre></div>
+
+<dl>
+<dt>parameterDefinition</dt>
+<dd>Either a <a class="apilink" href="scripting-api-reference-project-model-parameter.html#modelparameterpreset">model.ParameterPreset</a>, a <a class="apilink" href="scripting-api-reference-project-model-parameter.html#modelgameparameter">model.GameParameter</a>, or a <a class="apilink" href="scripting-api-reference-project.html#parameterdefinition">parameterDefinition</a> object.</dd>
+</dl>
+<p>Returns the game parameter <a class="apilink" href="scripting-api-reference-project-managedobject.html#managedobject">ManagedObject</a>.</p>
+<h2 api="function" id="eventaddgrouptrack"><a href="#eventaddgrouptrack">Event.addGroupTrack</a></h2>
+<p>Adds an <a href="glossary.html#audio-track">audio track</a> with the given name to the event.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">Event</span><span class="p">.</span><span class="nx">addGroupTrack</span><span class="p">(</span>
+    <span class="nx">name</span>
+<span class="p">)</span>
+</pre></div>
+
+<dl>
+<dt>name</dt>
+<dd>The <code>string</code> value to assign the audio track when it is created.</dd>
+</dl>
+<p>Returns the newly created <a class="apilink" href="scripting-api-reference-project-model-track.html#modelgrouptrack">model.GroupTrack</a>.</p>
+<h2 api="function" id="eventaddmarkertrack"><a href="#eventaddmarkertrack">Event.addMarkerTrack()</a></h2>
+<p>Adds a <span class="dead-link" href="glossary.html#marker-track">marker track</span class="dead-link"> to the event.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">Event</span><span class="p">.</span><span class="nx">addMarkerTrack</span><span class="p">()</span>
+</pre></div>
+
+<p>Returns the newly created <a class="apilink" href="scripting-api-reference-project-model-track.html#modelmarkertrack">model.MarkerTrack</a>.</p>
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/studio/fmod-studio-concepts.html#event">Event</a></p>
+<h2 api="function" id="eventaddreturntrack"><a href="#eventaddreturntrack">Event.addReturnTrack</a></h2>
+<p>Adds a <a href="glossary.html#return-track">return track</a> with the given name to the event.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">Event</span><span class="p">.</span><span class="nx">addReturnTrack</span><span class="p">(</span>
+    <span class="nx">name</span>
+<span class="p">)</span>
+</pre></div>
+
+<dl>
+<dt>name</dt>
+<dd>The <code>string</code> value to assign the return track when it is created.</dd>
+</dl>
+<p>Returns the newly created return track <a class="apilink" href="scripting-api-reference-project-managedobject.html#managedobject">ManagedObject</a>.</p>
+<h2 api="function" id="eventget3dattributes"><a href="#eventget3dattributes">Event.get3DAttributes</a></h2>
+<p>Retrieves the 3D attributes of an event.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">Event</span><span class="p">.</span><span class="nx">get3DAttributes</span><span class="p">()</span>
+</pre></div>
+
+<p>Returns an object representing the currently auditioned 3D attributes of the event instance:</p>
+<ul>
+<li><code>radialDistance</code>: Distance from the listener (<code>number</code>)</li>
+<li><code>azimuth</code>: Angle of event in relation to listener (<code>number</code>)</li>
+<li><code>height</code>: Vertical position of the event (<code>number</code>)</li>
+<li><code>rotation</code>: The horizontal rotation of the event (<code>number</code>)</li>
+</ul>
+<h2 api="function" id="eventgetcursorposition"><a href="#eventgetcursorposition">Event.getCursorPosition</a></h2>
+<p>Retrieves the <a href="glossary.html#cursor">cursor</a> position.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">Event</span><span class="p">.</span><span class="nx">getCursorPosition</span><span class="p">(</span>
+    <span class="nx">parameter</span>
+<span class="p">)</span>
+</pre></div>
+
+<dl>
+<dt>parameter</dt>
+<dd>The <a href="glossary.html#parameter">parameter</a> to get to cursor postion of. Must be the <a href="glossary.html#event">event</a>'s <a class="apilink" href="scripting-api-reference-project-model-parameter.html#modeltimeline">model.Timeline</a> or one of the event's <a class="apilink" href="scripting-api-reference-project-model-parameter.html#modelgameparameter">model.GameParameter</a>s.</dd>
+</dl>
+<p>Returns the cursor position as a <code>number</code>.</p>
+<h2 api="function" id="eventgetparameterpresets"><a href="#eventgetparameterpresets">Event.getParameterPresets</a></h2>
+<p>Retrieves an array of all the <a href="glossary.html#parameter">parameters</a> in your project that are referenced by the <a href="glossary.html#event">event</a>.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">Event</span><span class="p">.</span><span class="nx">getParameterPresets</span><span class="p">()</span>
+</pre></div>
+
+<p>Returns an array of all <a class="apilink" href="scripting-api-reference-project-model-parameter.html#modelgameparameter">model.GameParameter</a> objects that the event has a corresponding <a class="apilink" href="scripting-api-reference-project-model-parameter.html#modelparameterproxy">model.ParameterProxy</a> for. This includes both parameters that have a <a href="glossary.html#parameter-sheet">parameter sheet</a> in the event and those that do not. The order of the array matches the order displayed in the <span class="dead-link" href="glossary.html#transport-bar">transport bar</span class="dead-link">.</p>
+<h2 api="function" id="eventgetpath"><a href="#eventgetpath">Event.getPath</a></h2>
+<p>Retrieves the <a href="glossary.html#event">event</a>'s unique path identifier.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">Event</span><span class="p">.</span><span class="nx">getPath</span><span class="p">()</span>
+</pre></div>
+
+<p>Returns the event's <a href="https://fmod.com/docs/2.03/studio/advanced-topics.html#paths">path</a> as a <code>string</code>.</p>
+<h2 api="function" id="eventgetplayheadposition"><a href="#eventgetplayheadposition">Event.getPlayheadPosition</a></h2>
+<p>Retrieves the <a href="glossary.html#playback-position">playback position</a> of a given <a href="glossary.html#parameter">parameter</a>.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">Event</span><span class="p">.</span><span class="nx">getPlayheadPosition</span><span class="p">(</span>
+    <span class="nx">parameter</span>
+<span class="p">)</span>
+</pre></div>
+
+<dl>
+<dt>parameter</dt>
+<dd>The <a class="apilink" href="scripting-api-reference-project-model-parameter.html#modeltimeline">model.Timeline</a> or <a class="apilink" href="scripting-api-reference-project-model-parameter.html#modelgameparameter">model.GameParameter</a> to retrieve the playback position of.</dd>
+</dl>
+<p>Returns the playback position of a <a class="apilink" href="scripting-api-reference-project-model-parameter.html#modelparameter">model.Parameter</a> as a <code>number</code>.</p>
+<h2 api="function" id="eventis3d"><a href="#eventis3d">Event.is3D</a></h2>
+<p>Reports whether an <a href="glossary.html#event">event</a> is <a href="glossary.html#3d-event">3D</a>.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">Event</span><span class="p">.</span><span class="nx">is3D</span><span class="p">()</span>
+</pre></div>
+
+<p>Returns <code>true</code> if an event is 3D. An event is considered 3D if any of these conditions are met:<br />
+- The event has a Spatializer, 3D Object Spatializer, or a 3rd party spatializer.<br />
+- The event contains a <a href="parameters-reference.html#built-in-parameters">built-in</a> parameter.<br />
+- The event contains or references any other events which are 3D.</p>
+<p>This function performs calculations that require the event be fully loaded into memory. This can be slow if triggered on a large number of events.</p>
+<p><strong>See Also:</strong> <a href="glossary.html#spatializer-effect">Spatializer Effect</a></p>
+<h2 api="function" id="eventisoneshot"><a href="#eventisoneshot">Event.isOneShot</a></h2>
+<p>Reports whether an <a href="glossary.html#event">event</a> is a one-shot.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">Event</span><span class="p">.</span><span class="nx">isOneShot</span><span class="p">()</span>
+</pre></div>
+
+<p>Returns <code>true</code> if an event is one-shot. An event is considered one-shot if it is guaranteed to terminate without intervention in bounded time after being started.</p>
+<p>This function performs calculations that require the event be fully loaded into memory. This can be slow if triggered on a large number of events.</p>
+<h2 api="function" id="eventispaused"><a href="#eventispaused">Event.isPaused</a></h2>
+<p>Reports whether an <a href="glossary.html#event-instance">event instance</a> is paused.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">Event</span><span class="p">.</span><span class="nx">isPaused</span><span class="p">()</span>
+</pre></div>
+
+<p>Returns <code>true</code> if an event instance is paused.</p>
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/studio/advanced-topics.html#event-state">Event State</a></p>
+<h2 api="function" id="eventisplaying"><a href="#eventisplaying">Event.isPlaying</a></h2>
+<p>Reports whether an <a href="glossary.html#event-instance">event instance</a> is playing.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">Event</span><span class="p">.</span><span class="nx">isPlaying</span><span class="p">()</span>
+</pre></div>
+
+<p>Returns <code>true</code> if an event instance is playing.</p>
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/studio/advanced-topics.html#event-state">Event State</a></p>
+<h2 api="function" id="eventisrecording"><a href="#eventisrecording">Event.isRecording</a></h2>
+<p>Reports whether an <a href="glossary.html#event-instance">event instance</a> is being recorded in a <span class="dead-link" href="glossary.html#profiler-session">profiler session</span class="dead-link">.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">Event</span><span class="p">.</span><span class="nx">isRecording</span><span class="p">()</span>
+</pre></div>
+
+<p>Returns <code>true</code> for profiler sessions with recording enabled.</p>
+<p>Profiler sessions are event instances that record realtime data from the <a href="https://fmod.com/docs/2.03/api/studio-api-system.html">FMOD Studio system</a>, <a href="glossary.html#bus">buses</a>, and event instances for profiling purposes.</p>
+<h2 api="function" id="eventisstopping"><a href="#eventisstopping">Event.isStopping</a></h2>
+<p>Reports whether an <a href="glossary.html#event-instance">event instance</a> is stopping.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">Event</span><span class="p">.</span><span class="nx">isStopping</span><span class="p">()</span>
+</pre></div>
+
+<p>Returns <code>true</code> if an event instance is stopping.</p>
+<p>This call ignores the paused <a href="https://fmod.com/docs/2.03/studio/advanced-topics.html#event-state">event state</a>.</p>
+<h2 api="function" id="eventkeyoff"><a href="#eventkeyoff">Event.keyOff</a></h2>
+<p>Sends the keyoff command to a currently playing <a href="glossary.html#event-instance">event instance</a>.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">Event</span><span class="p">.</span><span class="nx">keyOff</span><span class="p">()</span>
+</pre></div>
+
+<p>If a <a href="glossary.html#sustain-point">sustain point</a> exists ahead of the <a href="glossary.html#playback-position">playback position</a> this triggers the event instance's <a href="fmod-studio-concepts.html#key-off-commands">keyoff</a> behavior.</p>
+<h2 api="function" id="eventreturntostart"><a href="#eventreturntostart">Event.returnToStart</a></h2>
+<p>Moves the <a href="glossary.html#playback-position">playback position</a> to the <a href="glossary.html#cursor">cursor position</a> if called while the <a href="glossary.html#event-instance">event instance</a> is playing, stopping, or paused, or to the start of the <a href="glossary.html#timeline">timeline</a> while the event instance is stopped.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">Event</span><span class="p">.</span><span class="nx">returnToStart</span><span class="p">()</span>
+</pre></div>
+
+<p>Only the timeline playback position is affected by this particular function; the playback positions of other parameters are unaffected.</p>
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/studio/advanced-topics.html#event-state">Event State</a>, <a href="glossary.html#cursor">Cursor</a></p>
+<h2 api="function" id="eventset3dattributes"><a href="#eventset3dattributes">Event.set3DAttributes</a></h2>
+<p>Sets the <a href="https://fmod.com/docs/2.03/api/core-api-common.html#fmod_3d_attributes">3D attributes</a> of an <a href="glossary.html#event-instance">event instance</a> being <a href="glossary.html#audition">auditioned</a> based on a 3D attributes object.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">Event</span><span class="p">.</span><span class="nx">set3DAttributes</span><span class="p">(</span>
+    <span class="nx">attributes</span>
+<span class="p">)</span>
+</pre></div>
+
+<dl>
+<dt>attributes</dt>
+<dd>Object describing the 3D attributes to give to the event.</dd>
+</dl>
+<p>See <a class="apilink" href="scripting-api-reference-project-model-event.html#eventget3dattributes">Event.get3DAttributes</a> for more information on the properties required for the <code>attributes</code> object.</p>
+<h2 api="function" id="eventsetcursorposition"><a href="#eventsetcursorposition">Event.setCursorPosition</a></h2>
+<p>Sets the <a href="glossary.html#cursor">cursor</a> position to a number.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">Event</span><span class="p">.</span><span class="nx">setCursorPosition</span><span class="p">(</span>
+    <span class="nx">parameter</span><span class="p">,</span>
+    <span class="nx">position</span>
+<span class="p">)</span>
+</pre></div>
+
+<dl>
+<dt>parameter</dt>
+<dd>The parameter to set the cursor postion of. Either a <a class="apilink" href="scripting-api-reference-project-model-parameter.html#modeltimeline">model.Timeline</a> or a <a class="apilink" href="scripting-api-reference-project-model-parameter.html#modelgameparameter">model.GameParameter</a>.</dd>
+<dt>position</dt>
+<dd>The numerical value to set the cursor postion to.</dd>
+</dl>
+<h2 api="function" id="eventstopimmediate"><a href="#eventstopimmediate">Event.stopImmediate</a></h2>
+<p>Stops an <a href="glossary.html#event-instance">event instance</a> immediately, skipping the stopping <a href="glossary.html#event-state">event state</a>.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">Event</span><span class="p">.</span><span class="nx">stopImmediate</span><span class="p">()</span>
+</pre></div>
+
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/studio/advanced-topics.html#event-state">Event State</a></p>
+<h2 api="function" id="eventstopnonimmediate"><a href="#eventstopnonimmediate">Event.stopNonImmediate()</a></h2>
+<p>Commands a playing <a href="glossary.html#event-instance">event instance</a> to enter the stopping <a href="glossary.html#event-state">event state</a>.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">Event</span><span class="p">.</span><span class="nx">stopNonImmediate</span><span class="p">()</span>
+</pre></div>
+
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/studio/advanced-topics.html#event-state">Event State</a></p>
+<h2 api="function" id="eventtogglepause"><a href="#eventtogglepause">Event.togglePause</a></h2>
+<p>Toggles the pause <a href="glossary.html#event-state">state</a> of an <a href="glossary.html#event-instance">event instance</a>.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">Event</span><span class="p">.</span><span class="nx">togglePause</span><span class="p">()</span>
+</pre></div>
+
+<p>The equivalent of pressing the pause button in the transport controls.</p>
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/studio/advanced-topics.html#event-state">Event State</a></p>
+<h2 api="function" id="eventtogglerecording"><a href="#eventtogglerecording">Event.toggleRecording</a></h2>
+<p>Toggles the recording state for a profiler session.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">Event</span><span class="p">.</span><span class="nx">toggleRecording</span><span class="p">()</span>
+</pre></div>
+
+<h2 api="function" id="eventplay"><a href="#eventplay">Event.play</a></h2>
+<p>Plays the <a href="glossary.html#event-instance">event instance</a>.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">Event</span><span class="p">.</span><span class="nx">play</span><span class="p">()</span>
+</pre></div>
+
+<p>The equivalent of pressing the play button in the <a href="glossary.html#transport-controls">transport controls</a>.</p>
+<p><strong>See Also:</strong> <a href="https://fmod.com/docs/2.03/studio/advanced-topics.html#event-state">Event State</a></p></div>
+
+<p class="manual-footer">FMOD Studio User Manual 2.03.15 (2026-09-21). &copy; 2026 Firelight Technologies Pty Ltd.</p>
+</div>
+</body>
+</html>
+

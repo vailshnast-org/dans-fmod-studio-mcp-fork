@@ -1,0 +1,291 @@
+<html>
+<head>
+<title>Scripting</title>
+<link rel="stylesheet" href="style/docs.css">
+<link rel="stylesheet" href="style/code_highlight.css">
+<script type="text/javascript" src="scripts/language-selector.js"></script></head>
+<body>
+<div class="docs-body">
+<div class="manual-toc">
+<p>FMOD Studio User Manual 2.03</p>
+<ul>
+<li><a href="welcome-to-fmod-studio.html">Welcome to FMOD Studio</a></li>
+<li><a href="fmod-studio-concepts.html">FMOD Studio Concepts</a></li>
+<li><a href="organizing-the-project.html">Organizing the Project</a></li>
+<li><a href="authoring-events.html">Authoring Events</a></li>
+<li><a href="working-with-instruments.html">Working with Instruments</a></li>
+<li><a href="managing-assets.html">Managing Assets</a></li>
+<li><a href="parameters.html">Parameters</a></li>
+<li><a href="getting-events-into-your-game.html">Getting Events into Your Game</a></li>
+<li><a href="mixing.html">Mixing</a></li>
+<li><a href="the-sandbox.html">The Sandbox</a></li>
+<li><a href="editing-during-live-update.html">Editing During Live Update</a></li>
+<li><a href="profiling.html">Profiling</a></li>
+<li><a href="dialogue-and-localization.html">Dialogue and Localization</a></li>
+<li><a href="using-source-control.html">Using Source Control</a></li>
+<li><a href="supporting-downloadable-and-user-generated-content.html">Supporting Downloadable and User-generated Content</a></li>
+<li><a href="advanced-topics.html">Advanced Topics</a></li>
+<li><a href="quick-start-tutorial.html">Quick Start Tutorial</a></li>
+<li><a href="effect-reference.html">Effect Reference</a></li>
+<li><a href="event-macro-controls-reference.html">Event Macros Drawer Reference</a></li>
+<li><a href="instrument-reference.html">Instrument Reference</a></li>
+<li><a href="keyboard-shortcut-reference.html">Keyboard Shortcut Reference</a></li>
+<li><a href="modulator-reference.html">Modulator Reference</a></li>
+<li><a href="parameters-reference.html">Parameters Reference</a></li>
+<li><a href="plugin-reference.html">Plug-in Reference</a></li>
+<li class="manual-current-chapter manual-active-chapter"><a href="scripting-terminal-reference.html">Scripting</a><ul>
+<li><a href="#script-files">Script Files</a></li>
+<li><a href="#terminal-interface">Terminal interface</a></li>
+<li><a href="#scripting-examples">Scripting examples</a><ul>
+<li><a href="#creating-and-deleting-an-event">Creating and Deleting an Event</a></li>
+<li><a href="#checking-the-tool-version">Checking the Tool Version</a></li>
+<li><a href="#modifying-the-global-context">Modifying the Global Context</a></li>
+<li><a href="#custom-menus">Custom Menus</a></li>
+<li><a href="#custom-save-build-menu-item">Custom Save &amp; Build Menu Item</a></li>
+<li><a href="#setting-master-volume">Setting Master Volume</a></li>
+<li><a href="#selecting-an-event-and-setting-timeline-position">Selecting an Event and Setting Timeline Position</a></li>
+<li><a href="#adding-a-new-audio-track-to-the-selected-event">Adding a New Audio Track to the Selected Event</a></li>
+<li><a href="#creating-a-multi-instrument-and-adding-instruments-to-its-playlist">Creating a Multi-Instrument and Adding Instruments to its Playlist</a></li>
+<li><a href="#sort-audio-files-after-theyre-imported">Sort Audio Files After They're Imported</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="scripting-api-reference.html">Scripting API Reference</a></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="glossary.html">Glossary</a></li>
+<li><a href="appendix-a-celeste.html">Appendix: Celeste Getting Started Guide</a></li>
+<li><a href="appendix-b-reaper-integration.html">Appendix: Reaper Integration</a></li>
+</ul>
+</div>
+<div class="manual-content studio">
+<h1>25. Scripting</h1>
+<p><a href="glossary.html#fmod-studio">FMOD Studio</a>'s scripting feature lets you control Studio and edit projects by using JavaScript. Commands can be entered into the built-in scripting interface, written into files that can be loaded either when FMOD Studio is launched or while it is running, or via TCP/IP connection.</p>
+<p>Scripts can be used to perform a variety of tasks:</p>
+<ul>
+<li><strong>Custom keyboard shortcuts:</strong> Write scripts to automate tasks you perform regularly in FMOD Studio.</li>
+<li><strong>Level editor integrations:</strong> Support creating new events or modifying existing events, directly within your level editor.</li>
+<li><strong>Cutscene editor integration:</strong> Sync the timeline between an animation editor and an FMOD event.</li>
+<li><strong>DAW integration:</strong> Export audio directly into FMOD Studio.</li>
+<li><strong>Batch processing:</strong> Create lots of events quickly by writing a script that loads a CSV file as the specification.</li>
+<li><strong>Advanced auditioning:</strong> Audition complex events by writing custom UI to drive parameters.</li>
+</ul>
+<div class="admonition warning">
+<p>You can potentially use scripting to edit content in ways that make it invalid. For example, it is possible to write a script that creates an event with no name. An event must have a name to be considered valid, so such an event is invalid by default.</p>
+<p>You can check whether an <a class="apilink" href="scripting-api-reference-project-managedobject.html#managedobject">ManagedObject</a> created or edited by a script is valid by calling <a class="apilink" href="scripting-api-reference-project-managedobject.html#managedobjectisvalid">ManagedObject.isValid</a> on that object.</p>
+</div>
+<p>For more information about the scripting API, see the <a href="scripting-api-reference.html">Scripting API Reference</a>.</p>
+<h2 id="script-files"><a href="#script-files">25.1 Script Files</a></h2>
+<p>Script files are automatically evaluated every time you load a project. <a href="glossary.html#fmod-studio">FMOD Studio</a> reads scripts from any files with the <code>.js</code> extension in the following locations:</p>
+<ul>
+<li>System scripts directory:<ul>
+<li><strong>Windows:</strong> <code>%localappdata%/FMOD Studio/Scripts</code></li>
+<li><strong>Mac:</strong> <code>~/Library/Preferences/FMOD Studio/Scripts</code></li>
+<li><strong>Linux:</strong> <code>~/.config/fmod-studio/Scripts</code></li>
+</ul>
+</li>
+<li>Built-in scripts directory:<ul>
+<li><strong>Windows:</strong> <code>%fmod_install_directory%/Scripts</code></li>
+<li><strong>Mac:</strong> <code>%fmod_bundle%/Scripts</code></li>
+<li><strong>Linux:</strong> <code>%fmod_install_directory%/Scripts</code></li>
+</ul>
+</li>
+<li>Project scripts directory:<ul>
+<li><code>%project_root_directory%/Scripts</code></li>
+</ul>
+</li>
+</ul>
+<p>After adding or altering a script in one of these directories, you can select "Scripts &gt; Reload" to use the newly updated script.</p>
+<p>Some example scripts are included with FMOD Studio, and can be found in the built-in scripts directory.</p>
+<h2 id="terminal-interface"><a href="#terminal-interface">25.2 Terminal interface</a></h2>
+<p>Studio also supports evaluating script code in a REPL style interface. This can be used to control Studio remotely from an external application (e.g. your level editor). </p>
+<p>Communicating with Studio is done via a TCP/IP connection over port 3663. Any data transmitted to Studio will be interpreted as JavaScript encoded as UTF-8. Any data received by clients should be interpreted as UTF-8 strings, representing the evaluated code.</p>
+<p>Commands can also be run using the built-in terminal interface. The console window can be opened by selecting "Window &gt; Console" in the menu bar or by using the shortcut key combination Control+0 on Windows or &#8984;+0 on Mac. This opens the console window, which contains the terminal tab. You can type commands directly into this:</p>
+<p><img alt="console" src="images/console.png" /></p>
+<h2 id="scripting-examples"><a href="#scripting-examples">25.3 Scripting examples</a></h2>
+<h3 id="creating-and-deleting-an-event"><a href="#creating-and-deleting-an-event">25.3.1 Creating and Deleting an Event</a></h3>
+<p>Using the managed object API, along with the <code>studio.project.create(entityName)</code> function, allows you to create objects within the project. For example, to create a new event in the root folder of the project:</p>
+<div class="highlight language-javascript"><pre><span></span><span class="kd">var</span> <span class="nx">myEvent</span> <span class="o">=</span> <span class="nx">studio</span><span class="p">.</span><span class="nx">project</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s2">&quot;Event&quot;</span><span class="p">);</span>
+<span class="nx">myEvent</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="s2">&quot;My New Event&quot;</span><span class="p">;</span>
+<span class="nx">myEvent</span><span class="p">.</span><span class="nx">folder</span> <span class="o">=</span> <span class="nx">studio</span><span class="p">.</span><span class="nx">project</span><span class="p">.</span><span class="nx">workspace</span><span class="p">.</span><span class="nx">masterEventFolder</span><span class="p">;</span>
+</pre></div>
+
+<p>And to delete the newly created event:</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">studio</span><span class="p">.</span><span class="nx">project</span><span class="p">.</span><span class="nx">deleteObject</span><span class="p">(</span><span class="nx">myEvent</span><span class="p">);</span>
+</pre></div>
+
+<h3 id="checking-the-tool-version"><a href="#checking-the-tool-version">25.3.2 Checking the Tool Version</a></h3>
+<p>Studio provides the <code>studio.version</code> script object which allows you to check the tool version. It is good practice to check the tool version before installing script functionality. For example:</p>
+<div class="highlight language-javascript"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="nx">studio</span><span class="p">.</span><span class="nx">version</span><span class="p">.</span><span class="nx">productVersion</span> <span class="o">==</span> <span class="mi">2</span> <span class="o">&amp;&amp;</span> <span class="nx">studio</span><span class="p">.</span><span class="nx">version</span><span class="p">.</span><span class="nx">majorVersion</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// add menu bar items</span>
+<span class="p">}</span>
+</pre></div>
+
+<h3 id="modifying-the-global-context"><a href="#modifying-the-global-context">25.3.3 Modifying the Global Context</a></h3>
+<p>When Studio loads script within your Javascript files, it executes within its own scope. This means that if you declare a function called <code>foo()</code>, you will still not be able to call <code>foo()</code> directly from the shell interface. To register functions that can be called globally, you must attach them to the global context. For example:</p>
+<div class="highlight language-javascript"><pre><span></span><span class="kd">var</span> <span class="nx">global</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+<span class="nx">global</span><span class="p">.</span><span class="nx">foo</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;Hello!&quot;</span><span class="p">);</span> <span class="p">}</span>
+</pre></div>
+
+<h3 id="custom-menus"><a href="#custom-menus">25.3.4 Custom Menus</a></h3>
+<p>The <a href="scripting-api-reference-menu.html">studio.menu</a> module provides access to menu bar items and functionality. The script below demonstrates using this module to do the following:</p>
+<ul>
+<li>Creating menu items that execute a function when selected.</li>
+<li>Binding a menu item to a key combination.</li>
+<li>Conditionally enabling a menu item.</li>
+<li>Creating a separator between menu items.</li>
+<li>Checking a menu item with a checkmark.</li>
+<li>Using a function from the <a href="scripting-api-reference-window.html">studio.window</a> module to display what is currently selected in the active window, in this case the browser.</li>
+<li>Dynamically creating a submenu.</li>
+</ul>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">studio</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">addMenuItem</span><span class="p">({</span>
+    <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;Greetings\\Say Hello&quot;</span><span class="p">,</span>
+    <span class="nx">execute</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;Hello&quot;</span><span class="p">);</span> <span class="p">},</span>
+    <span class="nx">keySequence</span><span class="o">:</span> <span class="s2">&quot;Ctrl+H&quot;</span><span class="p">,</span>
+<span class="p">});</span>
+
+<span class="nx">studio</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">addMenuItem</span><span class="p">({</span>
+    <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;Greetings\\Say Bye&quot;</span><span class="p">,</span>
+    <span class="nx">execute</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;Bye&quot;</span><span class="p">);</span> <span class="p">},</span>
+    <span class="nx">isEnabled</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+<span class="p">});</span>
+
+<span class="nx">studio</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">addMenuItem</span><span class="p">({</span> <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;Greetings\\----&quot;</span> <span class="p">});</span> <span class="c1">// use all &#39;-&#39; characters to create a separator</span>
+
+<span class="nx">studio</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">addMenuItem</span><span class="p">({</span>
+    <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;Greetings\\Say Checked&quot;</span><span class="p">,</span>
+    <span class="nx">execute</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;Checked toggled&quot;</span><span class="p">);</span> <span class="k">this</span><span class="p">.</span><span class="nx">isChecked</span> <span class="o">=</span> <span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">isChecked</span><span class="p">;</span> <span class="p">},</span>
+    <span class="nx">isChecked</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+<span class="p">});</span>
+
+<span class="nx">studio</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">addMenuItem</span><span class="p">({</span>
+    <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;Greetings\\Advanced\\Say what&#39;s Selected&quot;</span><span class="p">,</span>
+    <span class="nx">execute</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">alert</span><span class="p">(</span><span class="nx">studio</span><span class="p">.</span><span class="nb">window</span><span class="p">.</span><span class="nx">browserCurrent</span><span class="p">());</span> <span class="p">},</span>
+    <span class="nx">isVisible</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">studio</span><span class="p">.</span><span class="nb">window</span><span class="p">.</span><span class="nx">browserCurrent</span><span class="p">();</span> <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="nx">studio</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">addMenuItem</span><span class="p">({</span>
+    <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;Greetings\\Dynamic Submenu&quot;</span><span class="p">,</span>
+    <span class="nx">subMenuItems</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">items</span> <span class="o">=</span> <span class="p">[];</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">items</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+                <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;#&quot;</span> <span class="o">+</span> <span class="nx">i</span><span class="p">,</span>
+                <span class="nx">execute</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;Well hello there &quot;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">);</span> <span class="p">},</span>
+            <span class="p">});</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="nx">items</span><span class="p">;</span>
+    <span class="p">},</span>
+<span class="p">});</span>
+</pre></div>
+
+<h3 id="custom-save-build-menu-item"><a href="#custom-save-build-menu-item">25.3.5 Custom Save &amp; Build Menu Item</a></h3>
+<p>The following script demonstrates creating a menu item that, when executed, saves and builds the current project.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">studio</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">addMenuItem</span><span class="p">({</span> <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;Save and Build&quot;</span><span class="p">,</span> <span class="nx">execute</span><span class="o">:</span> <span class="kd">function</span> <span class="nx">buildAndCopy</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">studio</span><span class="p">.</span><span class="nx">project</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
+    <span class="nx">studio</span><span class="p">.</span><span class="nx">project</span><span class="p">.</span><span class="nx">build</span><span class="p">();</span>
+    <span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;Save and Build complete!&quot;</span><span class="p">);</span>
+<span class="p">}});</span>
+</pre></div>
+
+<h3 id="setting-master-volume"><a href="#setting-master-volume">25.3.6 Setting Master Volume</a></h3>
+<p>The following script demonstrates accessing the project's <a href="glossary.html#master-bus">master bus</a> and setting its volume:</p>
+<div class="highlight language-javascript"><pre><span></span><span class="kd">var</span> <span class="nx">masterBus</span> <span class="o">=</span> <span class="nx">studio</span><span class="p">.</span><span class="nx">project</span><span class="p">.</span><span class="nx">workspace</span><span class="p">.</span><span class="nx">mixer</span><span class="p">.</span><span class="nx">masterBus</span><span class="p">;</span>
+<span class="nx">masterBus</span><span class="p">.</span><span class="nx">volume</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span><span class="p">;</span>
+</pre></div>
+
+<h3 id="selecting-an-event-and-setting-timeline-position"><a href="#selecting-an-event-and-setting-timeline-position">25.3.7 Selecting an Event and Setting Timeline Position</a></h3>
+<p>The following script demonstrates, given an event's <a href="advanced-topics.html#guids">GUID</a>, opening the event in the <a href="glossary.html#event-editor-window">event editor</a>, and scrubbing to a specific <a href="glossary.html#cursor">cursor</a> position on the event's [timeline]. To test this, you can retrieve the GUID of an event in your project by right-clicking on it in the event editor and selecting "Copy GUID", and replacing the placeholder GUID assigned to <code>eventGUID</code> with the copied GUID.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="kd">var</span> <span class="nx">eventGUID</span> <span class="o">=</span> <span class="s2">&quot;{aabe5118-c144-4dc3-839a-ff52a2b49162}&quot;</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">timelinePos</span> <span class="o">=</span> <span class="mf">2.3</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">event</span> <span class="o">=</span> <span class="nx">studio</span><span class="p">.</span><span class="nx">project</span><span class="p">.</span><span class="nx">lookup</span><span class="p">(</span><span class="nx">eventGUID</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">studio</span><span class="p">.</span><span class="nb">window</span><span class="p">.</span><span class="nx">navigateTo</span><span class="p">(</span><span class="nx">event</span><span class="p">);</span>
+    <span class="nx">event</span><span class="p">.</span><span class="nx">timeline</span><span class="p">.</span><span class="nx">setCursorPosition</span><span class="p">(</span><span class="nx">timelinePos</span><span class="p">);</span>
+    <span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;Opened and scrubbed: &quot;</span> <span class="o">+</span> <span class="nx">event</span><span class="p">.</span><span class="nx">name</span><span class="p">);</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;Could not find event: &quot;</span> <span class="o">+</span> <span class="nx">eventGUID</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+
+<h3 id="adding-a-new-audio-track-to-the-selected-event"><a href="#adding-a-new-audio-track-to-the-selected-event">25.3.8 Adding a New Audio Track to the Selected Event</a></h3>
+<p>The following script adds a new <a href="glossary.html#audio-track">audio track</a> to the event currently selected in the <a href="glossary.html#events-browser">events browser</a>, prompting the user for its name, and connecting it to an event and the event's master track.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">studio</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">addMenuItem</span><span class="p">({</span> <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;Add Audio Track&quot;</span><span class="p">,</span>
+    <span class="nx">isEnabled</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="kd">var</span> <span class="nx">event</span> <span class="o">=</span> <span class="nx">studio</span><span class="p">.</span><span class="nb">window</span><span class="p">.</span><span class="nx">browserCurrent</span><span class="p">();</span> <span class="k">return</span> <span class="nx">event</span> <span class="o">&amp;&amp;</span> <span class="nx">event</span><span class="p">.</span><span class="nx">isOfExactType</span><span class="p">(</span><span class="s2">&quot;Event&quot;</span><span class="p">);</span> <span class="p">},</span>
+    <span class="nx">execute</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">trackName</span> <span class="o">=</span> <span class="nx">studio</span><span class="p">.</span><span class="nx">system</span><span class="p">.</span><span class="nx">getText</span><span class="p">(</span><span class="s2">&quot;Name of new group track:&quot;</span><span class="p">,</span> <span class="s2">&quot;New Track&quot;</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">trackName</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">event</span> <span class="o">=</span> <span class="nx">studio</span><span class="p">.</span><span class="nb">window</span><span class="p">.</span><span class="nx">browserCurrent</span><span class="p">();</span>
+            <span class="kd">var</span> <span class="nx">track</span> <span class="o">=</span> <span class="nx">studio</span><span class="p">.</span><span class="nx">project</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s2">&quot;GroupTrack&quot;</span><span class="p">);</span>
+            <span class="nx">track</span><span class="p">.</span><span class="nx">mixerGroup</span><span class="p">.</span><span class="nx">output</span> <span class="o">=</span> <span class="nx">event</span><span class="p">.</span><span class="nx">mixer</span><span class="p">.</span><span class="nx">masterBus</span><span class="p">;</span>
+            <span class="nx">track</span><span class="p">.</span><span class="nx">mixerGroup</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">trackName</span><span class="p">;</span>
+            <span class="nx">event</span><span class="p">.</span><span class="nx">relationships</span><span class="p">.</span><span class="nx">groupTracks</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">track</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+<span class="p">});</span>
+</pre></div>
+
+<h3 id="creating-a-multi-instrument-and-adding-instruments-to-its-playlist"><a href="#creating-a-multi-instrument-and-adding-instruments-to-its-playlist">25.3.9 Creating a Multi-Instrument and Adding Instruments to its Playlist</a></h3>
+<p>The following script demonstrates creating a function that, when passed an event, adds a <a href="glossary.html#multi-instrument">multi-instrument</a> to its <a href="glossary.html#master-track">master track</a>, and adds already existing <a href="glossary.html#audio-file">audio files</a> named "sound1.wav" and "sound2.wav" to the multi-instrument's <a href="glossary.html#playlist">playlist</a>. </p>
+<div class="highlight language-javascript"><pre><span></span><span class="kd">function</span> <span class="nx">createMulti</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">track</span> <span class="o">=</span> <span class="nx">event</span><span class="p">.</span><span class="nx">masterTrack</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">multiInstrument</span> <span class="o">=</span> <span class="nx">track</span><span class="p">.</span><span class="nx">addSound</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">timeline</span><span class="p">,</span> <span class="s1">&#39;MultiSound&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+
+    <span class="kd">var</span> <span class="nx">singleInstrument1</span> <span class="o">=</span> <span class="nx">studio</span><span class="p">.</span><span class="nx">project</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s1">&#39;SingleSound&#39;</span><span class="p">);</span>
+    <span class="nx">singleInstrument1</span><span class="p">.</span><span class="nx">audioFile</span> <span class="o">=</span> <span class="nx">studio</span><span class="p">.</span><span class="nx">project</span><span class="p">.</span><span class="nx">workspace</span><span class="p">.</span><span class="nx">masterAssetFolder</span><span class="p">.</span><span class="nx">getAsset</span><span class="p">(</span><span class="s2">&quot;sound1.wav&quot;</span><span class="p">);</span>
+    <span class="nx">singleInstrument1</span><span class="p">.</span><span class="nx">owner</span> <span class="o">=</span> <span class="nx">multiInstrument</span><span class="p">;</span>
+
+    <span class="kd">var</span> <span class="nx">singleInstrument2</span> <span class="o">=</span> <span class="nx">studio</span><span class="p">.</span><span class="nx">project</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s1">&#39;SingleSound&#39;</span><span class="p">);</span>
+    <span class="nx">singleInstrument2</span><span class="p">.</span><span class="nx">audioFile</span> <span class="o">=</span> <span class="nx">studio</span><span class="p">.</span><span class="nx">project</span><span class="p">.</span><span class="nx">workspace</span><span class="p">.</span><span class="nx">masterAssetFolder</span><span class="p">.</span><span class="nx">getAsset</span><span class="p">(</span><span class="s2">&quot;sound2.wav&quot;</span><span class="p">);</span>
+    <span class="nx">singleInstrument2</span><span class="p">.</span><span class="nx">owner</span> <span class="o">=</span> <span class="nx">multiInstrument</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+<h3 id="sort-audio-files-after-theyre-imported"><a href="#sort-audio-files-after-theyre-imported">25.3.10 Sort Audio Files After They're Imported</a></h3>
+<p>The following script demonstrates using the <a href="scripting-api-reference-project.html#projectaudiofileimportedconnect">audioFileImported</a> callback to have Studio automatically call a function when an <a href="glossary.html#audio-file">audio file</a> is imported. In this case, the function <code>postAudioFileImported</code> will take the first three letters of the imported audio file as a prefix for sorting, and, if a folder with the prefix exists, moves the imported audio file to that folder.</p>
+<div class="highlight language-javascript"><pre><span></span><span class="kd">function</span> <span class="nx">postAudioFileImported</span><span class="p">(</span><span class="nx">audioFile</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// Tries to put &#39;abc_sound.wav&#39; into the &#39;ABC&#39; folder if it exists</span>
+
+    <span class="c1">// Parse newly imported audio file&#39;s name for prefix</span>
+    <span class="kd">var</span> <span class="nx">filePath</span> <span class="o">=</span> <span class="nx">audioFile</span><span class="p">.</span><span class="nx">assetPath</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">);</span>
+    <span class="kd">var</span> <span class="nx">fileName</span> <span class="o">=</span> <span class="nx">filePath</span><span class="p">[</span><span class="nx">filePath</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">];</span>
+    <span class="kd">var</span> <span class="nx">prefix</span> <span class="o">=</span> <span class="nx">fileName</span><span class="p">.</span><span class="nx">substr</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">).</span><span class="nx">toUpperCase</span><span class="p">();</span>
+    <span class="c1">// If file isn&#39;t imported to root folder, it doesn&#39;t need to be sorted - return early</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">filePath</span><span class="p">.</span><span class="nx">length</span> <span class="o">!==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">fileName</span> <span class="o">+</span> <span class="s2">&quot; isn&#39;t in the root folder -- file imported to a specific folder, sorting will be skipped&quot;</span><span class="p">);</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">fileName</span> <span class="o">+</span> <span class="s2">&quot; has the prefix &quot;</span> <span class="o">+</span> <span class="nx">prefix</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Iterate over master assets folder for sub-folder that matches prefix</span>
+    <span class="kd">var</span> <span class="nx">folderFound</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">assets</span> <span class="o">=</span> <span class="nx">studio</span><span class="p">.</span><span class="nx">project</span><span class="p">.</span><span class="nx">workspace</span><span class="p">.</span><span class="nx">masterAssetFolder</span><span class="p">.</span><span class="nx">assets</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">assets</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">assets</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">isOfType</span><span class="p">(</span><span class="s2">&quot;EncodableAsset&quot;</span><span class="p">))</span> <span class="p">{</span>
+
+            <span class="kd">var</span> <span class="nx">folderName</span> <span class="o">=</span> <span class="nx">assets</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">assetPath</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">);</span>
+            <span class="nx">folderName</span> <span class="o">=</span> <span class="nx">folderName</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="nx">folderName</span> <span class="o">===</span> <span class="nx">prefix</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Folder found that matches prefix &quot;</span> <span class="o">+</span> <span class="nx">prefix</span> <span class="o">+</span> <span class="s2">&quot; -- moving file to matching folder&quot;</span><span class="p">);</span>
+                <span class="nx">folderFound</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+                <span class="nx">audioFile</span><span class="p">.</span><span class="nx">setAssetPath</span><span class="p">(</span><span class="nx">assets</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">assetPath</span> <span class="o">+</span> <span class="nx">fileName</span><span class="p">);</span>
+                <span class="k">return</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">folderFound</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;No folder matching prefix &quot;</span> <span class="o">+</span> <span class="nx">prefix</span> <span class="o">+</span> <span class="s2">&quot; found -- leaving imported file as is&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="c1">// Connect our function to the audioFileImported callback</span>
+<span class="nx">studio</span><span class="p">.</span><span class="nx">project</span><span class="p">.</span><span class="nx">audioFileImportedConnect</span><span class="p">(</span><span class="nx">postAudioFileImported</span><span class="p">);</span>
+</pre></div></div>
+
+<p class="manual-footer">FMOD Studio User Manual 2.03.15 (2026-09-21). &copy; 2026 Firelight Technologies Pty Ltd.</p>
+</div>
+</body>
+</html>
+

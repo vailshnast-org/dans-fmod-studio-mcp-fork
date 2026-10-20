@@ -1,0 +1,230 @@
+<html>
+<head>
+<title>Scripting API Reference | System</title>
+<link rel="stylesheet" href="style/docs.css">
+<link rel="stylesheet" href="style/code_highlight.css">
+<script type="text/javascript" src="scripts/language-selector.js"></script></head>
+<body>
+<div class="docs-body">
+<div class="manual-toc">
+<p>FMOD Studio User Manual 2.03</p>
+<ul>
+<li><a href="welcome-to-fmod-studio.html">Welcome to FMOD Studio</a></li>
+<li><a href="fmod-studio-concepts.html">FMOD Studio Concepts</a></li>
+<li><a href="organizing-the-project.html">Organizing the Project</a></li>
+<li><a href="authoring-events.html">Authoring Events</a></li>
+<li><a href="working-with-instruments.html">Working with Instruments</a></li>
+<li><a href="managing-assets.html">Managing Assets</a></li>
+<li><a href="parameters.html">Parameters</a></li>
+<li><a href="getting-events-into-your-game.html">Getting Events into Your Game</a></li>
+<li><a href="mixing.html">Mixing</a></li>
+<li><a href="the-sandbox.html">The Sandbox</a></li>
+<li><a href="editing-during-live-update.html">Editing During Live Update</a></li>
+<li><a href="profiling.html">Profiling</a></li>
+<li><a href="dialogue-and-localization.html">Dialogue and Localization</a></li>
+<li><a href="using-source-control.html">Using Source Control</a></li>
+<li><a href="supporting-downloadable-and-user-generated-content.html">Supporting Downloadable and User-generated Content</a></li>
+<li><a href="advanced-topics.html">Advanced Topics</a></li>
+<li><a href="quick-start-tutorial.html">Quick Start Tutorial</a></li>
+<li><a href="effect-reference.html">Effect Reference</a></li>
+<li><a href="event-macro-controls-reference.html">Event Macros Drawer Reference</a></li>
+<li><a href="instrument-reference.html">Instrument Reference</a></li>
+<li><a href="keyboard-shortcut-reference.html">Keyboard Shortcut Reference</a></li>
+<li><a href="modulator-reference.html">Modulator Reference</a></li>
+<li><a href="parameters-reference.html">Parameters Reference</a></li>
+<li><a href="plugin-reference.html">Plug-in Reference</a></li>
+<li><a href="scripting-terminal-reference.html">Scripting</a></li>
+<li class="manual-current-chapter manual-inactive-chapter"><a href="scripting-api-reference.html">Scripting API Reference</a><ul class="subchapters"><li><a href="scripting-api-reference-globals.html">Globals</a></li><li><a href="scripting-api-reference-menu.html">Menu</a></li><li><a href="scripting-api-reference-project.html">Project</a></li><li><a href="scripting-api-reference-project-entity.html">Project.Entity</a></li><li><a href="scripting-api-reference-project-managedobject.html">Project.ManagedObject</a></li><li><a href="scripting-api-reference-project-model.html">Project.Model</a></li><li><a href="scripting-api-reference-project-model-asset.html">Project.Model.Asset</a></li><li><a href="scripting-api-reference-project-model-automatableobject.html">Project.Model.AutomatableObject</a></li><li><a href="scripting-api-reference-project-model-automationcurve.html">Project.Model.AutomationCurve</a></li><li><a href="scripting-api-reference-project-model-automator.html">Project.Model.Automator</a></li><li><a href="scripting-api-reference-project-model-bank.html">Project.Model.Bank</a></li><li><a href="scripting-api-reference-project-model-event.html">Project.Model.Event</a></li><li><a href="scripting-api-reference-project-model-folder.html">Project.Model.Folder</a></li><li><a href="scripting-api-reference-project-model-mixereffect.html">Project.Model.MixerEffect</a></li><li><a href="scripting-api-reference-project-model-mixerstrip.html">Project.Model.MixerStrip</a></li><li><a href="scripting-api-reference-project-model-modulator.html">Project.Model.Modulator</a></li><li><a href="scripting-api-reference-project-model-parameter.html">Project.Model.Parameter</a></li><li><a href="scripting-api-reference-project-model-sound.html">Project.Model.Sound</a></li><li><a href="scripting-api-reference-project-model-track.html">Project.Model.Track</a></li><li><a href="scripting-api-reference-project-model-triggerable.html">Project.Model.Triggerable</a></li><li><a href="scripting-api-reference-project-workspace.html">Project.Workspace</a></li><li class="manual-current-chapter manual-active-chapter"><a href="scripting-api-reference-system.html">System</a></li><li><a href="scripting-api-reference-ui.html">UI</a></li><li><a href="scripting-api-reference-window.html">Window</a></li></ul></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="glossary.html">Glossary</a></li>
+<li><a href="appendix-a-celeste.html">Appendix: Celeste Getting Started Guide</a></li>
+<li><a href="appendix-b-reaper-integration.html">Appendix: Reaper Integration</a></li>
+</ul>
+</div>
+<div class="manual-content studio">
+<h1>26. Scripting API Reference | System</h1>
+<div class="toc">
+<ul>
+<li><a href="#module-system">Module: System</a><ul>
+<li><a href="#systemrequirefilename">system.require(fileName)</a></li>
+<li><a href="#systembacktrace">system.backtrace()</a></li>
+<li><a href="#systemverbosemsg">system.verbose(msg)</a></li>
+<li><a href="#systemprintmsg">system.print(msg)</a></li>
+<li><a href="#systemwarnmsg">system.warn(msg)</a></li>
+<li><a href="#systemerrormsg">system.error(msg)</a></li>
+<li><a href="#systemmessagemsg">system.message(msg)</a></li>
+<li><a href="#systemquestionmsg">system.question(msg)</a></li>
+<li><a href="#systemgettextmsg-defaulttext">system.getText(msg[, defaultText])</a></li>
+<li><a href="#systemgetnumbermsg-defaulttext">system.getNumber(msg[, defaultText])</a></li>
+<li><a href="#systemstartpathtoexecutable-processoptions">system.start(pathToExecutable, processOptions)</a></li>
+<li><a href="#systemstartasyncpathtoexecutable-processoptions">system.startAsync(pathToExecutable, processOptions)</a></li>
+<li><a href="#systemreaddirfilepath-readdirfiltersflag">system.readDir(filePath, readDirFiltersFlag)</a></li>
+<li><a href="#systemreaddirfilters">system.readDirFilters</a></li>
+<li><a href="#systemgetfilefilepath">system.getFile(filePath)</a></li>
+<li><a href="#systemopenmode">system.openMode</a></li>
+<li><a href="#systempermission">system.permission</a></li>
+</ul>
+</li>
+<li><a href="#class-file">Class: File</a><ul>
+<li><a href="#fileexists">File.exists()</a></li>
+<li><a href="#fileopenopenmodeflag">File.open(openModeFlag)</a></li>
+<li><a href="#filewritetexttext">File.writeText(text)</a></li>
+<li><a href="#filereadtextmaxsize">File.readText(maxSize)</a></li>
+<li><a href="#filewritebinarybytearray">File.writeBinary(byteArray)</a></li>
+<li><a href="#filereadbinarymaxsize">File.readBinary(maxSize)</a></li>
+<li><a href="#fileclose">File.close()</a></li>
+<li><a href="#filecopyfilepath">File.copy(filePath)</a></li>
+<li><a href="#fileremove">File.remove()</a></li>
+<li><a href="#filesize">File.size()</a></li>
+<li><a href="#filepermissions">File.permissions()</a></li>
+<li><a href="#filesetpermissionspermissions">File.setPermissions(permissions)</a></li>
+</ul>
+</li>
+<li><a href="#class-scriptprocess">Class: ScriptProcess</a><ul>
+<li><a href="#scriptprocessisrunning">ScriptProcess.isRunning()</a></li>
+<li><a href="#scriptprocessreadallstandardoutput">ScriptProcess.readAllStandardOutput()</a></li>
+<li><a href="#scriptprocessreadallstandarderror">ScriptProcess.readAllStandardError()</a></li>
+<li><a href="#scriptprocesswritestandardinputtext-timeout">ScriptProcess.writeStandardInput(text, timeout)</a></li>
+<li><a href="#scriptprocesskill">ScriptProcess.kill()</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<h2 id="module-system"><a href="#module-system">Module: System</a></h2>
+<p>The <code>studio.system</code> module provides general system-wide functionality.</p>
+<h3 id="systemrequirefilename"><a href="#systemrequirefilename">system.require(fileName)</a></h3>
+<p>Loads a javascript file as a library. The <code>fileName</code> passed can be either a relative or absolute path. The file being loaded should contain a module. For example:</p>
+<div class="highlight language-javascript"><pre><span></span><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">foobar</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="c1">// implementation</span>
+    <span class="p">},</span>
+<span class="p">};</span>
+</pre></div>
+
+<p>The module can then be used:</p>
+<div class="highlight language-javascript"><pre><span></span><span class="kd">var</span> <span class="nx">MyModule</span> <span class="o">=</span> <span class="nx">studio</span><span class="p">.</span><span class="nx">system</span><span class="p">.</span><span class="nx">require</span><span class="p">(</span><span class="s2">&quot;utils/file_name.js&quot;</span><span class="p">);</span> <span class="c1">// absolute path or file path relative to the script</span>
+<span class="nx">MyModule</span><span class="p">.</span><span class="nx">foobar</span><span class="p">();</span>
+</pre></div>
+
+<p>When loading relative module files, it is recommended that the modules are placed in a different folder, such as a subfolder. This ensures the module's files are not loaded as top-level <a href="scripting-terminal-reference.html#script-files">script files</a>. This loads scripts relative to the script making this call, so it is not possible to use <code>system.require</code> with relative paths from the console.</p>
+<p>Returns the loaded js module object or <code>null</code> if unsuccessful.</p>
+<h3 id="systembacktrace"><a href="#systembacktrace">system.backtrace()</a></h3>
+<p>Returns the callstack as an array of strings.</p>
+<h3 id="systemverbosemsg"><a href="#systemverbosemsg">system.verbose(msg)</a></h3>
+<p>Logs a verbose message.</p>
+<h3 id="systemprintmsg"><a href="#systemprintmsg">system.print(msg)</a></h3>
+<p>Logs a message.</p>
+<h3 id="systemwarnmsg"><a href="#systemwarnmsg">system.warn(msg)</a></h3>
+<p>Logs a warning.</p>
+<h3 id="systemerrormsg"><a href="#systemerrormsg">system.error(msg)</a></h3>
+<p>Logs an error.</p>
+<h3 id="systemmessagemsg"><a href="#systemmessagemsg">system.message(msg)</a></h3>
+<p>Logs a message in a popup dialog (blocking).</p>
+<h3 id="systemquestionmsg"><a href="#systemquestionmsg">system.question(msg)</a></h3>
+<p>Prompts for a 'yes'/'no' response to a given message and returns a boolean value (blocking).</p>
+<h3 id="systemgettextmsg-defaulttext"><a href="#systemgettextmsg-defaulttext">system.getText(msg[, defaultText])</a></h3>
+<p>Prompts for text input and returns the string, or null if cancelled (blocking).</p>
+<h3 id="systemgetnumbermsg-defaulttext"><a href="#systemgetnumbermsg-defaulttext">system.getNumber(msg[, defaultText])</a></h3>
+<p>Prompts for numeric input and returns the value, or null if cancelled (blocking).</p>
+<h3 id="systemstartpathtoexecutable-processoptions"><a href="#systemstartpathtoexecutable-processoptions">system.start(pathToExecutable, processOptions)</a></h3>
+<p>Runs an external process with options object <code>{ workingDir, args, timeout (milliseconds) }</code> (blocking).</p>
+<p>Returns a result object <code>{ exitCode, standardOutput, standardError }</code>.</p>
+<h3 id="systemstartasyncpathtoexecutable-processoptions"><a href="#systemstartasyncpathtoexecutable-processoptions">system.startAsync(pathToExecutable, processOptions)</a></h3>
+<p>Runs an external asynchronous process with options object <code>{ workingDir, args }</code>.</p>
+<p>Returns a <a href="#class-scriptprocess">studio.system.ScriptProcess</a> object representing the asynchronous process.</p>
+<h3 id="systemreaddirfilepath-readdirfiltersflag"><a href="#systemreaddirfilepath-readdirfiltersflag">system.readDir(filePath, readDirFiltersFlag)</a></h3>
+<p>Returns a string array from the filters specified by <code>readDirFiltersFlag</code> from the <code>filePath</code>. If <code>readDirFiltersFlag</code> is not defined in the function call, a default of <code>system.readDirFilters.AllEntries</code> will be used. The available options are described by the <a href="#systemreaddirfilters">system.readDirFilters</a> enum.</p>
+<h3 id="systemreaddirfilters"><a href="#systemreaddirfilters">system.readDirFilters</a></h3>
+<p>An enumeration used with <code>studio.system.readDir(filePath, readDirFiltersFlag)</code> to describe the filters in which a string array will be returned. The filter value is specified by combining values from the following list using the bitwise OR operator:</p>
+<ul>
+<li><code>Dirs</code>: List directories that match the filters.</li>
+<li><code>AllDirs</code>: List all directories; i.e. don't apply the filters to directory names.</li>
+<li><code>Files</code>: List files.</li>
+<li><code>Drives</code>: List disk drives (ignored under Unix).</li>
+<li><code>NoSymLinks</code>: Do not list symbolic links (ignored by operating systems that don't support symbolic links).</li>
+<li><code>NoDotAndDotDot</code>: Do not list the special entries "." and "..".</li>
+<li><code>NoDot</code>: Do not list the special entry ".".</li>
+<li><code>NoDotDot</code>: Do not list the special entry "..".</li>
+<li><code>AllEntries</code>: List directories, files, drives and symlinks (this does not list broken symlinks unless you specify System).</li>
+<li><code>Readable</code>: List files for which the application has read access. The Readable value needs to be combined with Dirs or Files.</li>
+<li><code>Writable</code>: List files for which the application has write access. The Writable value needs to be combined with Dirs or Files.</li>
+<li><code>Executable</code>: List files for which the application has execute access. The Executable value needs to be combined with Dirs or Files.</li>
+<li><code>Modified</code>: Only list files that have been modified (ignored on Unix).</li>
+<li><code>Hidden</code>: List hidden files (on Unix, files starting with a ".").</li>
+<li><code>System</code>: List system files (on Unix, FIFOs, sockets and device files are included; on Windows, .lnk files are included).</li>
+<li><code>CaseSensitive</code>: The filter should be case sensitive.</li>
+</ul>
+<h3 id="systemgetfilefilepath"><a href="#systemgetfilefilepath">system.getFile(filePath)</a></h3>
+<p>Returns a <a href="#class-file">studio.system.File</a> object representing the file at <code>filePath</code>.</p>
+<h3 id="systemopenmode"><a href="#systemopenmode">system.openMode</a></h3>
+<p>An enumeration used with <code>studio.system.File.open()</code> to describe the mode in which a file is opened. Possible values are:</p>
+<ul>
+<li><code>ReadOnly</code>: The file is open for reading. </li>
+<li><code>WriteOnly</code>: The file is open for writing. This mode implies <code>Truncate</code>. </li>
+<li><code>ReadWrite</code>: The file is open for reading and writing. </li>
+<li><code>Append</code>: The file is opened in append mode so that all data is written to the end of the file. </li>
+<li><code>Truncate</code>: If possible, the file is truncated before it is opened. All earlier contents of the file are lost.</li>
+</ul>
+<h3 id="systempermission"><a href="#systempermission">system.permission</a></h3>
+<p>An enumeration used with <a href="#filesetpermissionspermissions">studio.system.File.setPermissions()</a> to alter the permissions of a file. The permissions of a file can be queried using <a href="#filepermissions">studio.system.File.permissions</a>. The values may be OR-ed together to test multiple permissions and ownership values. Possible values are:</p>
+<ul>
+<li><code>ReadOwner</code>: The file is readable by the owner of the file.</li>
+<li><code>WriteOwner</code>: The file is writable by the owner of the file.</li>
+<li><code>ExeOwner</code>: The file is executable by the owner of the file.</li>
+<li><code>ReadUser</code>: The file is readable by the user (platform-dependent).</li>
+<li><code>WriteUser</code>: The file is writable by the user (platform-dependent).</li>
+<li><code>ExeUser</code>: The file is executable by the user (platform-dependent).</li>
+<li><code>ReadGroup</code>: The file is readable by the group.</li>
+<li><code>WriteGroup</code>: The file is writable by the group.</li>
+<li><code>ExeGroup</code>: The file is executable by the group.</li>
+<li><code>ReadOther</code>: The file is readable by anyone.</li>
+<li><code>WriteOther</code>: The file is writable by anyone.</li>
+<li><code>ExeOther</code>: The file is executable by anyone.</li>
+<li><code>Exe</code>: The file is executable by everyone.</li>
+<li><code>Write</code>: The file is writable by everyone.</li>
+<li><code>Read</code>: The file is readable by everyone.</li>
+</ul>
+<h2 id="class-file"><a href="#class-file">Class: File</a></h2>
+<p>The <code>studio.system.File</code> object allows for interaction with files on disk. A <code>studio.system.File</code> can be created using <a href="#systemgetfilefilepath">system.getFile()</a>.</p>
+<h3 id="fileexists"><a href="#fileexists">File.exists()</a></h3>
+<p>Returns <code>true</code> if the file the object represents exists on disk, or <code>false</code> otherwise.</p>
+<h3 id="fileopenopenmodeflag"><a href="#fileopenopenmodeflag">File.open(openModeFlag)</a></h3>
+<p>Opens the file in the mode specified by <code>openModeFlag</code>. The available options are described by the <a href="#systemopenmode">system.openMode</a> enum. Returns <code>true</code> if the operation succeeds, or <code>false</code> otherwise.</p>
+<h3 id="filewritetexttext"><a href="#filewritetexttext">File.writeText(text)</a></h3>
+<p>Writes the <code>text</code> to the file as Utf8. Returns the number of bytes that were actually written, or -1 if an error occurred.</p>
+<h3 id="filereadtextmaxsize"><a href="#filereadtextmaxsize">File.readText(maxSize)</a></h3>
+<p>Reads at most <code>maxSize</code> bytes from the file as Utf8 and returns the resulting string.</p>
+<h3 id="filewritebinarybytearray"><a href="#filewritebinarybytearray">File.writeBinary(byteArray)</a></h3>
+<p>Writes the <code>byteArray</code> to the file. Returns the number of bytes that were actually written, or -1 if an error occurred.</p>
+<h3 id="filereadbinarymaxsize"><a href="#filereadbinarymaxsize">File.readBinary(maxSize)</a></h3>
+<p>Reads at most <code>maxSize</code> bytes from the file and returns the result.</p>
+<h3 id="fileclose"><a href="#fileclose">File.close()</a></h3>
+<p>Closes the file and flushes any changes to disk. Returns <code>true</code> if the operation succeeds, or <code>false</code> otherwise.</p>
+<h3 id="filecopyfilepath"><a href="#filecopyfilepath">File.copy(filePath)</a></h3>
+<p>Copies the file to the absolute <code>filePath</code> specified. Directories that don't exist within the <code>filePath</code> will be created as required.</p>
+<h3 id="fileremove"><a href="#fileremove">File.remove()</a></h3>
+<p>Removes the file from disk. The operation is not undoable and the file will not be recoverable from the Recycle Bin on Windows or the Trash on Mac OS X. Returns <code>true</code> if the operation succeeds, or <code>false</code> otherwise.</p>
+<h3 id="filesize"><a href="#filesize">File.size()</a></h3>
+<p>Returns the size of the file in bytes.</p>
+<h3 id="filepermissions"><a href="#filepermissions">File.permissions()</a></h3>
+<p>Returns the complete OR-ed together combination of <a href="#systempermission">system.permission</a> flags if the file exists on disk, or 0 otherwise.</p>
+<h3 id="filesetpermissionspermissions"><a href="#filesetpermissionspermissions">File.setPermissions(permissions)</a></h3>
+<p>Sets the <a href="#systempermission">system.permission</a> flags for the file to the <code>permissions</code> specified. Returns true if successful, or false if the permissions cannot be modified.</p>
+<h2 id="class-scriptprocess"><a href="#class-scriptprocess">Class: ScriptProcess</a></h2>
+<p>The <code>studio.system.ScriptProcess</code> object allows for interaction with a process started using <a href="#systemstartasyncpathtoexecutable-processoptions">system.startAsync()</a>.</p>
+<h3 id="scriptprocessisrunning"><a href="#scriptprocessisrunning">ScriptProcess.isRunning()</a></h3>
+<p>Returns <code>true</code> if the process is running and is ready for reading or writing, or <code>false</code> otherwise.</p>
+<h3 id="scriptprocessreadallstandardoutput"><a href="#scriptprocessreadallstandardoutput">ScriptProcess.readAllStandardOutput()</a></h3>
+<p>Returns all data available from the standard output of the process.</p>
+<h3 id="scriptprocessreadallstandarderror"><a href="#scriptprocessreadallstandarderror">ScriptProcess.readAllStandardError()</a></h3>
+<p>Returns all data available from the standard error of the process.</p>
+<h3 id="scriptprocesswritestandardinputtext-timeout"><a href="#scriptprocesswritestandardinputtext-timeout">ScriptProcess.writeStandardInput(text, timeout)</a></h3>
+<p>Writes the <code>text</code> to the standard input of the process and waits up to <code>timeout</code> number of milliseconds for the process to write back to the standard output.</p>
+<h3 id="scriptprocesskill"><a href="#scriptprocesskill">ScriptProcess.kill()</a></h3>
+<p>Kills the process, causing it to exit immediately.</p></div>
+
+<p class="manual-footer">FMOD Studio User Manual 2.03.15 (2026-09-21). &copy; 2026 Firelight Technologies Pty Ltd.</p>
+</div>
+</body>
+</html>
+

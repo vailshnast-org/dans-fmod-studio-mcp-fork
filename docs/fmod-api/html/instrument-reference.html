@@ -1,0 +1,691 @@
+<html>
+<head>
+<title>Instrument Reference</title>
+<link rel="stylesheet" href="style/docs.css">
+<link rel="stylesheet" href="style/code_highlight.css">
+<script type="text/javascript" src="scripts/language-selector.js"></script></head>
+<body>
+<div class="docs-body">
+<div class="manual-toc">
+<p>FMOD Studio User Manual 2.03</p>
+<ul>
+<li><a href="welcome-to-fmod-studio.html">Welcome to FMOD Studio</a></li>
+<li><a href="fmod-studio-concepts.html">FMOD Studio Concepts</a></li>
+<li><a href="organizing-the-project.html">Organizing the Project</a></li>
+<li><a href="authoring-events.html">Authoring Events</a></li>
+<li><a href="working-with-instruments.html">Working with Instruments</a></li>
+<li><a href="managing-assets.html">Managing Assets</a></li>
+<li><a href="parameters.html">Parameters</a></li>
+<li><a href="getting-events-into-your-game.html">Getting Events into Your Game</a></li>
+<li><a href="mixing.html">Mixing</a></li>
+<li><a href="the-sandbox.html">The Sandbox</a></li>
+<li><a href="editing-during-live-update.html">Editing During Live Update</a></li>
+<li><a href="profiling.html">Profiling</a></li>
+<li><a href="dialogue-and-localization.html">Dialogue and Localization</a></li>
+<li><a href="using-source-control.html">Using Source Control</a></li>
+<li><a href="supporting-downloadable-and-user-generated-content.html">Supporting Downloadable and User-generated Content</a></li>
+<li><a href="advanced-topics.html">Advanced Topics</a></li>
+<li><a href="quick-start-tutorial.html">Quick Start Tutorial</a></li>
+<li><a href="effect-reference.html">Effect Reference</a></li>
+<li><a href="event-macro-controls-reference.html">Event Macros Drawer Reference</a></li>
+<li class="manual-current-chapter manual-active-chapter"><a href="instrument-reference.html">Instrument Reference</a><ul>
+<li><a href="#common-instrument-properties">Common Instrument Properties</a><ul>
+<li><a href="#name-text-field">Name (Text field)</a></li>
+<li><a href="#color-color">Color (Color)</a></li>
+<li><a href="#sheet-tab">Sheet (Tab)</a></li>
+<li><a href="#position-multiple-means-of-editing">Position (Multiple means of editing)</a></li>
+<li><a href="#length-multiple-means-of-editing">Length (Multiple means of editing)</a></li>
+<li><a href="#probability-toggle-button">Probability (Toggle button)</a></li>
+<li><a href="#chance-number-box">Chance (Number box)</a></li>
+<li><a href="#conditions-list-multiple-means-of-editing">Conditions list (Multiple means of editing)</a></li>
+<li><a href="#andor-radio-buttons">AND/OR (Radio buttons)</a></li>
+<li><a href="#parameter-name-text-field">Parameter Name (Text field)</a></li>
+<li><a href="#parameter-range-ribbon-slider">Parameter Range (Ribbon slider)</a></li>
+<li><a href="#parameter-value-dropdown-menu">Parameter Value (Dropdown menu)</a></li>
+<li><a href="#inverted-toggle-button">Inverted (Toggle button)</a></li>
+<li><a href="#polyphony-number-box">Polyphony (Number box)</a></li>
+<li><a href="#stealing-dropdown-menu">Stealing (Dropdown menu)</a></li>
+<li><a href="#timetempo-control-radio-buttons">Time/Tempo control (Radio buttons)</a></li>
+<li><a href="#delay-interval-ribbon-slider">Delay Interval (Ribbon slider)</a></li>
+<li><a href="#quantization-interval-radio-buttons">Quantization Interval (Radio buttons)</a></li>
+</ul>
+</li>
+<li><a href="#single-instrument">Single Instrument</a><ul>
+<li><a href="#content-graphic-graphic">Content Graphic (Graphic)</a></li>
+<li><a href="#fade-curves-mouse-editable-graphics">Fade Curves (Mouse-editable graphics)</a></li>
+<li><a href="#volume-dial">Volume (Dial)</a></li>
+<li><a href="#pitch-number-box">Pitch (Number box)</a></li>
+<li><a href="#start-offset-number-box">Start Offset (Number box)</a></li>
+<li><a href="#async-toggle-button">Async (Toggle button)</a></li>
+<li><a href="#cut-toggle-button">Cut (Toggle button)</a></li>
+<li><a href="#loop-instrument-toggle-button">Loop Instrument (Toggle button)</a></li>
+<li><a href="#play-count-number-box">Play Count (Number box)</a></li>
+<li><a href="#asset-preview-graphic">Asset Preview (Graphic)</a></li>
+</ul>
+</li>
+<li><a href="#multi-instrument">Multi Instrument</a><ul>
+<li><a href="#content-graphic-multiple-means-of-editing">Content Graphic (Multiple means of editing)</a></li>
+<li><a href="#fade-curves-mouse-editable-graphics_1">Fade Curves (Mouse-editable graphics)</a></li>
+<li><a href="#volume-dial_1">Volume (Dial)</a></li>
+<li><a href="#pitch-number-box_1">Pitch (Number box)</a></li>
+<li><a href="#start-offset-number-box_1">Start Offset (Number box)</a></li>
+<li><a href="#async-toggle-button_1">Async (Toggle button)</a></li>
+<li><a href="#cut-toggle-button_1">Cut (Toggle button)</a></li>
+<li><a href="#playlist-selection-mode-dropdown-menu">Playlist Selection Mode (Dropdown menu)</a></li>
+<li><a href="#loop-playlist-toggle-button">Loop Playlist (Toggle button)</a></li>
+<li><a href="#play-count-number-box_1">Play Count (Number box)</a></li>
+<li><a href="#playlist-playlist">Playlist (Playlist)</a></li>
+</ul>
+</li>
+<li><a href="#event-instrument">Event Instrument</a><ul>
+<li><a href="#content-graphic-multiple-means-of-editing_1">Content Graphic (Multiple means of editing)</a></li>
+<li><a href="#fade-curves-mouse-editable-graphics_2">Fade Curves (Mouse-editable graphics)</a></li>
+<li><a href="#volume-dial_2">Volume (Dial)</a></li>
+<li><a href="#pitch-number-box_2">Pitch (Number box)</a></li>
+<li><a href="#start-offset-number-box_2">Start Offset (Number box)</a></li>
+<li><a href="#cut-toggle-button_2">Cut (Toggle button)</a></li>
+<li><a href="#parameter-value-dial">Parameter value (Dial)</a></li>
+</ul>
+</li>
+<li><a href="#scatterer-instrument">Scatterer Instrument</a><ul>
+<li><a href="#fade-curves-mouse-editable-graphics_3">Fade Curves (Mouse-editable graphics)</a></li>
+<li><a href="#volume-dial_3">Volume (Dial)</a></li>
+<li><a href="#pitch-dial">Pitch (Dial)</a></li>
+<li><a href="#timetempo-radio-buttons">Time/Tempo (Radio buttons)</a></li>
+<li><a href="#min-max-spawn-interval-ribbon-slider">Min &amp; Max Spawn Interval (Ribbon slider)</a></li>
+<li><a href="#quantization-interval-radio-buttons_1">Quantization Interval (Radio buttons)</a></li>
+<li><a href="#spawn-rate-dial">Spawn Rate (Dial)</a></li>
+<li><a href="#spawn-total-dial">Spawn Total (Dial)</a></li>
+<li><a href="#vol-rnd-dial">Vol Rnd (Dial)</a></li>
+<li><a href="#pitch-rnd-dial">Pitch Rnd (Dial)</a></li>
+<li><a href="#min-max-scatter-distance-ribbon-slider">Min &amp; Max Scatter Distance (Ribbon slider)</a></li>
+<li><a href="#polyphony-dial">Polyphony (Dial)</a></li>
+<li><a href="#spawn-stealing-radio-buttons">Spawn Stealing (Radio buttons)</a></li>
+<li><a href="#cut-toggle-button_3">Cut (Toggle button)</a></li>
+<li><a href="#playlist-selection-mode-dropdown-menu_1">Playlist Selection Mode (Dropdown menu)</a></li>
+<li><a href="#playlist-playlist_1">Playlist (Playlist)</a></li>
+</ul>
+</li>
+<li><a href="#programmer-instrument">Programmer Instrument</a><ul>
+<li><a href="#placeholder-graphic-multiple-means-of-editing">Placeholder Graphic (Multiple means of editing)</a></li>
+<li><a href="#fade-curves-mouse-editable-graphics_4">Fade Curves (Mouse-editable graphics)</a></li>
+<li><a href="#volume-dial_4">Volume (Dial)</a></li>
+<li><a href="#pitch-number-box_3">Pitch (Number box)</a></li>
+<li><a href="#start-offset-number-box_3">Start Offset (Number box)</a></li>
+<li><a href="#async-toggle-button_2">Async (Toggle button)</a></li>
+<li><a href="#cut-toggle-button_4">Cut (Toggle button)</a></li>
+<li><a href="#loop-instrument-toggle-button_1">Loop Instrument (Toggle button)</a></li>
+<li><a href="#play-count-number-box_2">Play Count (Number box)</a></li>
+<li><a href="#placeholder-preview-multiple-means-of-editing">Placeholder Preview (Multiple means of editing)</a></li>
+</ul>
+</li>
+<li><a href="#command-instrument">Command Instrument</a><ul>
+<li><a href="#command-type-dropdown-menu">Command Type (Dropdown menu)</a></li>
+<li><a href="#target-dropdown-menu">Target (Dropdown menu)</a></li>
+<li><a href="#value-number-box">Value (Number box)</a></li>
+<li><a href="#delta-value-number-box">Delta Value (Number box)</a></li>
+</ul>
+</li>
+<li><a href="#silence-instrument">Silence Instrument</a><ul>
+<li><a href="#duration-dial">Duration (Dial)</a></li>
+</ul>
+</li>
+<li><a href="#snapshot-instrument">Snapshot Instrument</a><ul>
+<li><a href="#fade-curves-mouse-editable-graphics_5">Fade Curves (Mouse-editable graphics)</a></li>
+<li><a href="#snapshot-dropdown-menu">Snapshot (Dropdown menu)</a></li>
+<li><a href="#intensity-dial">Intensity (Dial)</a></li>
+</ul>
+</li>
+<li><a href="#audiomotors2-instrument">AudioMotors2 Instrument</a></li>
+<li><a href="#audiorain-instrument">AudioRain Instrument</a></li>
+<li><a href="#audioweather-instrument">AudioWeather Instrument</a></li>
+<li><a href="#audiowind-instrument">AudioWind Instrument</a></li>
+<li><a href="#haptics-instrument">Haptics Instrument</a><ul>
+<li><a href="#auditioning-support">Auditioning Support</a></li>
+<li><a href="#advanced-haptics-support">Advanced Haptics Support</a></li>
+<li><a href="#clip-data-drop">Clip (Data drop)</a></li>
+<li><a href="#left-dial">Left (Dial)</a></li>
+<li><a href="#right-dial">Right (Dial)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="keyboard-shortcut-reference.html">Keyboard Shortcut Reference</a></li>
+<li><a href="modulator-reference.html">Modulator Reference</a></li>
+<li><a href="parameters-reference.html">Parameters Reference</a></li>
+<li><a href="plugin-reference.html">Plug-in Reference</a></li>
+<li><a href="scripting-terminal-reference.html">Scripting</a></li>
+<li><a href="scripting-api-reference.html">Scripting API Reference</a></li>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="glossary.html">Glossary</a></li>
+<li><a href="appendix-a-celeste.html">Appendix: Celeste Getting Started Guide</a></li>
+<li><a href="appendix-b-reaper-integration.html">Appendix: Reaper Integration</a></li>
+</ul>
+</div>
+<div class="manual-content studio">
+<h1>20. Instrument Reference</h1>
+<p><a href="glossary.html#instrument">Instruments</a> are fundamental to playing audio content in <a href="glossary.html#fmod-studio">FMOD Studio</a>, as well as for triggering certain kinds of behavior. This chapter describes the various types of instrument, as well as detailed information about their properties, behaviors, and features.</p>
+<p>The properties of instruments are found in several different parts of FMOD Studio's interface.</p>
+<p><img alt="Trigger Region" src="images/single-instrument-trigger-region.png" /><br />
+<em>An instrument trigger region.</em></p>
+<p>All instruments are displayed as <a href="glossary.html#trigger-region">trigger regions</a> on the <a href="glossary.html#track">tracks</a> and <a href="glossary.html#action-sheet">action sheets</a> of <a href="glossary.html#event">events</a>. These trigger regions display certain important properties of the instrument at all times.</p>
+<p><img alt="Instrument Deck Panel" src="images/single-instrument-deck.png" /><br />
+<em>An instrument deck panel.</em></p>
+<p>In addition to the properties displayed on their trigger regions, instruments have properties that appear in the deck while the instrument's trigger region is selected in the editor.</p>
+<p><img alt="Trigger Behavior Drawer in Quantization Mode" src="images/trigger-behavior-drawer.png" /> <img alt="Trigger Behavior Drawer In Delay Mode" src="images/trigger-behavior-drawer-delay-mode.png" /></p>
+<p>Finally, additional properties can be found in instruments' <span class="dead-link" href="glossary.html#trigger-behavior-drawer">trigger behavior drawers</span class="dead-link">. Instrument trigger behavior drawers are divided into two sections, "Conditions" and "Delay &amp; Quantization." These sections define the circumstances in which the instrument can be triggered.</p>
+<p>There are three kinds of <a href="glossary.html#trigger-condition">trigger condition</a>: Probability, parameter, and event. Instruments can be given all three kinds, in any combination. For information about how to add trigger conditions to events, see the <a href="working-with-instruments.html#trigger-conditions">Trigger Conditions</a> section of the <a href="working-with-instruments.html">Working with Instruments</a> chapter.</p>
+<h2 id="common-instrument-properties"><a href="#common-instrument-properties">20.1 Common Instrument Properties</a></h2>
+<p>While each type of instrument has a unique list of <span class="dead-link" href="glossary.html#controller">controls</span class="dead-link"> and <span class="dead-link" href="glossary.html#property">properties</span class="dead-link">, there are some features that all instruments have in common.</p>
+<h3 id="name-text-field"><a href="#name-text-field">20.1.1 Name (Text field)</a></h3>
+<p><img alt="Instrument Name and Color" src="images/instrument-name.png" /><br />
+The name of an instrument appears at the top of its trigger region. By default, instruments are named after their instrument type or content. If an instrument's name is something other than its instrument type, its type is parenthetically appended to the name displayed on the trigger region.</p>
+<h3 id="color-color"><a href="#color-color">20.1.2 Color (Color)</a></h3>
+<p><img alt="Instrument Name and Color" src="images/instrument-name.png" /><br />
+The color of an instrument's trigger region has no effect on in-game behavior, but can make the instrument easier to identify at a glance in FMOD Studio. When first created, an instrument's color is determined by its type.</p>
+<h3 id="sheet-tab"><a href="#sheet-tab">20.1.3 Sheet (Tab)</a></h3>
+<p><img alt="Sheet Tabs" src="images/parameterTabBar.png" /><br />
+The action sheet or parameter sheet on which an instrument's trigger region appears determines which parameter or <a href="glossary.html#event-state">event states</a> can trigger the instrument.</p>
+<h3 id="position-multiple-means-of-editing"><a href="#position-multiple-means-of-editing">20.1.4 Position (Multiple means of editing)</a></h3>
+<p>For instruments on parameter sheets, the horizontal position and length of the trigger region defines the range of parameter values that can trigger the instrument. For synchronous instruments, the horizontal position of the trigger region also determines which part of the associated asset plays when the instrument is overlapped by the timeline's playback position.<br />
+<strong>Units</strong>: Parameter units.</p>
+<h3 id="length-multiple-means-of-editing"><a href="#length-multiple-means-of-editing">20.1.5 Length (Multiple means of editing)</a></h3>
+<p>For instruments on parameter sheets, the horizontal position and length of the trigger region defines the range of parameter values that can trigger the instrument. For synchronous instruments, the length of the trigger region also determines when the timeline's playback position stops overlapping the instrument, and thus when the instrument must stop playing.<br />
+<strong>Units</strong>: Parameter units.</p>
+<h3 id="probability-toggle-button"><a href="#probability-toggle-button">20.1.6 Probability (Toggle button)</a></h3>
+<p><img alt="Probability Toggle Button" src="images/probability-toggle-button.png" /><br />
+If toggled on, the instrument has a <span class="dead-link" href="glossary.html#probability-trigger-condition">probability trigger condition</span class="dead-link">. If toggled off, the instrument does not, and the value of the chance property is ignored.</p>
+<p>A probability trigger condition means that there's a chance (defined by the <a href="instrument-reference.html#chance-number-box">chance</a> property, below) that the instrument triggers each time the instrument's other trigger behavior dictates that it should be triggered, i.e.: when the instrument is overlapped by the playback position, the playback position is at a bar or beat to which the instrument is quantized, and either all the instrument's parameter and event trigger conditions are met (if the instrument's AND/OR buttons are set to "AND") or at least one of the instrument's parameter and event trigger conditions are met (if the instrument's AND/OR buttons are set to "OR"). An instrument can have no more than one probability trigger condition.</p>
+<h3 id="chance-number-box"><a href="#chance-number-box">20.1.7 Chance (Number box)</a></h3>
+<p><img alt="Chance Number Box" src="images/chance-number-box.png" /><br />
+This is the percentage chance that the instrument is triggered. This property is checked against a random number each time the instrument's other trigger behavior dictates it should be triggered.<br />
+<strong>Units</strong>: Percentage Points.<br />
+<strong>Automatable.</strong></p>
+<h3 id="conditions-list-multiple-means-of-editing"><a href="#conditions-list-multiple-means-of-editing">20.1.8 Conditions list (Multiple means of editing)</a></h3>
+<p><img alt="Trigger Conditions List" src="images/conditions-list.png" /><br />
+The conditions list contains all the parameter and event conditions associated with the instrument. It does not include the instrument's probability trigger condition, if any. Each event or parameter trigger condition has properties of its own.</p>
+<p>Parameter trigger conditions specify a parameter and a range of values into which that parameter's value must fall for the condition to be true. Event trigger conditions specify <a href="advanced-topics.html#event-state">event states</a> that the event must be in for the condition to be true. An instrument can have any number of event or parameter trigger conditions.</p>
+<h3 id="andor-radio-buttons"><a href="#andor-radio-buttons">20.1.9 AND/OR (Radio buttons)</a></h3>
+<p><img alt="AND/OR Radio Buttons" src="images/and-or-buttons.png" /><br />
+These buttons determine which event or parameter conditions must be met for the instrument to be triggered when there are multiple event or parameter conditions present. If "OR" is selected, only one of the instrument's event or parameter conditions must be met; whereas if "AND" is selected, all of the instrument's event and parameter conditions must be met.</p>
+<h3 id="parameter-name-text-field"><a href="#parameter-name-text-field">20.1.10 Parameter Name (Text field)</a></h3>
+<dl>
+<dt><img alt="Parameter Name" src="images/parameter-trigger-condition-name.png" /></dt>
+<dd>The name of the parameter used by a parameter condition. Changing this property alters the name of the  parameter, not the name of the condition.</dd>
+</dl>
+<h3 id="parameter-range-ribbon-slider"><a href="#parameter-range-ribbon-slider">20.1.11 Parameter Range (Ribbon slider)</a></h3>
+<p><img alt="Parameter Range" src="images/parameter-trigger-condition-range.png" /><br />
+The range of values that the parameter must have for the parameter condition to be met (or not met, if the condition is inverted). This property only appears for parameter conditions based on built-in parameters and discrete and continuous user parameters.</p>
+<h3 id="parameter-value-dropdown-menu"><a href="#parameter-value-dropdown-menu">20.1.12 Parameter Value (Dropdown menu)</a></h3>
+<p><img alt="Parameter Value" src="images/parameter-trigger-condition-value.png" /><br />
+The specific value that the parameter must have for the parameter condition to be met (or not met, if the condition is inverted). This property only appears for parameter conditions based on labeled parameters.</p>
+<h3 id="inverted-toggle-button"><a href="#inverted-toggle-button">20.1.13 Inverted (Toggle button)</a></h3>
+<p><img alt="Inverted Toggle Button" src="images/inverted-button.png" /><br />
+This toggle button determines whether the parameter's value must match or not match the parameter condition's parameter range or parameter value for the condition to be met. If inverted is toggled off, the parameter's value must match the parameter condition's parameter range or value; if it is toggled on, the parameter's value must not match the parameter condition's range or value.</p>
+<h3 id="polyphony-number-box"><a href="#polyphony-number-box">20.1.14 Polyphony (Number box)</a></h3>
+<p><img alt="Polyphony Number Box" src="images/trigger-condition-polyphony.png" /><br />
+Polyphony defines the maximum number of simultaneously playing <span class="dead-link" href="glossary.html#instrument-instance">instances of the instrument</span class="dead-link"> that can be triggered by the parent <a href="glossary.html#event-instance">event instance</a>. If the event instance attempts to trigger a new instance of the instrument while the number of playing instances of that instrument triggered by the same event instance is equal to the polyphony, whether a new instance is played and an existing one culled depends on the instrument's stealing behavior.</p>
+<h3 id="stealing-dropdown-menu"><a href="#stealing-dropdown-menu">20.1.15 Stealing (Dropdown menu)</a></h3>
+<p><img alt="Stealing Mode Dropdown Menu" src="images/trigger-condition-stealing.png" /><br />
+The stealing mode of an instrument determines what happens when the instrument is triggered and playing a new instance of the instrument would cause the number of simultaneously playing instances of that instrument triggered by the same event instance to exceed the instrument's polyphony. If stealing is set to oldest, the oldest instance of the instrument immediately stops as the new instance begins; whereas if stealing is set to none, no instance of the instrument is stopped and no new instance of the instrument begins playing.</p>
+<h3 id="timetempo-control-radio-buttons"><a href="#timetempo-control-radio-buttons">20.1.16 Time/Tempo control (Radio buttons)</a></h3>
+<p><img alt="Time/Tempo Radio Buttons" src="images/trigger-condition-time-tempo.png" /><br />
+If this control is set to time, the instrument waits to play for a period of time after being triggered defined by the delay interval property: If the instrument is asynchronous, it waits for the period of time specified by the delay interval property before playing; and if it is synchronous, it waits for the period of time specified by the delay interval property and then only plays if it is still overlapped by the parameter playback position. If this control is instead set to tempo, the instrument only triggers on specific beats or bars specified by the quantization interval property.</p>
+<h3 id="delay-interval-ribbon-slider"><a href="#delay-interval-ribbon-slider">20.1.17 Delay Interval (Ribbon slider)</a></h3>
+<p><img alt="Delay Interval" src="images/trigger-condition-delay-interval.png" /><br />
+Delay interval defines the period of time that must elapse after the instrument is triggered before it begins playing. If the minimum and maximum values of the ribbon slider are the same, the period of time's length is fixed. If the minimum and maximum values of the ribbon slider differ, the period of time's length is randomized within that range each time the instrument's trigger conditions are met.<br />
+<strong>Units</strong>: Milliseconds or seconds.</p>
+<h3 id="quantization-interval-radio-buttons"><a href="#quantization-interval-radio-buttons">20.1.18 Quantization Interval (Radio buttons)</a></h3>
+<p><img alt="Quantization Interval" src="images/trigger-condition-quantization-interval.png" /><br />
+An instrument's quantization interval specifies on which of the timeline's beats or bars the instrument's trigger conditions are checked while the instrument is overlapped by the playback position. The bar and beat numbers used by this property are those that appear on the timeline when the editor is set to beats mode, as defined by the event's <a href="glossary.html#tempo-marker">tempo markers</a>.</p>
+<h2 id="single-instrument"><a href="#single-instrument">20.2 Single Instrument</a></h2>
+<p>Single instruments are a kind of <a href="glossary.html#instrument">instrument</a> that can hold only one <a href="glossary.html#audio-file">audio file</a>. As such, single instruments lack <a href="glossary.html#playlist">playlists</a>, but otherwise closely resemble <a href="glossary.html#multi-instrument">multi instruments</a>. Single instruments are the foundation of most other instrument types.</p>
+<p><img alt="Trigger Region" src="images/single-instrument-trigger-region.png" /><br />
+<em>A single instrument trigger region.</em></p>
+<p><img alt="Single Instrument Deck Panel" src="images/single-instrument-deck.png" /><br />
+<em>A single instrument deck panel.</em></p>
+<h3 id="content-graphic-graphic"><a href="#content-graphic-graphic">20.2.1 Content Graphic (Graphic)</a></h3>
+<p><img alt="Content graphic" src="images/single-instrument-trigger-region.png" /><br />
+The waveform of the <a href="glossary.html#audio-file">audio asset</a> associated with a single instrument is displayed on its <a href="glossary.html#trigger-region">trigger region</a>. If the instrument is <a href="glossary.html#asynchronous">asynchronous</a>, this content is surrounded by a border. If the instrument is <a href="glossary.html#synchronous">synchronous</a> and its <span class="dead-link" href="glossary.html#play-count">play count</span class="dead-link"> is greater than one, multiple copies of the waveform may be displayed, provided the trigger region is long enough.</p>
+<h3 id="fade-curves-mouse-editable-graphics"><a href="#fade-curves-mouse-editable-graphics">20.2.2 Fade Curves (Mouse-editable graphics)</a></h3>
+<p><img alt="Fade Curves" src="images/single-instrument-fade-curves.png" /><br />
+A fade curve defines how an instrument's volume ramps from silence to full volume when the playback position moves onto the instrument, or how it ramps from full volume to silence when the playback position moves off the instrument. Instruments on action sheets can not have fade curves. Each instrument on a parameter sheet can have one fade curve for its left side, and one fade curve for its right. Instruments do not have fade curves by default.</p>
+<h3 id="volume-dial"><a href="#volume-dial">20.2.3 Volume (Dial)</a></h3>
+<p><img alt="Volume" src="images/instrument-volume.png" /><br />
+Volume defines the gain applied to the instrument's output.<br />
+<strong>Units</strong>: Decibels.<br />
+<strong>Automatable and Modulatable.</strong></p>
+<h3 id="pitch-number-box"><a href="#pitch-number-box">20.2.4 Pitch (Number box)</a></h3>
+<p><img alt="Pitch" src="images/instrument-pitch.png" /><br />
+Pitch defines the amount of pitch adjustment applied to the instrument's output. The pitch properties of instruments on parameter sheets other than the timeline sheet are compatible with <span class="dead-link" href="glossary.html#autopitch-modulator">autopitch modulators</span class="dead-link">.<br />
+<strong>Units</strong>: Semitones.<br />
+<strong>Automatable and Modulatable.</strong></p>
+<h3 id="start-offset-number-box"><a href="#start-offset-number-box">20.2.5 Start Offset (Number box)</a></h3>
+<p><img alt="Start Offset" src="images/start-offset.png" /><br />
+The start offset of a single instrument determines the point within its associated audio asset from which it starts playing when the instrument is triggered, expressed as a percentage of the length of the audio file associated with the instrument. For asynchronous instruments, this directly determines the position from which the associated audio file begins to play when the instrument is triggered. For synchronous instruments, this offset is added to the position of the <a href="glossary.html#playback-position">playback position</a> inside the instrument's waveform, and so is an exception to the rule that the part of a single instrument's waveform that plays is the part of the waveform that's overlapped by the playback position.<br />
+<strong>Units</strong>: Percentage points.<br />
+<strong>Automatable and Modulatable.</strong></p>
+<h3 id="async-toggle-button"><a href="#async-toggle-button">20.2.6 Async (Toggle button)</a></h3>
+<p><img alt="Async Toggle Button" src="images/single-instrument-async.png" /><br />
+A single instrument's synchronous or asynchronous state determines whether it is possible to seek or scrub within the waveform displayed on its trigger region. If an instrument is synchronous, the section of the waveform underneath the timeline playback position is the part of the asset that plays while the instrument is triggered; whereas if the instrument is asychronous, the playback position's location on the instrument has no effect on which part of the associated asset plays. Instruments on parameters other than the timeline are always asynchronous. For more information about synchronous and asynchronous instruments, see the <a href="working-with-instruments.html#synchronous-and-asynchronous-instruments">Synchronous and Asynchronous Instruments</a> section of the <a href="working-with-instruments.html">Working With Instruments</a> chapter.</p>
+<h3 id="cut-toggle-button"><a href="#cut-toggle-button">20.2.7 Cut (Toggle button)</a></h3>
+<p><img alt="Cut Toggle Button" src="images/cut-button.png" /><br />
+An asynchronous instrument's cut mode determines whether it stops playing when its <a href="glossary.html#trigger-condition">trigger conditions</a> cease being met. The cut toggle button only appears in the deck of asynchronous instruments.</p>
+<h3 id="loop-instrument-toggle-button"><a href="#loop-instrument-toggle-button">20.2.8 Loop Instrument (Toggle button)</a></h3>
+<p><img alt="Loop Instrument Toggle Button" src="images/single-instrument-loop-instrument.png" /><br />
+Looping a synchronous instrument causes it to loop in accordance with its play count property. Specifically, the play count of a synchronous instrument is the number of times its content graphic is iterated on that instrument's trigger region, limited by the amount of horizontal space on that trigger region; whereas the play count of an asynchronous instrument is the number of times that instrument plays its associated audio file when triggered. This toggle button is visually identical to the Loop Playlist button found on multi instruments, but differs in function.</p>
+<h3 id="play-count-number-box"><a href="#play-count-number-box">20.2.9 Play Count (Number box)</a></h3>
+<p><img alt="Play Count Enabled" src="images/play-count-enabled.png" /> <img alt="Play Count Disabled" src="images/play-count-disabled.png" /><br />
+This property is only available for instruments whose loop instrument toggle buttons are enabled. It determines the number of times that instrument can loop, as described in the sections on those toggle buttons. If this property is infinite on an asynchronous instrument, the associated instrument or playlist will finish playing out its current loop when the instrument is <a href="glossary.html#untrigger">untriggered</a>, then stop; but if it is finite, it will loop a number of times equal to play count even if the instrument is untriggered before it is finished.</p>
+<h3 id="asset-preview-graphic"><a href="#asset-preview-graphic">20.2.10 Asset Preview (Graphic)</a></h3>
+<p><img alt="Asset Preview" src="images/single-instrument-asset-preview.png" /><br />
+The waveform of the audio asset associated with a single instrument is displayed in its <span class="dead-link" href="glossary.html#asset-preview">asset preview</span class="dead-link">.</p>
+<h2 id="multi-instrument"><a href="#multi-instrument">20.3 Multi Instrument</a></h2>
+<p>A multi instrument is a kind of <a href="glossary.html#instrument">instrument</a> with a <a href="glossary.html#playlist">playlist</a>. When the instrument is <a href="glossary.html#trigger">triggered</a>, an item from its playlist is selected for play. A multi instrument's playlist can contain nearly any kind of instrument, including <a href="glossary.html#single-instrument">single instruments</a>, <a href="glossary.html#event-instrument">event instruments</a>, <a href="glossary.html#programmer-instrument">programmer instruments</a>, <a href="glossary.html#command-instrument">command instruments</a>, <a href="glossary.html#silence-instrument">silence instruments</a>, and other multi instruments.</p>
+<p><img alt="Trigger Region" src="images/multi-instrument-trigger-region.png" /><br />
+<em>A multi instrument trigger region.</em></p>
+<p><img alt="Multi Instrument Deck Panel" src="images/multi-instrument-deck.png" /><br />
+<em>A multi instrument deck panel.</em></p>
+<h3 id="content-graphic-multiple-means-of-editing"><a href="#content-graphic-multiple-means-of-editing">20.3.1 Content Graphic (Multiple means of editing)</a></h3>
+<p><img alt="Content graphic" src="images/multi-instrument-trigger-region.png" /><br />
+The waveforms and timelines of the instruments in a multi instrument's playlist are displayed on its trigger region. If there is enough room, each playlist entry's content is marked by a letter in a circle, corresponding to the letter that appears on that playlist entry in the deck. If the instrument is asynchronous, each playlist entry's content is surrounded by a border.</p>
+<h3 id="fade-curves-mouse-editable-graphics_1"><a href="#fade-curves-mouse-editable-graphics_1">20.3.2 Fade Curves (Mouse-editable graphics)</a></h3>
+<p><img alt="Fade Curves" src="images/instrument-fade-curves.png" /><br />
+A fade curve defines how an instrument's volume ramps from silence to full volume when the playback position moves onto the instrument, or how it ramps from full volume to silence when the playback position moves off the instrument. Instruments on action sheets can not have fade curves. Each instrument on a parameter sheet can have one fade curve for its left side, and one fade curve for its right. Instruments do not have fade curves by default.</p>
+<h3 id="volume-dial_1"><a href="#volume-dial_1">20.3.3 Volume (Dial)</a></h3>
+<p><img alt="Volume" src="images/instrument-volume.png" /><br />
+Volume defines the gain applied to the instrument's output.<br />
+<strong>Units</strong>: Decibels.<br />
+<strong>Automatable and Modulatable.</strong></p>
+<h3 id="pitch-number-box_1"><a href="#pitch-number-box_1">20.3.4 Pitch (Number box)</a></h3>
+<p><img alt="Pitch" src="images/instrument-pitch.png" /><br />
+Pitch defines the amount of pitch adjustment applied to the instrument's output. The pitch properties of instruments on parameter sheets other than the timeline sheet are compatible with <span class="dead-link" href="glossary.html#autopitch-modulator">autopitch modulators</span class="dead-link">.<br />
+<strong>Units</strong>: Semitones.<br />
+<strong>Automatable and Modulatable.</strong></p>
+<h3 id="start-offset-number-box_1"><a href="#start-offset-number-box_1">20.3.5 Start Offset (Number box)</a></h3>
+<p><img alt="Start Offset" src="images/start-offset.png" /><br />
+The start offset of a multi instrument determines the point within the first playlist entry it selects to play from when the instrument is triggered, expressed as a percentage of the length of that playlist entry. It only affects the first playlist entry selected each time the instrument is triggered. In asynchronous instruments, this directly determines the position from which the associated <a href="glossary.html#audio-file">audio file</a> begins to play when the instrument is triggered. For single, multi, and event instrument playlist entries in synchronous instruments, this offset is added to the position of the playback position inside the instrument's waveform, and so is an exception to the rule that the part of a single instrument's waveform that plays is the part of the waveform that's overlapped by the playback position.<br />
+<strong>Units</strong>: Percentage points.<br />
+<strong>Automatable and Modulatable.</strong></p>
+<h3 id="async-toggle-button_1"><a href="#async-toggle-button_1">20.3.6 Async (Toggle button)</a></h3>
+<p><img alt="Async Button" src="images/multi-instrument-async.png" /><br />
+An instrument's synchronous or asynchronous state determines whether it is possible to seek or scrub within the waveforms displayed on its trigger region. If an instrument is synchronous, the section of the waveform underneath the timeline playback position is the part of the asset that plays while the instrument is triggered; whereas if the instrument is asynchronous, the playback position's location on the instrument has no effect on which part of the associated assets play. Instruments on parameters other than the timeline are always asynchronous. For more information about synchronous and asynchronous instruments, see the <a href="working-with-instruments.html#synchronous-and-asynchronous-instruments">Synchronous and Asynchronous Instruments</a> section of the <a href="working-with-instruments.html">Working With Instruments</a> chapter.</p>
+<h3 id="cut-toggle-button_1"><a href="#cut-toggle-button_1">20.3.7 Cut (Toggle button)</a></h3>
+<p><img alt="Cut Button" src="images/multi-instrument-async.png" /><br />
+An asynchronous instrument's cut mode determines whether it stops playing when its <a href="glossary.html#trigger-condition">trigger conditions</a> cease being met. The cut toggle button only appears in the deck of asynchronous instruments.</p>
+<h3 id="playlist-selection-mode-dropdown-menu"><a href="#playlist-selection-mode-dropdown-menu">20.3.8 Playlist Selection Mode (Dropdown menu)</a></h3>
+<p><img alt="Playlist Selection Mode Dropdown Menu" src="images/playlist-selection-mode.png" /><br />
+This property represents the <a href="glossary.html#playlist-selection-mode">playlist selection mode</a> of the instrument's playlist. There are four playlist selection modes:</p>
+<ul>
+<li><strong>Shuffle.</strong> Items in the <a href="glossary.html#playlist">playlist</a> are selected for playback in random order. In addition, as long as the playlist contains at least three instruments and does not include play percentages, no instrument in that playlist will be selected twice in a row.</li>
+<li><strong>Randomize.</strong> Items in the playlist are selected for playback in random order. The frequency and recency with which items have been selected in the past has no bearing on the probability of those items being selected in future.</li>
+<li><strong>Sequential - play scope.</strong> Items in the playlist are selected for playback in the order in which they appear. When determining which items have already been selected, the playlist takes into account items selected in the current <a href="glossary.html#event-instance">event instance</a> and since the start of that event instance.</li>
+<li><strong>Sequential - global scope.</strong> Items in the playlist are selected for playback in the order in which they appear. When determining which items have already been selected, the playlist takes into account items selected in all past and present instances of the event.</li>
+<li><strong>Sequential - instance scope.</strong> Items in the playlist are selected for playback in the order in which they appear. When determining which items have already been selected, the playlist takes into account items selected in the current event instance, even if they were selected before it was stopped and restarted.</li>
+</ul>
+<p>Playlists are set to shuffle by default.</p>
+<h3 id="loop-playlist-toggle-button"><a href="#loop-playlist-toggle-button">20.3.9 Loop Playlist (Toggle button)</a></h3>
+<p><img alt="Loop Playlist Toggle Button" src="images/multi-instrument-loop-playlist.png" /><br />
+Looping a synchronous multi instrument causes it to play multiple playlist entries in accordance with its play count property. Specifically, the play count of a synchronous multi instrument represents the maximum number of times it can select playlist entries to play, provided it remains triggered; whereas the play count of an asynchronous instrument is the number of times that instrument selects a playlist entry to play when triggered. This toggle button is visually identical to the Loop Instrument button found on single instruments, but differs in function.</p>
+<h3 id="play-count-number-box_1"><a href="#play-count-number-box_1">20.3.10 Play Count (Number box)</a></h3>
+<p><img alt="Play Count Enabled" src="images/play-count-enabled.png" /> <img alt="Play Count Disabled" src="images/play-count-disabled.png" /><br />
+This property is only available for instruments whose loop playlist toggle buttons are enabled. It determines the number of times that instrument can loop, as described in the sections on those toggle buttons. If this property is infinite on an asynchronous instrument, the associated instrument or playlist will finish playing out its current loop then stop looping when the instrument is <a href="glossary.html#untrigger">untriggered</a>; but if it is finite, it will loop a number of times equal to play count even if the instrument is untriggered before it is finished.</p>
+<h3 id="playlist-playlist"><a href="#playlist-playlist">20.3.11 Playlist (Playlist)</a></h3>
+<p><img alt="Playlist" src="images/playlist.png" /><br />
+A list of all the instruments that the multi instrument can select to spawn. Each instrument has a letter that corresponds to the letters that appear on the multi instrument's content graphic, a name, and a play percentage that weights selection when the instrument's playlist selection mode is shuffle or randomize.<br />
+Selecting a playlist entry causes the corresponding instrument to be displayed in the deck to the right of the multi instrument.<br />
+Selecting multiple playlist entries causes one of the instruments to be displayed in the deck to the right of the multi instrument, and highlights properties common to all the selected playlist entries' instruments in gold. Changes made to a property highlighted in gold change that property for every playlist entry in the selection.</p>
+<h2 id="event-instrument"><a href="#event-instrument">20.4 Event Instrument</a></h2>
+<p>An event instrument (also known as an 'event reference instrument') is a kind of <a href="glossary.html#instrument">instrument</a> that plays an instance of a specified <a href="glossary.html#event">event</a> elsewhere in the project when <a href="glossary.html#trigger">triggered</a>. The resultant instance's output is routed into the <a href="glossary.html#track">track</a> that holds the event reference instrument.</p>
+<p><img alt="Trigger Region" src="images/event-instrument-trigger-region.png" /><br />
+<em>An event instrument trigger region.</em></p>
+<p><img alt="Event Instrument Deck Panel" src="images/event-instrument-deck.png" /><br />
+<em>An event instrument deck panel.</em></p>
+<h3 id="content-graphic-multiple-means-of-editing_1"><a href="#content-graphic-multiple-means-of-editing_1">20.4.1 Content Graphic (Multiple means of editing)</a></h3>
+<p><img alt="Content graphic" src="images/event-instrument-trigger-region.png" /><br />
+If the event <a href="glossary.html#referenced-event">referenced</a> by an event instrument has a <a href="glossary.html#parameter-sheet">parameter sheet</a> for its <a href="glossary.html#timeline">timeline</a>, the content of that sheet is displayed on the instrument's <a href="glossary.html#trigger-region">trigger region</a>, surrounded by a border.</p>
+<h3 id="fade-curves-mouse-editable-graphics_2"><a href="#fade-curves-mouse-editable-graphics_2">20.4.2 Fade Curves (Mouse-editable graphics)</a></h3>
+<p><img alt="Fade Curves" src="images/event-instrument-fade-curves.png" /><br />
+A fade curve defines how an instrument's volume ramps from silence to full volume when the playback position moves onto the instrument, or how it ramps from full volume to silence when the playback position moves off the instrument. Instruments on action sheets can not have fade curves. Each instrument on a parameter sheet can have one fade curve for its left side, and one fade curve for its right. Instruments do not have fade curves by default.</p>
+<h3 id="volume-dial_2"><a href="#volume-dial_2">20.4.3 Volume (Dial)</a></h3>
+<p><img alt="Event Instrument Volume Dial" src="images/event-instrument-volume.png" /><br />
+Volume defines the gain applied to the <a href="glossary.html#master-track">master track</a> <span class="dead-link" href="glossary.html#fader">volume fader</span class="dead-link"> of any instance of the associated event created by the event instrument. This means that the fader volume of an event instance created by an event instrument may differ from that of an instance of the same event created by your game's code.<br />
+<strong>Units</strong>: Decibels.<br />
+<strong>Automatable and Modulatable.</strong></p>
+<h3 id="pitch-number-box_2"><a href="#pitch-number-box_2">20.4.4 Pitch (Number box)</a></h3>
+<p><img alt="Pitch" src="images/instrument-pitch.png" /><br />
+Pitch defines the amount of pitch adjustment applied to the instrument's output. The pitch properties of instruments on parameter sheets other than the timeline sheet are compatible with <span class="dead-link" href="glossary.html#autopitch-modulator">autopitch modulators</span class="dead-link">.<br />
+<strong>Units</strong>: Semitones.<br />
+<strong>Automatable and Modulatable.</strong></p>
+<h3 id="start-offset-number-box_2"><a href="#start-offset-number-box_2">20.4.5 Start Offset (Number box)</a></h3>
+<p><img alt="Event Instrument Start Offset" src="images/event-instrument-start-offset.png" /><br />
+The start offset of an event instrument determines the point within its associated event's <a href="glossary.html#timeline">timeline</a> at which the timeline <a href="glossary.html#playback-position">playback position</a> should start when the instrument is triggered, expressed as a percentage of the length of the associated event's timeline. For this purpose, the associated event's timeline is assumed to start at position 0:00.000 and to end at the right edge of the rightmost instrument or <a href="glossary.html#logic-marker">logic marker</a> on the event's timeline sheet.<br />
+<strong>Units</strong>: Percentage points.<br />
+<strong>Automatable and Modulatable.</strong></p>
+<h3 id="cut-toggle-button_2"><a href="#cut-toggle-button_2">20.4.6 Cut (Toggle button)</a></h3>
+<p><img alt="Event Instrument Cut Button" src="images/cut-button.png" /><br />
+An instrument's cut mode determines whether it stops playing when its <a href="glossary.html#trigger-condition">trigger conditions</a> cease being met.</p>
+<h3 id="parameter-value-dial"><a href="#parameter-value-dial">20.4.7 Parameter value (Dial)</a></h3>
+<p><img alt="Event Instrument Parameter Values" src="images/event-instrument-parameters.png" /><br />
+If the event referenced by the event instrument has any <a href="glossary.html#user-parameter">user parameters</a>, those parameters are displayed as dials in the deck when the event instrument is selected. If such a parameter is subject to <a href="glossary.html#parameter-linking">parameter linking</a>, a small hollow circle is displayed next to its dial to indicate that it is linked. The referenced event's <a href="glossary.html#built-in-parameter">built-in parameters</a> and <a href="glossary.html#timeline-parameter">timeline parameter</a> are not displayed in the deck when the event instrument is selected.<br />
+<strong>Automatable and Modulatable.</strong></p>
+<h2 id="scatterer-instrument"><a href="#scatterer-instrument">20.5 Scatterer Instrument</a></h2>
+<p>The scatterer instrument is a type of <a href="glossary.html#instrument">instrument</a> with features that permit spatial and temporal randomization.</p>
+<p><img alt="Scatterer Instrument Trigger Region" src="images/scatterer-instrument-trigger-region.png" /><br />
+<em>A scatterer instrument trigger region.</em></p>
+<p><img alt="Scatterer Instrument Deck Panel in Time Mode" src="images/scatterer-instrument-deck.png" /> <img alt="Scatterer Instrument Deck Panel in Tempo Mode" src="images/scatterer-instrument-deck-tempo-mode.png" /><br />
+<em>A scatterer instrument deck panel.</em></p>
+<p>When a scatterer instrument is triggered, an item from its playlist is selected for play. A scatterer instrument's playlist can contain <a href="glossary.html#single-instrument">single instruments</a>, <a href="instrument-reference.html#event-instrument">event instruments</a>, <a href="glossary.html#programmer-instrument">programmer instruments</a>, <a href="glossary.html#multi-instrument">multi instruments</a>, <a href="glossary.html#command-instrument">command instruments</a>, and <a href="glossary.html#silence-instrument">silence instruments</a>.</p>
+<p>A scatterer instrument can select and spawn an instrument from its playlist regardless of when the previous one it spawned finishes playing, can randomize the volume and pitch of each spawned instance individually, and can assign a random offset to the position of each spawned instance for the purposes of panning and other <a href="glossary.html#3d-event">3D behaviors</a>.</p>
+<p>The item selected from a scatterer instrument's playlist depends on the instrument's playlist selection mode. By default, a scatterer instrument's playlist selection mode is set to shuffle. To change it, use the playlist selection mode dropdown menu.</p>
+<h3 id="fade-curves-mouse-editable-graphics_3"><a href="#fade-curves-mouse-editable-graphics_3">20.5.1 Fade Curves (Mouse-editable graphics)</a></h3>
+<p><img alt="Fade Curves" src="images/scatterer-instrument-fade-curves.png" /><br />
+A fade curve defines how an instrument's volume ramps from silence to full volume when the playback position moves onto the instrument, or how it ramps from full volume to silence when the playback position moves off the instrument. Instruments on action sheets can not have fade curves. Each instrument on a parameter sheet can have one fade curve for its left side, and one fade curve for its right. Instruments do not have fade curves by default.</p>
+<h3 id="volume-dial_3"><a href="#volume-dial_3">20.5.2 Volume (Dial)</a></h3>
+<p><img alt="Volume" src="images/instrument-volume.png" /><br />
+Volume defines the gain applied to the instrument's output. If a <span class="dead-link" href="glossary.html#random-modulator">random modulator</span class="dead-link"> is attached to this property, the adjustment applied by that modulator is randomized once each time the instrument is triggered. To randomize the volume of individual spawned playlist entry instances, see the Vol Rnd property, below.<br />
+<strong>Units</strong>: Decibels.<br />
+<strong>Automatable and Modulatable.</strong></p>
+<h3 id="pitch-dial"><a href="#pitch-dial">20.5.3 Pitch (Dial)</a></h3>
+<p><img alt="Pitch" src="images/instrument-pitch.png" /><br />
+Pitch defines the amount of pitch adjustment applied to the instrument's output. The pitch properties of instruments on parameter sheets other than the timeline sheet are compatible with <span class="dead-link" href="glossary.html#autopitch-modulator">autopitch modulators</span class="dead-link">. If a <span class="dead-link" href="glossary.html#random-modulator">random modulator</span class="dead-link"> is attached to this property, the adjustment applied by that modulator is randomized once each time the instrument is triggered. To randomize the pitch of individual playlist entry instances, see the Pitch Rnd property, below.<br />
+<strong>Units</strong>: Semitones.<br />
+<strong>Automatable and Modulatable.</strong></p>
+<h3 id="timetempo-radio-buttons"><a href="#timetempo-radio-buttons">20.5.4 Time/Tempo (Radio buttons)</a></h3>
+<p><img alt="Time/Tempo Radio Buttons" src="images/scatterer-instrument-time-tempo.png" /><br />
+These buttons determine whether the scatterer instrument selects playlist entries to play sounds based on the passage of time, or on specific bars and beats. If time is selected, it selects entries to play in intervals determined by the min &amp; max spawn interval property, below. If tempo is selected, it instead selects entries to play at intervals determined by the quantization interval property, below.</p>
+<h3 id="min-max-spawn-interval-ribbon-slider"><a href="#min-max-spawn-interval-ribbon-slider">20.5.5 Min &amp; Max Spawn Interval (Ribbon slider)</a></h3>
+<p><img alt="Spawn Interval Ribbon Slider" src="images/scatterer-instrument-spawn-interval.png" /><br />
+Min &amp; max spawn interval define the range of duration that can pass between the start of one playlist entry instance spawned by that scatterer instrument and the start of the next. These values are divided by the value of the spawn rate property, below. This property only appears if the time/tempo property is set to time.<br />
+<strong>Units</strong>: Milliseconds or seconds.</p>
+<h3 id="quantization-interval-radio-buttons_1"><a href="#quantization-interval-radio-buttons_1">20.5.6 Quantization Interval (Radio buttons)</a></h3>
+<p><img alt="Quantization Interval Radio Buttons" src="images/scatterer-instrument-quantization-interval.png" /><br />
+A scatterer instrument's quantization interval specifies on which of the timeline's beats or bars the instrument can select an entry from its playlist to spawn. The bar and beat numbers used by this property are those that appear on the timeline when the editor is set to beats mode, as defined by the event's tempo markers. These values are influenced by the value of the spawn rate property, below. This property only appears if the time/tempo property is set to tempo.</p>
+<h3 id="spawn-rate-dial"><a href="#spawn-rate-dial">20.5.7 Spawn Rate (Dial)</a></h3>
+<p><img alt="Spawn Rate Dial" src="images/scatterer-instrument-spawn-rate.png" /><br />
+This property scales the frequency with which the instrument selects a playlist entry to spawn. If the time/tempo property is set to time, the min and max spawn interval properties are divided by the spawn rate to determine the amount of time that passes between one playlist entry being selected to spawn and the next being selected. If the time/tempo property is set to tempo, the spawn rate instead represents the amount by which the instrument progresses towards a playlist entry being selected on each beat or bar to which the instrument is quantized; when progress equals or exceeds 100%, a playlist entry is selected to spawn and progress is reduced by 100 percentage points.<br />
+<strong>Units</strong>: Percentage points.<br />
+<strong>Automatable and Modulatable.</strong></p>
+<h3 id="spawn-total-dial"><a href="#spawn-total-dial">20.5.8 Spawn Total (Dial)</a></h3>
+<p><img alt="Spawn Total Dial" src="images/scatterer-instrument-spawn-total.png" /><br />
+This property specifies the maximum number of times the instrument may select an entry from its playlist to spawn each time it becomes triggered. If the instrument is <a href="glossary.html#untrigger">untriggered</a> before it reaches this spawn count, it stops selecting playlist entries.</p>
+<h3 id="vol-rnd-dial"><a href="#vol-rnd-dial">20.5.9 Vol Rnd (Dial)</a></h3>
+<p><img alt="Vol Rnd Dial" src="images/scatterer-instrument-vol-rnd.png" /><br />
+This property acts like a <span class="dead-link" href="glossary.html#random-modulator">randomization modulator</span class="dead-link"> on the volume of each entry in the scatterer instrument's playlist: Each time the instrument selects a playlist entry to spawn, it adjusts the volume of that spawned sound by a random amount between the value of this property and 0 dB.<br />
+<strong>Units</strong>: Decibels.</p>
+<h3 id="pitch-rnd-dial"><a href="#pitch-rnd-dial">20.5.10 Pitch Rnd (Dial)</a></h3>
+<p><img alt="Pitch Rnd Dial" src="images/scatterer-instrument-pitch-rnd.png" /><br />
+This property acts like a randomization modulator on the pitch of each entry in the scatterer instrument's playlist: Each time the instrument selects a playlist entry to spawn, it adjusts the pitch of that spawned sound to a random value within the specified range of values, centered on the property's <a href="glossary.html#base-property-value">base value</a>.<br />
+<strong>Units</strong>: Semitones.</p>
+<h3 id="min-max-scatter-distance-ribbon-slider"><a href="#min-max-scatter-distance-ribbon-slider">20.5.11 Min &amp; Max Scatter Distance (Ribbon slider)</a></h3>
+<p><img alt="Min &amp; Max Scatter Distance Ribbon Slider" src="images/scatterer-instrument-scatter-distance.png" /><br />
+These properties define the spatial randomization applied by the scatterer instrument. Each time the scatterer instrument selects a playlist entry to spawn, the position of the spawned sound is set to a random location in 3D space that's no closer to the event emitter than the min scatter distance and no further from the event emitter than the max scatter distance. This randomized position is used to calculate the spawned sound's 3D attributes for the purposes of <a href="advanced-topics.html#spatialization-options">spatialization</a> and other 3D behavior. These properties only affect the scatterer instrument instance itself and are unrelated to the event's <a href="event-macro-controls-reference.html#min-and-max-distance">Min and Max Distance</a> macros. Regardless of how the Min and Max Distance macros are configured, the scatterer instrument spawns its playlist entries within a range defined by the Min &amp; Max Scatter Distance. If a <a href="advanced-topics.html#spatialization-options">spatializing effect</a> is affecting the output of the spatializer instrument, the min and max distance of that effect affects the range at which the scatterer instrument's spawned sounds become audible, as it does for any audio signal passed into it, but it does not affect the Min &amp; Max Scatter Distance at all.</p>
+<h3 id="polyphony-dial"><a href="#polyphony-dial">20.5.12 Polyphony (Dial)</a></h3>
+<p><img alt="Polyphony Dial" src="images/scatterer-instrument-polyphony.png" /><br />
+This dial sets the maximum number of spawned sounds that an instance of the scatterer instrument may play simultaneously. If the number of simultaneously playing spawned sounds is equal to this number when the instrument attempts to select a playlist entry to spawn, it will fail to span the new sound or cull one of its existing sounds as per the instrument's spawn stealing property, below.</p>
+<h3 id="spawn-stealing-radio-buttons"><a href="#spawn-stealing-radio-buttons">20.5.13 Spawn Stealing (Radio buttons)</a></h3>
+<p><img alt="Spawn Stealing Radio Buttons" src="images/scatterer-instrument-spawn-stealing.png" /><br />
+These buttons determine how a scatterer instrument behaves when it attempts the select a new playlist entry to spawn when the number of concurrently-playing spawned sounds is equal to the instrument's polyphony. If spawn stealing is set to oldest, the oldest playing spawned sound is culled, and the selected playlist entry is spawned normally. If spawn stealing is set to none, none of the playing spawned sounds are culled, and the selected playlist entry is not spawned.</p>
+<h3 id="cut-toggle-button_3"><a href="#cut-toggle-button_3">20.5.14 Cut (Toggle button)</a></h3>
+<p><img alt="Cut Toggle Button" src="images/cut-button.png" /><br />
+An asynchronous instrument's cut mode determines whether it stops playing when its <a href="glossary.html#trigger-condition">trigger conditions</a> cease being met. The cut toggle button only appears in the deck of asynchronous instruments.</p>
+<h3 id="playlist-selection-mode-dropdown-menu_1"><a href="#playlist-selection-mode-dropdown-menu_1">20.5.15 Playlist Selection Mode (Dropdown menu)</a></h3>
+<p><img alt="Playlist Selection Mode Dropdown Menu" src="images/playlist-selection-mode.png" /><br />
+This property represents the <a href="glossary.html#playlist-selection-mode">playlist selection mode</a> of the instrument's playlist. There are four playlist selection modes:</p>
+<ul>
+<li><strong>Shuffle.</strong> Items in the <a href="glossary.html#playlist">playlist</a> are selected for playback in random order. In addition, as long as the playlist contains at least three instruments and does not include play percentages, no instrument in that playlist will be selected twice in a row.</li>
+<li><strong>Randomize.</strong> Items in the playlist are selected for playback in random order. The frequency and recency with which items have been selected in the past has no bearing on the probability of those items being selected in future.</li>
+<li><strong>Sequential - play scope.</strong> Items in the playlist are selected for playback in the order in which they appear. When determining which items have already been selected, the playlist takes into account items selected in the current <a href="glossary.html#event-instance">event instance</a> and since the start of that event instance.</li>
+<li><strong>Sequential - global scope.</strong> Items in the playlist are selected for playback in the order in which they appear. When determining which items have already been selected, the playlist takes into account items selected in all past and present instances of the event.</li>
+<li><strong>Sequential - instance scope.</strong> Items in the playlist are selected for playback in the order in which they appear. When determining which items have already been selected, the playlist takes into account items selected in the current event instance, even if they were selected before it was stopped and restarted.</li>
+</ul>
+<p>Playlists are set to shuffle by default.</p>
+<h3 id="playlist-playlist_1"><a href="#playlist-playlist_1">20.5.16 Playlist (Playlist)</a></h3>
+<p><img alt="Playlist" src="images/playlist.png" /><br />
+A list of all the instruments that the scatterer instrument can select to spawn. Each instrument has a letter that corresponds to the letters that appear on the scatterer instrument's content graphic, a name, and a play percentage that weights selection when the instrument's playlist selection mode is shuffle or randomize.<br />
+Selecting a playlist entry causes the corresponding instrument to be displayed in the deck to the right of the scatterer instrument.<br />
+Selecting multiple playlist entries causes one of the instruments to be displayed in the deck to the right of the scatterer instrument, and highlights properties common to all the selected playlist entries' instruments in gold. Changes made to a property highlighted in gold change that property for every playlist entry in the selection.</p>
+<h2 id="programmer-instrument"><a href="#programmer-instrument">20.6 Programmer Instrument</a></h2>
+<p>A programmer instrument is kind of <a href="glossary.html#instrument">instrument</a> that's a placeholder for a sound to be selected at run time. When a programmer instrument is triggered in your game, it generates a <a href="https://fmod.com/docs/2.03/api/studio-guide.html#event-callbacks">callback</a> which is passed to your game's code. Your game's code can then specify an <a href="glossary.html#audio-file">audio file</a> for the <a href="glossary.html#fmod-engine">FMOD Engine</a> to play. Programmer instruments otherwise function similarly to <a href="#single-instrument">single instruments</a>.</p>
+<p><img alt="Trigger Region" src="images/programmer-instrument-trigger-region.png" /><br />
+<em>A programmer instrument trigger region.</em></p>
+<p><img alt="Programmer Instrument Deck Panel" src="images/programmer-instrument-deck.png" /><br />
+<em>A programmer instrument deck panel.</em></p>
+<p>For an example of how programmer instruments can be used in a game's code, see the <a href="https://fmod.com/docs/2.03/api/studio-guide.html#dialogue-and-localization">Dialog and Localization</a> section of the <a href="https://fmod.com/docs/2.03/api">FMOD Engine User Manual</a>.</p>
+<p>For the purposes of auditioning in <a href="glossary.html#fmod-studio">FMOD Studio</a>, programmer instruments can be assigned placeholder audio files. These placeholder files are not <span class="dead-link" href="glossary.html#building">built</span class="dead-link"> into <a href="glossary.html#bank">banks</a> and do not play when the instrument is triggered in your game. They exist purely so that programmer instruments can make a sound when auditioned in FMOD Studio.</p>
+<h3 id="placeholder-graphic-multiple-means-of-editing"><a href="#placeholder-graphic-multiple-means-of-editing">20.6.1 Placeholder Graphic (Multiple means of editing)</a></h3>
+<p><img alt="Placeholder graphic" src="images/programmer-instrument-trigger-region.png" /><br />
+The waveform of the placeholder audio file associated with a programmer instrument is displayed on its <a href="glossary.html#trigger-region">trigger region</a>. If the instrument is asynchronous, this content is surrounded by a border. If the instrument is synchronous and its play count is greater than one, multiple copies of the waveform may be displayed, provided the trigger region is long enough. This graphic has no impact on in-game behavior, but may be a useful guide when positioning instruments, <a href="glossary.html#automation">automation</a>, and <a href="glossary.html#logic-marker">logic markers</a>.</p>
+<h3 id="fade-curves-mouse-editable-graphics_4"><a href="#fade-curves-mouse-editable-graphics_4">20.6.2 Fade Curves (Mouse-editable graphics)</a></h3>
+<p><img alt="Fade Curves" src="images/programmer-instrument-fade-curves.png" /><br />
+A fade curve defines how an instrument's volume ramps from silence to full volume when the playback position moves onto the instrument, or how it ramps from full volume to silence when the playback position moves off the instrument. Instruments on action sheets can not have fade curves. Each instrument on a parameter sheet can have one fade curve for its left side, and one fade curve for its right. Instruments do not have fade curves by default.</p>
+<h3 id="volume-dial_4"><a href="#volume-dial_4">20.6.3 Volume (Dial)</a></h3>
+<p><img alt="Volume" src="images/instrument-volume.png" /><br />
+Volume defines the gain applied to the instrument's output.<br />
+<strong>Units</strong>: Decibels.<br />
+<strong>Automatable and Modulatable.</strong></p>
+<h3 id="pitch-number-box_3"><a href="#pitch-number-box_3">20.6.4 Pitch (Number box)</a></h3>
+<p><img alt="Pitch" src="images/instrument-pitch.png" /><br />
+Pitch defines the amount of pitch adjustment applied to the instrument's output. The pitch properties of instruments on parameter sheets other than the timeline sheet are compatible with <span class="dead-link" href="glossary.html#autopitch-modulator">autopitch modulators</span class="dead-link">.<br />
+<strong>Units</strong>: Semitones.<br />
+<strong>Automatable and Modulatable.</strong></p>
+<h3 id="start-offset-number-box_3"><a href="#start-offset-number-box_3">20.6.5 Start Offset (Number box)</a></h3>
+<p><img alt="Start Offset" src="images/start-offset.png" /><br />
+The start offset of a programmer instrument determines the point within an audio asset from which it starts playing when the instrument is triggered, expressed as a percentage of the length of the audio asset. For asynchronous instruments, this directly determines the position from which the audio file begins to play when the instrument is triggered. For synchronous instruments, this offset is added to the position of the <a href="glossary.html#playback-position">playback position</a> inside the instrument's waveform, and so is an exception to the rule that the part of a synchronous instrument's waveform that plays is the part of the waveform that's overlapped by the playback position.<br />
+<strong>Units</strong>: Percentage points.</p>
+<h3 id="async-toggle-button_2"><a href="#async-toggle-button_2">20.6.6 Async (Toggle button)</a></h3>
+<p><img alt="Async Toggle Button" src="images/programmer-instrument-async.png" /><br />
+A programmer instrument's synchronous or asynchronous state determines whether it is possible to seek or scrub within the waveform displayed on its trigger region. If an instrument is synchronous, the part of the asset that plays while the instrument is triggered depends on the position of the playback position on the instrument's trigger region; whereas if the instrument is asynchronous, the playback position's location on the instrument has no effect on which part of the associated asset plays. Instruments on <a href="glossary.html#parameter-sheet">parameter sheets</a> other than the timeline are always asynchronous. For more information about synchronous and asynchronous instruments, see the <a href="working-with-instruments.html#synchronous-and-asynchronous-instruments">Synchronous and Asynchronous Instruments</a> section of the <a href="working-with-instruments.html">Working With Instruments</a> chapter.</p>
+<h3 id="cut-toggle-button_4"><a href="#cut-toggle-button_4">20.6.7 Cut (Toggle button)</a></h3>
+<p><img alt="Cut Button" src="images/cut-button.png" /><br />
+An asynchronous instrument's cut mode determines whether it stops playing when its <a href="glossary.html#trigger-condition">trigger conditions</a> cease being met. The cut toggle button only appears in the deck of asynchronous instruments.</p>
+<h3 id="loop-instrument-toggle-button_1"><a href="#loop-instrument-toggle-button_1">20.6.8 Loop Instrument (Toggle button)</a></h3>
+<p><img alt="Loop Instrument Toggle Button" src="images/programmer-instrument-loop-instrument.png" /><br />
+Looping a programmer instrument causes it to loop in accordance with its play count property. Specifically, the play count of a synchronous programmer instrument is the number of times its placeholder graphic is iterated on that instrument's trigger region, limited by the amount of horizontal space on that trigger region, and also determines how many times an audio file played by the instrument will play as if the instrument were a single instrument; whereas the play count of an asynchronous instrument is the number of times that instrument plays an audio file when triggered. This toggle button is visually identical to the Loop Playlist button found on multi instruments, but differs in function.</p>
+<h3 id="play-count-number-box_2"><a href="#play-count-number-box_2">20.6.9 Play Count (Number box)</a></h3>
+<p><img alt="Play Count Enabled" src="images/play-count-enabled.png" /> <img alt="Play Count Disabled" src="images/play-count-disabled.png" /><br />
+This property is only available for instruments whose loop instrument or loop playlist toggle buttons are enabled. It determines the number of times that instrument plays, as described in the sections on those toggle buttons. If this property is infinite on an asynchronous instrument, the associated instrument or playlist will finish playing out its current loop then stop looping when the instrument is <a href="glossary.html#untrigger">untriggered</a>; but if it is finite, it will loop a number of times equal to play count even if the instrument is untriggered before it is finished.</p>
+<h3 id="placeholder-preview-multiple-means-of-editing"><a href="#placeholder-preview-multiple-means-of-editing">20.6.10 Placeholder Preview (Multiple means of editing)</a></h3>
+<p><img alt="Placeholder Preview" src="images/programmer-instrument-asset-placeholder.png" /><br />
+The waveform of an audio asset associated with a programmer instrument is displayed in the instrument's <span class="dead-link" href="glossary.html#placeholder-preview">placeholder preview</span class="dead-link">. This placeholder has no impact on in-game behavior, but can be useful when auditioning the event in FMOD Studio.</p>
+<h2 id="command-instrument"><a href="#command-instrument">20.7 Command Instrument</a></h2>
+<p>A command instrument is a kind of <a href="glossary.html#instrument">instrument</a> that does not produce audio output. Instead, when a command instrument is triggered, it issues a <span class="dead-link" href="glossary.html#command">command</span class="dead-link"> to some part of your <a href="glossary.html#fmod-studio">FMOD Studio</a> project. Commands can be used to change <a href="glossary.html#parameter">parameter</a> values and to stop and start <a href="glossary.html#event">events</a> and <a href="glossary.html#snapshot">snapshots</a>.</p>
+<p><img alt="Command Instrument Trigger Regions" src="images/command-instrument-trigger-regions.png" /><br />
+<em>A command instrument trigger region.</em></p>
+<p><img alt="Command Instrument Deck Panel" src="images/command-instrument-deck.png" /><img alt="Command Instrument Deck Panel Set to Set Parameter" src="images/command-instrument-deck-set-parameter.png" /> <img alt="Command Instrument Deck Panel Set to Increment Parameter" src="images/command-instrument-deck-increment-parameter.png" /><br />
+<em>Several command instrument deck panels, each set to a different command.</em></p>
+<h3 id="command-type-dropdown-menu"><a href="#command-type-dropdown-menu">20.7.1 Command Type (Dropdown menu)</a></h3>
+<p><img alt="Command Type Dropdown Menu" src="images/command-type-dropdown.png" /><br />
+The type of command associated with the instrument. Each command type does something different, as described below.</p>
+<ul>
+<li><strong>Start event.</strong> Creates a new <a href="glossary.html#event-instance">instance</a> of the target event or snapshot.</li>
+<li><strong>Stop event.</strong> Causes all instances of the target event or snapshot to enter the <a href="advanced-topics.html#event-state">stopping event state</a>.</li>
+<li><strong>Stop event - immediate.</strong> Causes all instances of the target event or snapshot to enter the <a href="advanced-topics.html#event-state">stopped event state</a>.</li>
+<li><strong>Set parameter.</strong> Sets the value of the target parameter. If the target parameter is a <a href="glossary.html#local-parameter">local parameter</a>, its value is set only in the local event instance; if the target parameter is a <a href="glossary.html#global-parameter">global parameter</a>, its value is set globally.</li>
+<li><strong>Increment parameter.</strong> Increases or decreases the target parameter by a specific amount, capped by the minimum and maximum values of the parameter. If the target parameter is a local parameter, its value is incremented only in the local event instance; if the target parameter is a global parameter, the global parameter's value is incremented.</li>
+</ul>
+<h3 id="target-dropdown-menu"><a href="#target-dropdown-menu">20.7.2 Target (Dropdown menu)</a></h3>
+<p><img alt="Command Target Dropdown Menu" src="images/command-target-dropdown.png" /><br />
+The target of the command. If the command type is start event, stop event, or stop event - immediate, the target must be an event or snapshot. If the command type is set parameter or increment parameter, the target must be a parameter.</p>
+<h3 id="value-number-box"><a href="#value-number-box">20.7.3 Value (Number box)</a></h3>
+<p><img alt="Command Value Number Box" src="images/command-value.png" /><br />
+The value to which the target parameter is to be set. This property is only available if the command type is set parameter.</p>
+<h3 id="delta-value-number-box"><a href="#delta-value-number-box">20.7.4 Delta Value (Number box)</a></h3>
+<p><img alt="Command Delta Value Number Box" src="images/command-delta-value.png" /><br />
+The value by which the target parameter is to be incremented (or decremented, if the delta value is negative). This property is only available if the command type is increment parameter.</p>
+<h2 id="silence-instrument"><a href="#silence-instrument">20.8 Silence Instrument</a></h2>
+<p>A silence instrument is a kind of <a href="glossary.html#instrument">instrument</a> that does not produce any output. When added to a consecutive <a href="glossary.html#action-sheet">action sheet</a> or the <a href="glossary.html#playlist">playlist</a> of a <a href="glossary.html#multi-instrument">multi instrument</a> or <a href="glossary.html#scatterer-instrument">scatterer instrument</a>, a silence instrument allows you define a circumstance in which the action sheet or instrument does not produce any sound.</p>
+<p>Silence instruments are always asynchronous.</p>
+<p><img alt="Silence Instrument Trigger Region" src="images/silence-instrument-trigger-region.png" /><br />
+<em>A silence instrument trigger region.</em></p>
+<p><img alt="Silence Instrument Deck Panel" src="images/silence-instrument-deck.png" /><br />
+<em>A silence instrument deck panel.</em></p>
+<h3 id="duration-dial"><a href="#duration-dial">20.8.1 Duration (Dial)</a></h3>
+<p><img alt="Duration" src="images/silence-instrument-duration.png" /><br />
+Duration defines the time for which the silence instrument remains active after being triggered. The value of this property is meaningful only if something is waiting for the silence instrument to finish playing.<br />
+<strong>Units</strong>: Milliseconds or seconds.<br />
+<strong>Automatable and Modulatable.</strong></p>
+<h2 id="snapshot-instrument"><a href="#snapshot-instrument">20.9 Snapshot Instrument</a></h2>
+<p>Snapshot instruments are a type of <a href="instrument-reference.html#event-instrument">event instrument</a>. Triggering a snapshot instrument causes a new instance of the corresponding <a href="glossary.html#snapshot">snapshot</a> to begin playing. When the <a href="glossary.html#playback-position">playback position</a> leaves the snapshot instrument, the instrument is <a href="glossary.html#untrigger">untriggered</a>, and the corresponding snapshot instance stops.</p>
+<p><img alt="Snapshot Instrument Trigger Region" src="images/snapshot-instrument-trigger-region.png" /><br />
+<em>A snapshot instrument trigger region.</em></p>
+<p><img alt="Snapshot Instrument Deck Panel" src="images/snapshot-instrument-deck.png" /><br />
+<em>The snapshot instrument deck panel.</em></p>
+<p>Each time a snapshot instrument is triggered, a new instance of the snapshot begins to play. This means that multiple simultaneous instances of the same snapshot can play at the same time, whether by multiple different snapshot instruments or as a result of the same snapshot instrument being triggered more than once in one or more instances of its <a href="glossary.html#parent-event">parent event</a>. Snapshot instances can also be started and stopped by your game's code.</p>
+<p>The property values of a snapshot instance started by a snapshot instrument are affected by the snapshot instrument's <span class="dead-link" href="glossary.html#intensity">intensity</span class="dead-link">.</p>
+<p>For more information about snapshots, see the <a href="mixing.html#snapshots-and-the-tracks-view">snapshots and the tracks view</a> section of the <a href="mixing.html">mixing</a> chapter.</p>
+<h3 id="fade-curves-mouse-editable-graphics_5"><a href="#fade-curves-mouse-editable-graphics_5">20.9.1 Fade Curves (Mouse-editable graphics)</a></h3>
+<p><img alt="Fade Curves" src="images/snapshot-instrument-fade-curves.png" /><br />
+A snapshot instrument's fade curve defines how the snapshot instance's intensity ramps from zero to the value of its intensity property when the playback position moves onto the instrument, or how it ramps from the value of its intensity property to zero when the playback position moves off the instrument. Instruments on action sheets can not have fade curves. Each instrument on a parameter sheet can have one fade curve for its left side, and one fade curve for its right. Instruments do not have fade curves by default.</p>
+<h3 id="snapshot-dropdown-menu"><a href="#snapshot-dropdown-menu">20.9.2 Snapshot (Dropdown menu)</a></h3>
+<p><img alt="Snapshot Dropdown Menu" src="images/snapshot-dropdown-menu.png" /><br />
+This property indicates which snapshot plays when the instrument is triggered.</p>
+<h3 id="intensity-dial"><a href="#intensity-dial">20.9.3 Intensity (Dial)</a></h3>
+<p><img alt="Snapshot Instrument Intensity Dial" src="images/snapshot-instrument-intensity.png" /><br />
+This property acts as a multiplier to the intensity of any instance of the associated snapshot created by the instrument.</p>
+<h2 id="audiomotors2-instrument"><a href="#audiomotors2-instrument">20.10 AudioMotors2 Instrument</a></h2>
+<p>AudioMotors2 instruments are a type of <a href="glossary.html#instrument">instrument</a> designed for vehicle engine sound synthesis. This instrument type is developed and maintained by <a href="http://lesound.io/">Le Sound</a>.</p>
+<p>For more information about this plug-in, see <a href="http://lesound.io/tutorials-and-videos/">Le Sound's documentation</a>.</p>
+<h2 id="audiorain-instrument"><a href="#audiorain-instrument">20.11 AudioRain Instrument</a></h2>
+<p>AudioRain instruments are a type of <a href="glossary.html#instrument">instrument</a> designed for rain sound synthesis. This instrument type is developed and maintained by <a href="http://lesound.io/">Le Sound</a>.</p>
+<p>For more information about this plug-in, see <a href="http://lesound.io/tutorials-and-videos/">Le Sound's documentation</a>.</p>
+<h2 id="audioweather-instrument"><a href="#audioweather-instrument">20.12 AudioWeather Instrument</a></h2>
+<p>AudioWeather instruments are a type of <a href="glossary.html#instrument">instrument</a> designed for weather sound synthesis. This instrument type is developed and maintained by <a href="http://lesound.io/">Le Sound</a>.</p>
+<p>For more information about this plug-in, see <a href="http://lesound.io/tutorials-and-videos/">Le Sound's documentation</a>.</p>
+<h2 id="audiowind-instrument"><a href="#audiowind-instrument">20.13 AudioWind Instrument</a></h2>
+<p>AudioWind instruments are a type of <a href="glossary.html#instrument">instrument</a> designed for wind sound synthesis. This instrument type is developed and maintained by <a href="http://lesound.io/">Le Sound</a>.</p>
+<p>For more information about this plug-in, see <a href="http://lesound.io/tutorials-and-videos/">Le Sound's documentation</a>.</p>
+<h2 id="haptics-instrument"><a href="#haptics-instrument">20.14 Haptics Instrument</a></h2>
+<p>Haptics instruments are a type of <a href="glossary.html#instrument">instrument</a> designed for synthesizing device vibrations from a haptic file created in <a href="https://developers.meta.com/horizon/resources/haptics-studio">Meta Haptics Studio</a>.</p>
+<h3 id="auditioning-support"><a href="#auditioning-support">20.14.1 Auditioning Support</a></h3>
+<p>The haptics instrument can be auditioned by connecting a controller to your computer and auditioning an <a href="glossary.html#event">event</a> containing a haptics instrument.<br />
+Auditioning is supported with the following devices and platforms:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Windows</th>
+<th>Mac</th>
+<th>Linux</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PS5</td>
+<td>&#x2713;</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>PS4</td>
+<td>&#x2713;</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>PSVR2</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Quest 3</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Switch 1/2</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Xbox Series X/S</td>
+<td>&#x2713;</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Xbox One</td>
+<td>&#x2713;</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="advanced-haptics-support"><a href="#advanced-haptics-support">20.14.2 Advanced Haptics Support</a></h3>
+<p>Haptics support is available in <code>simple</code> vs <code>advanced</code> varieties.<br />
+Simple haptics provide basic vibration by changing only the strength (amplitude) of a motor, resulting in a general “rumble” sensation that is not very detailed.<br />
+Advanced haptics use both amplitude and frequency to drive more precise actuators, allowing vibrations to feel sharper, smoother, or more textured.<br />
+This enables more expressive and localized feedback, such as simulating surfaces, impacts, or subtle motion.<br />
+Advanced haptics is supported with the following devices:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Advanced haptics</th>
+<th>Simple haptics</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PS5</td>
+<td>&#x2713;</td>
+<td></td>
+</tr>
+<tr>
+<td>PS4</td>
+<td></td>
+<td>&#x2713;</td>
+</tr>
+<tr>
+<td>PSVR2</td>
+<td>&#x2713;</td>
+<td></td>
+</tr>
+<tr>
+<td>Quest 3</td>
+<td>&#x2713;</td>
+<td></td>
+</tr>
+<tr>
+<td>Switch 1/2</td>
+<td></td>
+<td>&#x2713;</td>
+</tr>
+<tr>
+<td>Xbox Series X/S</td>
+<td></td>
+<td>&#x2713;</td>
+</tr>
+<tr>
+<td>Xbox One</td>
+<td></td>
+<td>&#x2713;</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="Haptics Trigger Region" src="images/haptics-instrument-trigger-region.png" /><br />
+<em>A haptics instrument trigger region.</em></p>
+<p><img alt="Haptics Instrument Deck Panel" src="images/haptics-instrument-deck.png" /><br />
+<em>A haptics instrument deck panel.</em></p>
+<h3 id="clip-data-drop"><a href="#clip-data-drop">20.14.3 Clip (Data drop)</a></h3>
+<p><img alt="Haptics Clip Data Drop" src="images/haptics-instrument-clip.png" /><br />
+Use this widget to specify the haptic clip to synthesize. You can either use drag and drop, or select "Browse" and navigate to the file in the browser provided.</p>
+<h3 id="left-dial"><a href="#left-dial">20.14.4 Left (Dial)</a></h3>
+<p><img alt="Haptics Intensity Dial" src="images/haptics-instrument-intensity-left.png" /><br />
+Left defines the output strength of the synthesized vibration on the left device or motor. Lower percentage values soften the vibration, and a value of 100% plays the vibration back at the original strength.<br />
+<strong>Units</strong>: Percentage.<br />
+<strong>Automatable and Modulatable.</strong></p>
+<h3 id="right-dial"><a href="#right-dial">20.14.5 Right (Dial)</a></h3>
+<p><img alt="Haptics Intensity Dial" src="images/haptics-instrument-intensity-right.png" /><br />
+Right defines the output strength of the synthesized vibration on the right device or motor. Lower percentage values soften the vibration, and a value of 100% plays the vibration back at the original strength.<br />
+<strong>Units</strong>: Percentage.<br />
+<strong>Automatable and Modulatable.</strong></p></div>
+
+<p class="manual-footer">FMOD Studio User Manual 2.03.15 (2026-09-21). &copy; 2026 Firelight Technologies Pty Ltd.</p>
+</div>
+</body>
+</html>
+
