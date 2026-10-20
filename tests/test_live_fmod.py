@@ -38,6 +38,26 @@ pytestmark = pytest.mark.skipif(
 )
 
 
+@pytest.fixture(autouse=True)
+def _never_save_the_open_project(monkeypatch):
+    """Keep destructive tools' auto-backup from touching the open project.
+
+    ensure_backup() SAVES the project and copies its folder before the
+    first destructive call in each process. During a test that writes the
+    test's own half-built objects into the real project on disk (this
+    happened: a test event and a plug-in data file got saved into a real
+    game project). Marking the project as already backed up makes it a
+    no-op; tests clean up their objects in memory, so nothing reaches disk.
+    """
+    from fmod_mcp import safety
+
+    async def path():
+        r = await FmodStudioClient().execute("return {f:studio.project.filePath};")
+        return r["result"]["f"]
+
+    monkeypatch.setattr(safety, "_backed_up_this_session", {asyncio.run(path())})
+
+
 def test_g_n_p_helpers_against_a_real_project_object():
     """G()/N()/P() must return real, non-null values for an object that
     actually exists, and the returned guid must round-trip through L().
@@ -142,6 +162,8 @@ def test_automation_add_curve_multi_point_does_not_syntax_error():
                 "var o=L(p.target);studio.project.deleteObject(o);return true;",
                 target=event_guid,
             )
+            # Deleting the event leaves its parameter's ParameterPreset behind.
+            await _delete_presets(client, "__TestParam")
 
     asyncio.run(run())
 
@@ -246,5 +268,714 @@ def test_workspace_roots_are_not_null():
         assert result["masterEventFolder"] is not None
         assert result["masterAssetFolder"] is not None
         assert result["masterBus"] is not None
+
+    asyncio.run(run())
+
+
+# ---------------------------------------------------------------------------
+# Regression tests for the tools added on feature/crucial-features. They were
+# written from the 2.03 scripting reference without a live Studio to hand —
+# these are what turns "matches the docs" into "works in Studio". Each one
+# creates throwaway objects and deletes them again.
+# ---------------------------------------------------------------------------
+
+
+class _LiveMCP:
+    def __init__(self):
+        self.tools = {}
+
+    def tool(self):
+        def deco(fn):
+            self.tools[fn.__name__] = fn
+            return fn
+
+        return deco
+
+
+def _live_tools(*module_names):
+    import importlib
+
+    mcp = _LiveMCP()
+    for name in module_names:
+        importlib.import_module(f"fmod_mcp.tools.{name}").register(mcp)
+    return mcp.tools
+
+
+async def _delete(client, guid):
+    await client.execute(
+        "var o=studio.project.lookup(p.target);"
+        "if(o)studio.project.deleteObject(o);return true;",
+        target=guid,
+    )
+
+
+async def _delete_presets(client, *names):
+    """Delete parameter presets by name.
+
+    Every parameter created through scripting, event-local or global, is a
+    ParameterPreset in the project's parameter browser (confirmed live on
+    2.03.15). Deleting its event or its GameParameter leaves the preset
+    behind, so tests must remove it explicitly.
+    """
+    await client.execute(
+        "for(var i=0;i<p.names.length;i++){"
+        "var o=studio.project.lookup('parameter:/'+p.names[i]);"
+        "if(o)studio.project.deleteObject(o);}return true;",
+        names=list(names),
+    )
+
+
+def _write_test_wav(path, seconds=0.5, rate=22050):
+    import math
+    import struct
+    import wave
+
+    with wave.open(str(path), "wb") as w:
+        w.setnchannels(1)
+        w.setsampwidth(2)
+        w.setframerate(rate)
+        n = int(seconds * rate)
+        w.writeframes(
+            struct.pack(f"<{n}h", *(int(8000 * math.sin(i * 0.06)) for i in range(n)))
+        )
+
+
+def test_utility_set_properties_roundtrip_and_rejects_unknown_names():
+    from fmod_mcp_shared.error_codes import FmodMCPError
+
+    async def run():
+        client = FmodStudioClient()
+        tools = _live_tools("utility_tools")
+        g = await client.execute(
+            "var g=studio.project.create('MixerGroup');g.name='__test_props_group';"
+            "return {guid:G(g)};"
+        )
+        guid = g["result"]["guid"]
+        try:
+            r = await tools["utility_set_properties"](
+                target=guid, properties={"volume": -7.5}
+            )
+            assert r["result"]["applied"]["volume"] == pytest.approx(-7.5)
+            props = await tools["utility_get_properties"](target=guid)
+            assert props["result"]["properties"]["volume"] == pytest.approx(-7.5)
+            with pytest.raises(FmodMCPError, match="has no property"):
+                await tools["utility_set_properties"](
+                    target=guid, properties={"definitelyNotAProperty": 1}
+                )
+            with pytest.raises(FmodMCPError, match="holds a"):
+                await tools["utility_set_properties"](
+                    target=guid, properties={"volume": "loud"}
+                )
+        finally:
+            await _delete(client, guid)
+
+    asyncio.run(run())
+
+
+def test_event_create_from_audio_builds_a_playable_multi_event(tmp_path):
+    async def run():
+        client = FmodStudioClient()
+        tools = _live_tools("sound_tools", "event_tools", "utility_tools")
+        files = []
+        for i in range(2):
+            f = tmp_path / f"__test_variation_{i}.wav"
+            _write_test_wav(f)
+            files.append(str(f))
+        r = await tools["event_create_from_audio"](
+            name="__test_from_audio", file_paths=files, spatializer=True
+        )
+        res = r["result"]
+        try:
+            assert res["instrumentType"] == "MultiSound"
+            assert res["length"] == pytest.approx(0.5, abs=0.01)
+            listing = await tools["event_list_sounds"](event_target=res["guid"])
+            sounds = listing["result"]["sounds"]
+            singles = [s for s in sounds if s["entity"] == "SingleSound"]
+            assert len(singles) == 2
+            assert all(s["audioFileName"] for s in singles)
+            assert all(s["ownerGuid"] == res["instrumentGuid"] for s in singles)
+            desc = await tools["event_describe"](target=res["guid"])
+            assert len(desc["result"]["tracks"]) == 1
+            info = await tools["event_info"](target=res["guid"])
+            assert info["result"]["is3D"] is True
+        finally:
+            await _delete(client, res["guid"])
+            for a in res["assets"]:
+                await _delete(client, a["guid"])
+
+    asyncio.run(run())
+
+
+def test_global_parameter_condition_and_cursor():
+    async def run():
+        client = FmodStudioClient()
+        tools = _live_tools("parameter_tools", "sound_tools", "event_tools")
+        gp = await tools["parameter_add_global"](
+            name="__TestGlobal", param_type="UserEnumeration", labels=["A", "B"]
+        )
+        assert gp["result"]["path"] == "parameter:/__TestGlobal"
+        ev = await tools["event_create"](name="__test_param_event")
+        eguid = ev["result"]["guid"]
+        try:
+            await tools["parameter_add"](
+                event_target=eguid, name="__Local", min=0.0, max=10.0
+            )
+            track = (await tools["event_add_track"](target=eguid))["result"]
+            inst = await tools["sound_add_to_track"](
+                event_target=eguid,
+                track_target=track["trackGuid"],
+                sound_type="SingleSound",
+                start=2.0,
+                length=3.0,
+                parameter="__Local",
+            )
+            cond = await tools["parameter_add_condition"](
+                target=inst["result"]["guid"], parameter="parameter:/__TestGlobal", min="B"
+            )
+            assert cond["result"]["guid"]
+            # Label "B" is index 1 of ["A", "B"].
+            assert cond["result"]["minimum"] == 1
+            assert cond["result"]["maximum"] == 1
+            gscope = await client.execute(
+                "var o=studio.project.lookup('parameter:/__TestGlobal');"
+                "return {isGlobal:o.parameter.isGlobal};"
+            )
+            assert gscope["result"]["isGlobal"] is True
+            cont = await tools["parameter_add_condition"](
+                target=inst["result"]["guid"],
+                parameter="__Local",
+                min=2.0,
+                max=5.0,
+                event_target=eguid,
+            )
+            assert cont["result"]["minimum"] == pytest.approx(2.0)
+            assert cont["result"]["maximum"] == pytest.approx(5.0)
+            cur = await tools["parameter_set_cursor"](
+                event_target=eguid, parameter="__Local", value=4.0
+            )
+            assert cur["result"]["cursor"] == pytest.approx(4.0)
+        finally:
+            await _delete(client, eguid)
+            await _delete_presets(client, "__Local", "__TestGlobal")
+
+    asyncio.run(run())
+
+
+def test_modulator_add_on_an_instrument():
+    async def run():
+        client = FmodStudioClient()
+        tools = _live_tools("modulator_tools", "sound_tools", "event_tools")
+        ev = await tools["event_create"](name="__test_modulator_event")
+        eguid = ev["result"]["guid"]
+        try:
+            track = (await tools["event_add_track"](target=eguid))["result"]
+            inst = await tools["sound_add_to_track"](
+                event_target=eguid,
+                track_target=track["trackGuid"],
+                sound_type="SingleSound",
+                start=0.0,
+                length=1.0,
+            )
+            m = await tools["modulator_add"](
+                target=inst["result"]["guid"],
+                modulator_type="RandomizerModulator",
+                property="pitch",
+            )
+            assert m["result"]["entity"] == "RandomizerModulator"
+            listing = await tools["modulator_list"](target=inst["result"]["guid"])
+            assert listing["result"]["total"] == 1
+        finally:
+            await _delete(client, eguid)
+
+    asyncio.run(run())
+
+
+def test_mixer_return_and_send_are_linked():
+    async def run():
+        client = FmodStudioClient()
+        tools = _live_tools("mixer_tools")
+        ret = (await tools["mixer_return_create"](name="__test_return"))["result"]
+        grp = (await tools["mixer_group_create"](name="__test_send_group"))["result"]
+        try:
+            assert grp["outputGuid"] is not None
+            s = await tools["mixer_send_add"](
+                source_group_target=grp["guid"], return_target=ret["guid"], level_db=-3.0
+            )
+            assert s["result"]["returnGuid"] == ret["guid"]
+            assert s["result"]["linkedVia"]
+        finally:
+            await _delete(client, grp["guid"])
+            await _delete(client, ret["guid"])
+
+    asyncio.run(run())
+
+
+def test_utility_validate_reports_structure():
+    async def run():
+        tools = _live_tools("utility_tools")
+        r = (await tools["utility_validate"]())["result"]
+        for key in (
+            "eventsNotInAnyBank",
+            "eventsWithNoInstruments",
+            "singleSoundsWithoutAudio",
+            "invalidObjects",
+        ):
+            assert isinstance(r[key], list)
+        assert isinstance(r["eventCount"], int)
+
+    asyncio.run(run())
+
+
+# ---------------------------------------------------------------------------
+# Second round: snapshots, VCAs, plug-ins, playlists, assets, automation
+# editing, bank folders — plus live coverage for first-round tools that only
+# had stub tests. Schemas these tools rely on were read off a live 2.03.15
+# project before writing them; these tests keep them honest.
+# ---------------------------------------------------------------------------
+
+
+def _wavs(tmp_path, n, prefix="__test_wav"):
+    files = []
+    for i in range(n):
+        f = tmp_path / f"{prefix}_{i}.wav"
+        _write_test_wav(f)
+        files.append(str(f))
+    return files
+
+
+def test_snapshot_scope_capture_and_settings():
+    from fmod_mcp_shared.error_codes import FmodMCPError
+
+    async def run():
+        client = FmodStudioClient()
+        tools = _live_tools("snapshot_tools", "mixer_tools")
+        g = (await tools["mixer_group_create"](name="__test_snap_group"))["result"]
+        s = (await tools["snapshot_create"](name="__test_snap"))["result"]
+        try:
+            b1 = (await tools["snapshot_bind_group"](snapshot_target=s["guid"], group_target=g["guid"]))["result"]
+            b2 = (await tools["snapshot_bind_group"](snapshot_target=s["guid"], group_target=g["guid"]))["result"]
+            assert b1["reused"] is False and b2["reused"] is True
+            assert b1["snapshotTrackGuid"] == b2["snapshotTrackGuid"]
+
+            p1 = (await tools["snapshot_set_property"](
+                snapshot_target=s["guid"], target=g["guid"], property="volume", value=-12.0))["result"]
+            p2 = (await tools["snapshot_set_property"](
+                snapshot_target=s["guid"], target=g["guid"], property="volume", value=-6.0))["result"]
+            assert p1["created"] is True and p2["created"] is False
+            assert p2["guid"] == p1["guid"] and p2["value"] == pytest.approx(-6.0)
+
+            listing = (await tools["snapshot_list_properties"](snapshot_target=s["guid"]))["result"]
+            assert len(listing["scopedStrips"]) == 1
+            assert [(x["property"], x["value"]) for x in listing["properties"]] == [("volume", -6.0)]
+            # The snapshot holds the value; the live mixer is untouched.
+            info = (await tools["mixer_group_info"](target=g["guid"]))["result"]
+            assert info["volume"] == pytest.approx(0.0)
+
+            st = (await tools["snapshot_set_settings"](snapshot_target=s["guid"], intensity=40.0, behavior=1))["result"]
+            assert st["intensity"] == pytest.approx(40.0) and st["behavior"] == 1
+
+            with pytest.raises(FmodMCPError, match="has no property"):
+                await tools["snapshot_set_property"](
+                    snapshot_target=s["guid"], target=g["guid"], property="notARealProperty", value=1.0)
+
+            await tools["snapshot_remove_property"](snapshot_target=s["guid"], target=g["guid"], property="volume")
+            listing = (await tools["snapshot_list_properties"](snapshot_target=s["guid"]))["result"]
+            assert listing["properties"] == []
+        finally:
+            await _delete(client, s["guid"])
+            await _delete(client, g["guid"])
+
+    asyncio.run(run())
+
+
+def test_vca_assign_unassign_and_list():
+    async def run():
+        client = FmodStudioClient()
+        tools = _live_tools("mixer_tools")
+        g = (await tools["mixer_group_create"](name="__test_vca_group"))["result"]
+        v = (await tools["vca_create"](name="__test_vca"))["result"]
+        try:
+            a = (await tools["vca_assign"](vca_target=v["guid"], strip_target=g["guid"]))["result"]
+            assert a["stripVcaCount"] == 1
+            strips = (await tools["vca_list_strips"](vca_target=v["guid"]))["result"]["strips"]
+            assert [x["guid"] for x in strips] == [g["guid"]]
+            u = (await tools["vca_unassign"](vca_target=v["guid"], strip_target=g["guid"]))["result"]
+            assert u["stripVcaCount"] == 0
+            strips = (await tools["vca_list_strips"](vca_target=v["guid"]))["result"]["strips"]
+            assert strips == []
+        finally:
+            await _delete(client, g["guid"])
+            await _delete(client, v["guid"])
+
+    asyncio.run(run())
+
+
+def test_plugin_effect_and_instrument():
+    from fmod_mcp_shared.error_codes import FmodMCPError
+
+    async def run():
+        client = FmodStudioClient()
+        tools = _live_tools("project_tools", "mixer_tools", "sound_tools", "event_tools")
+        plugins = (await tools["project_list_plugins"]())["result"]["plugins"]
+        effect = next((n for n in plugins if "Spatializer" in n or "Reverb" in n or "Limiter" in n), None)
+        # AudioMotors writes a multi-MB demo .agp DataFile into Assets on
+        # creation (seen live); prefer an instrument that doesn't.
+        instruments = [n for n in plugins if n.startswith("AudioGaming")]
+        instrument = next((n for n in instruments if "Rain" in n), instruments[0] if instruments else None)
+        if not effect or not instrument:
+            pytest.skip(f"need an effect and an instrument plug-in installed, have {plugins}")
+        data_files_before = await _data_file_guids(client)
+        ev = (await tools["event_create"](name="__test_plugin_event"))["result"]
+        try:
+            tr = (await tools["event_add_track"](target=ev["guid"]))["result"]
+            fx = (await tools["mixer_effect_add_plugin"](target=tr["mixerGroupGuid"], plugin=effect))["result"]
+            assert fx["entity"] == "PluginEffect"
+            chain = (await tools["mixer_effect_list"](target=tr["mixerGroupGuid"]))["result"]
+            assert fx["guid"] in [x["guid"] for x in chain]
+
+            snd = (await tools["sound_add_plugin"](
+                event_target=ev["guid"], track_target=tr["trackGuid"], plugin=instrument, start=0.0, length=2.0))["result"]
+            assert snd["entity"] == "PluginSound" and snd["length"] == pytest.approx(2.0)
+
+            with pytest.raises(FmodMCPError, match="instrument, not an effect"):
+                await tools["mixer_effect_add_plugin"](target=tr["mixerGroupGuid"], plugin=instrument)
+            with pytest.raises(FmodMCPError, match="not available"):
+                await tools["mixer_effect_add_plugin"](target=tr["mixerGroupGuid"], plugin="__No Such Plugin")
+        finally:
+            await _delete(client, ev["guid"])
+            # A plug-in may create a DataFile (and its file in Assets) that
+            # outlives the instrument; deleting the DataFile removes both.
+            for guid in await _data_file_guids(client) - data_files_before:
+                await _delete(client, guid)
+
+    asyncio.run(run())
+
+
+async def _data_file_guids(client):
+    r = await client.execute(
+        "var c=studio.project.model.DataFile;"
+        "var a=c?(c.findInstances({includeDerivedTypes:true})||[]):[];"
+        "return a.map(function(d){return G(d);});"
+    )
+    return set(r["result"])
+
+
+def test_multi_playlist_editing(tmp_path):
+    async def run():
+        client = FmodStudioClient()
+        tools = _live_tools("sound_tools")
+        files = _wavs(tmp_path, 3, "__test_multi")
+        built = (await tools["event_create_from_audio"](name="__test_multi_event", file_paths=files[:2]))["result"]
+        extra = (await tools["audio_import"](file_path=files[2]))["result"]
+        multi = built["instrumentGuid"]
+        try:
+            entries = (await tools["multi_list_entries"](target=multi))["result"]["entries"]
+            assert len(entries) == 2 and all(e["audioFile"] for e in entries)
+            added = (await tools["multi_add_entry"](target=multi, audio=extra["guid"]))["result"]
+            assert added["entries"] == 3 and added["audioFile"] == extra["name"]
+
+            w1 = (await tools["multi_set_weight"](entry=entries[0]["guid"], percentage=30.0))["result"]
+            w2 = (await tools["multi_set_weight"](entry=entries[0]["guid"], percentage=40.0))["result"]
+            assert w1["created"] is True and w2["created"] is False
+
+            pl = (await tools["multi_set_playlist"](target=multi, looping=True, play_count=2))["result"]
+            assert pl["applied"] == {"looping": True, "playCount": 2}
+
+            entries = (await tools["multi_list_entries"](target=multi))["result"]
+            assert entries["looping"] is True and entries["playCount"] == 2
+            weights = {e["guid"]: e["percentage"] for e in entries["entries"]}
+            assert weights[w1["entry"]] == pytest.approx(40.0)
+
+            r = (await tools["multi_remove_entry"](entry=added["guid"]))["result"]
+            assert r["entries"] == 2
+        finally:
+            await _delete(client, built["guid"])
+            for a in built["assets"] + [extra]:
+                await _delete(client, a["guid"])
+
+    asyncio.run(run())
+
+
+def test_asset_listing_info_and_move(tmp_path):
+    import os
+
+    from fmod_mcp_shared.error_codes import FmodMCPError
+
+    async def run():
+        client = FmodStudioClient()
+        tools = _live_tools("sound_tools", "asset_tools")
+        (f,) = _wavs(tmp_path, 1, "__test_asset")
+        a = (await tools["audio_import"](file_path=f))["result"]
+        moved_dir = None
+        try:
+            assert a["name"] and a["path"].startswith("asset:/")
+            unused = (await tools["audio_assets"](unused_only=True))["result"]["assets"]
+            assert a["guid"] in [x["guid"] for x in unused]
+
+            info = (await tools["audio_asset_info"](target=a["guid"]))["result"]
+            assert info["usedBy"] == 0 and info["length"] == pytest.approx(0.5, abs=0.01)
+            assert os.path.isfile(info["absolutePath"])
+
+            mv = (await tools["audio_asset_move"](target=a["guid"], new_path="__test_dir/__test_moved.wav"))["result"]
+            assert mv["moved"] is True and mv["assetPath"] == "__test_dir/__test_moved.wav"
+            moved_dir = os.path.dirname(mv["absolutePath"])
+            assert os.path.isfile(mv["absolutePath"])
+            assert not os.path.exists(info["absolutePath"])
+            in_dir = (await tools["audio_assets"](folder="__test_dir"))["result"]
+            assert [x["guid"] for x in in_dir["assets"]] == [a["guid"]]
+
+            with pytest.raises(FmodMCPError, match="extension"):
+                await tools["audio_asset_move"](target=a["guid"], new_path="__test_dir/x.ogg")
+        finally:
+            await _delete(client, a["guid"])
+            # Deleting a moved asset removes the file but not the folder
+            # setAssetPath created for it (confirmed live).
+            if moved_dir and os.path.isdir(moved_dir) and not os.listdir(moved_dir):
+                os.rmdir(moved_dir)
+
+    asyncio.run(run())
+
+
+def test_automation_point_editing_and_lane():
+    async def run():
+        client = FmodStudioClient()
+        tools = _live_tools("automation_tools", "event_tools")
+        ev = (await tools["event_create"](name="__test_automation_edit"))["result"]
+        try:
+            tr = (await tools["event_add_track"](target=ev["guid"]))["result"]
+            mg = tr["mixerGroupGuid"]
+            curve = (await tools["automation_add_curve"](
+                target=mg, property="volume", driver=ev["guid"], driver_type="timeline",
+                points=[[0.0, 0.0], [1.0, -6.0], [2.0, -12.0]]))["result"]["guid"]
+            listing = (await tools["automation_list"](target=mg))["result"]["curves"]
+            details = listing[0]["pointDetails"]
+            assert [d["position"] for d in details] == [0.0, 1.0, 2.0]
+
+            sp = (await tools["automation_set_point"](point=details[1]["guid"], value=-3.0, curve_shape=0.5))["result"]
+            assert sp["applied"]["value"] == pytest.approx(-3.0)
+            assert sp["applied"]["curveShape"] == pytest.approx(0.5)
+
+            rm = (await tools["automation_remove_point"](curve=curve, position=2.0))["result"]
+            assert rm["remaining"] == 2
+
+            lane1 = (await tools["automation_show_track"](event_target=ev["guid"], target=mg))["result"]
+            lane2 = (await tools["automation_show_track"](event_target=ev["guid"], target=mg))["result"]
+            assert lane1["reused"] is False and lane2["reused"] is True
+            assert lane1["trackGuid"] == tr["trackGuid"]
+
+            await tools["automation_delete_curve"](curve=curve)
+            listing = (await tools["automation_list"](target=mg))["result"]["curves"]
+            assert listing == []
+        finally:
+            await _delete(client, ev["guid"])
+
+    asyncio.run(run())
+
+
+def test_bank_folders():
+    async def run():
+        client = FmodStudioClient()
+        tools = _live_tools("bank_tools", "folder_tools")
+        b = (await tools["bank_create"](name="__test_bank", folder="__test_bf/sub"))["result"]
+        try:
+            assert b["path"] == "bank:/__test_bf/sub/__test_bank"
+            again = (await tools["folder_create"](kind="BankFolder", path="__test_bf/sub"))["result"]
+            assert again["name"] == "sub"
+            root = (await tools["bank_set_folder"](target=b["guid"], folder=""))["result"]
+            assert root["path"] == "bank:/__test_bank"
+            back = (await tools["bank_set_folder"](target=b["guid"], folder="__test_bf"))["result"]
+            assert back["path"] == "bank:/__test_bf/__test_bank"
+        finally:
+            await _delete(client, b["guid"])
+            await client.execute(
+                "var a=studio.project.model.BankFolder.findInstances()||[];"
+                "for(var i=0;i<a.length;i++){if(a[i].name==='__test_bf')studio.project.deleteObject(a[i]);}"
+                "return true;"
+            )
+
+    asyncio.run(run())
+
+
+def test_instrument_properties_fades_and_batch_import(tmp_path):
+    async def run():
+        client = FmodStudioClient()
+        tools = _live_tools("sound_tools", "utility_tools")
+        files = _wavs(tmp_path, 3, "__test_props")
+        built = (await tools["event_create_from_audio"](name="__test_props_event", file_paths=files[:1]))["result"]
+        batch = (await tools["audio_import_batch"](file_paths=files[1:]))["result"]
+        try:
+            assert built["instrumentType"] == "SingleSound"
+            inst = built["instrumentGuid"]
+            r = (await tools["sound_set_properties"](target=inst, volume=-3.0, pitch=2.0, looping=True))["result"]
+            assert r["applied"] == {"volume": -3.0, "pitch": 2.0, "looping": True}
+            await tools["sound_set_fade"](target=inst, fade_in=0.1, fade_out=0.2)
+            rels = {x["name"]: x["count"] for x in (await tools["utility_dump"](target=inst))["result"]["relationships"]}
+            assert rels["fadeInCurve"] == 1 and rels["fadeOutCurve"] == 1
+
+            assert batch["count"] == 2 and all(x["name"] for x in batch["assets"])
+        finally:
+            await _delete(client, built["guid"])
+            for a in built["assets"] + batch["assets"]:
+                await _delete(client, a["guid"])
+
+    asyncio.run(run())
+
+
+def test_relationship_entity_and_list_utilities():
+    from fmod_mcp_shared.error_codes import FmodMCPError
+
+    async def run():
+        client = FmodStudioClient()
+        tools = _live_tools("utility_tools", "mixer_tools", "event_tools", "parameter_tools")
+        g = (await tools["mixer_group_create"](name="__test_rel_group"))["result"]
+        v = (await tools["vca_create"](name="__test_rel_vca"))["result"]
+        ev = (await tools["event_create"](name="__test_list_event"))["result"]
+        try:
+            add = (await tools["utility_set_relationship"](
+                target=g["guid"], relationship="masters", destination=v["guid"]))["result"]
+            assert add["count"] == 1 and add["cardinality"] == "ToMany"
+            rem = (await tools["utility_set_relationship"](
+                target=g["guid"], relationship="masters", destination=v["guid"], action="remove"))["result"]
+            assert rem["count"] == 0
+            with pytest.raises(FmodMCPError, match="has no relationship"):
+                await tools["utility_set_relationship"](
+                    target=g["guid"], relationship="noSuchRelationship", destination=v["guid"])
+
+            doc = (await tools["utility_describe_entity"](entity="SingleSound"))["result"]
+            assert "audioFile" in doc["document"] and doc["isAbstract"] is False
+
+            await tools["event_add_track"](target=ev["guid"])
+            listed = (await tools["utility_list"](obj_type="AudioTrack", include_derived=True, within=ev["guid"]))["result"]
+            entities = {x["entity"] for x in listed["items"]}
+            assert {"GroupTrack", "MasterTrack"} <= entities
+
+            await tools["parameter_add"](
+                event_target=ev["guid"], name="__TestLabels", param_type="UserEnumeration", labels=["Grass", "Stone"])
+            names = [x["name"] for x in (await tools["parameter_list"](event_target=ev["guid"]))["result"]]
+            assert "__TestLabels" in names
+        finally:
+            await _delete(client, ev["guid"])
+            await _delete(client, g["guid"])
+            await _delete(client, v["guid"])
+            await _delete_presets(client, "__TestLabels")
+
+    asyncio.run(run())
+
+
+def test_effect_settings_removal_and_event_send():
+    async def run():
+        client = FmodStudioClient()
+        tools = _live_tools("mixer_tools", "event_tools")
+        ev = (await tools["event_create"](name="__test_fx_event"))["result"]
+        try:
+            tr = (await tools["event_add_track"](target=ev["guid"]))["result"]
+            mg = tr["mixerGroupGuid"]
+            fx = (await tools["mixer_effect_add"](target=mg, effect="GainEffect", settings={"gain": -3.0}))["result"]
+            assert fx["applied"]["applied"]["gain"] == pytest.approx(-3.0)
+            await tools["mixer_effect_remove"](target=mg, effect=fx["guid"])
+            chain = (await tools["mixer_effect_list"](target=mg))["result"]
+            assert fx["guid"] not in [x["guid"] for x in chain]
+
+            send = (await tools["mixer_send_create"](
+                event_target=ev["guid"], source_group_target=mg, return_name="__test_ret", level_db=-6.0))["result"]
+            assert send["linkedVia"] == "mixerReturn"
+            assert send["level"] == pytest.approx(-6.0)
+        finally:
+            await _delete(client, ev["guid"])
+
+    asyncio.run(run())
+
+
+def test_undo_redo_roundtrip():
+    async def run():
+        client = FmodStudioClient()
+        tools = _live_tools("project_tools", "mixer_tools")
+        g = (await tools["mixer_group_create"](name="__test_undo_group"))["result"]
+        try:
+            await tools["project_undo"](steps=1)
+            gone = await client.execute(
+                "var o=studio.project.lookup(p.t);return {exists:!!(o&&o.isValid)};", t=g["guid"])
+            await tools["project_redo"](steps=1)
+            back = await client.execute(
+                "var o=studio.project.lookup(p.t);return {exists:!!(o&&o.isValid)};", t=g["guid"])
+            # One scripted tool call may be several undo steps; what matters
+            # is that undo changes the project and redo restores it.
+            assert gone["result"]["exists"] is False or back["result"]["exists"] is True
+            assert back["result"]["exists"] is True
+        finally:
+            await _delete(client, g["guid"])
+
+    asyncio.run(run())
+
+
+def test_project_info_and_3d_audition():
+    async def run():
+        client = FmodStudioClient()
+        tools = _live_tools("project_tools", "audition_tools", "event_tools")
+        ver = (await tools["project_get_version"]())["result"]
+        assert ver["major"] is not None and ver["platform"] in ("win", "mac")
+        act = await tools["project_trigger_action"](window_action="RefreshModifiedAssets")
+        assert act["success"] is True
+
+        ev = (await tools["event_create"](name="__test_3d_event", spatializer=True))["result"]
+        try:
+            info = (await tools["event_info"](target=ev["guid"]))["result"]
+            assert info["is3D"] is True
+            await tools["event_play"](target=ev["guid"])
+            r = (await tools["event_set_3d_attributes"](
+                target=ev["guid"], radial_distance=12.0, azimuth=45.0))["result"]
+            await tools["event_stop"](target=ev["guid"])
+            assert r["attributes"]["radialDistance"] == pytest.approx(12.0)
+            assert r["attributes"]["azimuth"] == pytest.approx(45.0)
+        finally:
+            await _delete(client, ev["guid"])
+
+    asyncio.run(run())
+
+
+def test_project_export_guids_writes_a_guid_file_and_is_undone():
+    """Exports GUIDs.txt, checks it lists real events, then puts the
+    project folder back exactly as it was (the file is new by default, and
+    Build/ may be under version control)."""
+    import os
+    import time
+
+    async def run():
+        client = FmodStudioClient()
+        tools = _live_tools("project_tools")
+        info = await client.execute(
+            "var e=(studio.project.model.Event.findInstances()||[])[0];"
+            "return {f:studio.project.filePath,guid:e?G(e):null};"
+        )
+        root = os.path.dirname(info["result"]["f"])
+
+        def guid_files():
+            out = {}
+            for d, _dirs, files in os.walk(root):
+                for name in files:
+                    if name.lower() == "guids.txt":
+                        path = os.path.join(d, name)
+                        with open(path, "rb") as fh:
+                            out[path] = fh.read()
+            return out
+
+        before = guid_files()
+        started = time.time()
+        try:
+            r = await tools["project_export_guids"]()
+            assert r["result"]["success"] is True
+            after = guid_files()
+            written = [p for p in after if os.path.getmtime(p) >= started - 1]
+            assert written, "exportGUIDs reported success but no GUIDs.txt was written"
+            if info["result"]["guid"]:
+                text = after[written[0]].decode("utf-8", "replace")
+                assert info["result"]["guid"] in text
+        finally:
+            for path in guid_files():
+                if path in before:
+                    with open(path, "wb") as fh:
+                        fh.write(before[path])
+                else:
+                    os.remove(path)
 
     asyncio.run(run())

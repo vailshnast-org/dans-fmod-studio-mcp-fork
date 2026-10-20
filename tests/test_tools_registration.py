@@ -1,8 +1,11 @@
 import asyncio
 import importlib
 import inspect
+import json
 import os
 import pkgutil
+import shutil
+import subprocess
 import tempfile
 
 import pytest
@@ -74,11 +77,39 @@ _SAMPLES = {
     "strip_target": "mixer:/Test/TestGroup",
     "source_group_target": "mixer:/Test/TestGroup",
     "return_name": "TestReturn",
+    "return_target": _C_GUID,
+    "file_paths": None,  # filled below with real temp files
+    "properties": {"volume": -6.0, "looping": True},
+    "relationship": "output",
+    "destination": _B_GUID,
+    "entity": "SingleSound",
+    "modulator_type": "RandomizerModulator",
+    "parameter": "Intensity",
+    "min": 0.0,
+    "radial_distance": 10.0,
+    "window_action": "RefreshModifiedAssets",
+    "new_path": "sfx/player/step_01.wav",
+    "plugin": "Steam Audio Spatializer",
+    "percentage": 25.0,
+    "entry": _A_GUID,
+    "point": _A_GUID,
+    "curve": _B_GUID,
+}
+
+
+# Tools whose arguments are all optional but that (correctly) refuse a call
+# setting nothing — give them one field so the harness exercises their JS.
+_EXTRA_ARGS = {
+    "sound_set_properties": {"volume": -6.0},
+    "sound_set_fade": {"fade_in": 0.5},
+    "automation_set_point": {"value": -6.0},
+    "multi_set_playlist": {"looping": True},
+    "snapshot_set_settings": {"intensity": 50.0},
 }
 
 
 def _sample_args(fn):
-    args = {}
+    args = dict(_EXTRA_ARGS.get(fn.__name__, {}))
     sig = inspect.signature(fn)
     for pname, p in sig.parameters.items():
         if p.kind in (p.VAR_POSITIONAL, p.VAR_KEYWORD):
@@ -87,6 +118,8 @@ def _sample_args(fn):
             continue  # exercise only required params
         if pname == "file_path" and _SAMPLES["file_path"] is not None:
             args[pname] = _SAMPLES["file_path"]
+        elif pname == "file_paths" and _SAMPLES["file_path"] is not None:
+            args[pname] = [_SAMPLES["file_path"]]
         elif pname in _SAMPLES:
             args[pname] = _SAMPLES[pname]
         elif p.annotation is str:
@@ -107,7 +140,10 @@ def _sample_args(fn):
 def _balance(js):
     pairs = {"}": "{", ")": "(", "]": "["}
     stack = []
-    in_str = False
+    # Track which quote opened the current string: command bodies use
+    # single-quoted JS strings, the injected params are double-quoted JSON,
+    # and either may legitimately contain brackets (e.g. charAt(0)==='{').
+    in_str = None
     esc = False
     for ch in js:
         if in_str:
@@ -115,11 +151,11 @@ def _balance(js):
                 esc = False
             elif ch == "\\":
                 esc = True
-            elif ch == '"':
-                in_str = False
+            elif ch == in_str:
+                in_str = None
             continue
-        if ch == '"':
-            in_str = True
+        if ch in "\"'":
+            in_str = ch
         elif ch in "{([":
             stack.append(ch)
         elif ch in "})]":
@@ -139,7 +175,8 @@ def _tool_modules():
     return [m.name for m in pkgutil.iter_modules(tools_pkg.__path__)]
 
 
-def test_every_tool_registers_and_produces_valid_js(stub_client):
+def _run_every_tool():
+    """Invoke every registered tool once with sample args (stub client)."""
     if _SAMPLES["file_path"] is None:
         fd, path = tempfile.mkstemp(suffix=".wav")
         os.close(fd)
@@ -160,6 +197,11 @@ def test_every_tool_registers_and_produces_valid_js(stub_client):
             result = asyncio.run(fn(**args))
             assert result["success"] is True, f"{tool_name} failed: {result}"
             checked += 1
+    return checked, tool_names
+
+
+def test_every_tool_registers_and_produces_valid_js(stub_client):
+    checked, tool_names = _run_every_tool()
 
     assert stub_client.calls, "stub client never saw a command"
     # Every captured (command body, params) must form a balanced, parseable
@@ -195,3 +237,50 @@ def test_params_never_break_out_of_wrapper(stub_client):
     assert "return p.name;" in js
     assert js.startswith("(function(){const p=")
     _balance(js)
+
+
+# Parses (never runs) each payload with Node: new Function(src) throws a
+# SyntaxError for malformed code without executing it. The bracket check
+# above can't see statement-level errors — e.g. automation_add_curve once
+# joined statements with "," ("a;,b;"), which balanced fine and failed only
+# inside FMOD Studio as an opaque "Invalid JSON response".
+_NODE_PARSE = r"""
+const fs = require("fs");
+const items = JSON.parse(fs.readFileSync(process.argv[2], "utf8"));
+const bad = [];
+for (const it of items) {
+  try { new Function("return " + it.js); }
+  catch (e) { bad.push({ tool: it.tool, error: String(e) }); }
+}
+process.stdout.write(JSON.stringify(bad));
+"""
+
+# FMOD Studio's script engine is an older Qt JS engine; command bodies stick
+# to ES5 plus the wrapper's own const. Arrow functions, template literals and
+# let are the constructs most likely to slip in from modern-JS habits.
+_ES6_ONLY = ("=>", "`", "let ")
+
+
+@pytest.mark.skipif(shutil.which("node") is None, reason="node not installed")
+def test_every_command_is_syntactically_valid_js(stub_client, tmp_path):
+    _run_every_tool()
+    items = [
+        {"tool": body[:60], "js": format_command(body, **params)}
+        for body, params in stub_client.calls
+    ]
+    for body, _params in stub_client.calls:
+        for token in _ES6_ONLY:
+            assert token not in body, f"ES6-only {token!r} in command body: {body[:120]}"
+    src = tmp_path / "items.json"
+    src.write_text(json.dumps(items), encoding="utf-8")
+    script = tmp_path / "parse.js"
+    script.write_text(_NODE_PARSE, encoding="utf-8")
+    out = subprocess.run(  # noqa: S603 - fixed argv, test-only
+        [shutil.which("node"), str(script), str(src)],
+        capture_output=True,
+        text=True,
+        timeout=60,
+        check=True,
+    )
+    bad = json.loads(out.stdout)
+    assert not bad, f"syntax errors in generated JS: {bad}"

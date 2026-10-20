@@ -1,17 +1,24 @@
 import pytest
 
 from fmod_mcp.tools import (
+    _common,
     automation_tools,
     bank_tools,
     event_tools,
     folder_tools,
     marker_tools,
     mixer_tools,
+    modulator_tools,
     parameter_tools,
+    project_tools,
     snapshot_tools,
     sound_tools,
 )
-from fmod_mcp_shared.constants import MAX_AUTOMATION_POINTS, MAX_NAME_LENGTH
+from fmod_mcp_shared.constants import (
+    MAX_AUTOMATION_POINTS,
+    MAX_NAME_LENGTH,
+    MAX_PROPERTIES_PER_CALL,
+)
 from fmod_mcp_shared.error_codes import ErrorCode, FmodMCPError
 
 
@@ -119,15 +126,19 @@ def test_parameter_type_whitelist():
 
 
 def test_folder_kind_whitelist():
-    assert folder_tools.ALLOWED_FOLDER_KINDS == {"EventFolder", "AssetFolder"}
+    assert folder_tools.ALLOWED_FOLDER_KINDS == {"EventFolder", "BankFolder", "AssetFolder"}
 
 
-def test_automator_property_whitelist():
+def test_automator_property_validation():
     assert "volume" in automation_tools.ALLOWED_AUTOMATOR_PROPERTIES
     assert "pitch" in automation_tools.ALLOWED_AUTOMATOR_PROPERTIES
-    with pytest.raises(FmodMCPError) as ei:
-        automation_tools._check_property("pan")
-    assert ei.value.code == ErrorCode.INVALID_TYPE
+    # Any automatable property name is accepted Python-side (an effect's
+    # cutoff, a reverb's wet level); existence is checked live in JS.
+    automation_tools._check_property("cutoff")
+    for bad in ("", "has space", "__proto__", "a.b", "x;y", 5):
+        with pytest.raises(FmodMCPError) as ei:
+            automation_tools._check_property(bad)
+        assert ei.value.code == ErrorCode.INVALID_TYPE
 
 
 def test_automation_driver_type_whitelist():
@@ -202,4 +213,128 @@ def test_marker_entity_types_cover_all_track_add_methods():
         "SustainPoint",
         "TransitionMarker",
         "TransitionRegion",
+    )
+
+
+def test_identifier_check():
+    for good in ("volume", "decayTime", "wet_level", "Q2"):
+        _common.check_identifier(good, "property")
+    for bad in ("", "1abc", "_private", "__proto__", "a-b", "a b", "a.b", None):
+        with pytest.raises(FmodMCPError) as ei:
+            _common.check_identifier(bad, "property")
+        assert ei.value.code == ErrorCode.INVALID_PARAMETER
+
+
+def test_property_values_validation():
+    assert _common.check_property_values({"volume": -6.0, "looping": True}) == {
+        "volume": -6.0,
+        "looping": True,
+    }
+    for bad in (None, {}, [], "volume"):
+        with pytest.raises(FmodMCPError) as ei:
+            _common.check_property_values(bad)
+        assert ei.value.code == ErrorCode.INVALID_PARAMETER
+    # Only scalar values — an object/list could smuggle a relationship write.
+    for bad_value in ([1, 2], {"x": 1}, None):
+        with pytest.raises(FmodMCPError) as ei:
+            _common.check_property_values({"volume": bad_value})
+        assert ei.value.code == ErrorCode.INVALID_PARAMETER
+    with pytest.raises(FmodMCPError) as ei:
+        _common.check_property_values({"bad name": 1})
+    assert ei.value.code == ErrorCode.INVALID_PARAMETER
+    too_many = {f"p{i}": i for i in range(MAX_PROPERTIES_PER_CALL + 1)}
+    with pytest.raises(FmodMCPError) as ei:
+        _common.check_property_values(too_many)
+    assert ei.value.code == ErrorCode.VALUE_OUT_OF_RANGE
+
+
+def test_parameter_types_match_documented_enum():
+    # project.parameterType in the 2.03 scripting reference, minus Invalid.
+    assert parameter_tools.ALLOWED_PARAM_TYPES == {
+        "User",
+        "UserDiscrete",
+        "UserEnumeration",
+        "Distance",
+        "Direction",
+        "Elevation",
+        "EventConeAngle",
+        "EventOrientation",
+        "Speed",
+        "SpeedAbsolute",
+        "DistanceNormalized",
+    }
+
+
+def test_parameter_definition_validation():
+    parameter_tools._check_definition("User", 0.0, 1.0, None)
+    parameter_tools._check_definition("UserEnumeration", 0, 0, ["Grass", "Stone"])
+    cases = [
+        ("Nope", 0, 1, None, ErrorCode.INVALID_TYPE),
+        ("User", 1, 1, None, ErrorCode.VALUE_OUT_OF_RANGE),
+        ("User", 2, 1, None, ErrorCode.VALUE_OUT_OF_RANGE),
+        ("User", 0, 1, ["a"], ErrorCode.INVALID_PARAMETER),  # labels need enum type
+        ("UserEnumeration", 0, 1, [], ErrorCode.INVALID_PARAMETER),
+        ("UserEnumeration", 0, 1, ["a", ""], ErrorCode.INVALID_PARAMETER),
+    ]
+    for ptype, lo, hi, labels, code in cases:
+        with pytest.raises(FmodMCPError) as ei:
+            parameter_tools._check_definition(ptype, lo, hi, labels)
+        assert ei.value.code == code, (ptype, lo, hi, labels)
+
+
+def test_modulator_types_match_documented_addmodulator():
+    assert modulator_tools.ALLOWED_MODULATOR_TYPES == (
+        "RandomizerModulator",
+        "ADSRModulator",
+        "SidechainModulator",
+        "AutopitchModulator",
+    )
+    with pytest.raises(FmodMCPError) as ei:
+        modulator_tools._check_modulator_type("LFOModulator")
+    assert ei.value.code == ErrorCode.INVALID_TYPE
+
+
+def test_window_actions_exclude_destructive():
+    for dangerous in (
+        "Delete",
+        "RevertToSaved",
+        "CloseProject",
+        "ExitApplication",
+        "NewProject",
+        "OpenProject",
+        "Paste",
+        "SourceControlRevert",
+        "Undo",  # has its own step-limited tool
+    ):
+        assert dangerous not in project_tools.SAFE_WINDOW_ACTIONS
+
+
+def test_wav_duration(tmp_path):
+    wav = tmp_path / "one_second.wav"
+    _write_wav(wav, [0] * 22050, framerate=22050)
+    assert sound_tools._wav_duration(str(wav)) == pytest.approx(1.0)
+    fake = tmp_path / "fake.wav"
+    fake.write_bytes(b"not a wav")
+    assert sound_tools._wav_duration(str(fake)) is None
+
+
+def test_asset_move_path_validation():
+    from fmod_mcp.tools import asset_tools
+
+    assert asset_tools._check_asset_path("sfx/hit.wav") == "sfx/hit.wav"
+    assert asset_tools._check_asset_path("asset:/sfx/hit.wav") == "sfx/hit.wav"
+    assert asset_tools._check_asset_path(r"sfx\player\a.wav") == "sfx/player/a.wav"
+    for bad in ("", "   ", "/abs/x.wav", "C:/x.wav", r"c:\x.wav", "../x.wav",
+                "sfx/../../x.wav", "sfx//x.wav", "./x.wav"):
+        with pytest.raises(FmodMCPError) as ei:
+            asset_tools._check_asset_path(bad)
+        assert ei.value.code == ErrorCode.INVALID_PATH, bad
+
+
+def test_multi_entry_types():
+    assert sound_tools.MULTI_ENTRY_TYPES == (
+        "SingleSound",
+        "ProgrammerSound",
+        "SilenceSound",
+        "MultiSound",
     )
