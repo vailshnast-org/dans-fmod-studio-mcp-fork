@@ -1,4 +1,9 @@
+import os
+import time
+
 from mcp.server.fastmcp import FastMCP
+
+from fmod_mcp.tools.studio_tools import build_outputs, studio_log_problems
 
 from fmod_mcp_shared.error_codes import ErrorCode, FmodMCPError
 
@@ -45,25 +50,39 @@ def register(mcp: FastMCP):
         banks: list[str] | str | None = None,
         platforms: list[str] | str | None = None,
     ) -> dict:
-        """Build banks for the selected platform(s), or scope to specific
+        """Build banks inside the open Studio, or scope to specific
         banks/platforms (scoping a big project to one bank is much faster).
+        Returns a build report: success, each bank/GUIDs file written (path,
+        size) and any warning/error lines Studio logged during the build —
+        check `problems` before assuming the banks are shippable.
 
         Args:
             banks: Bank name or list (default: every bank).
             platforms: Platform name or list (default: every platform).
         """
+        started = time.time()
         if banks is None and platforms is None:
-            return await client.execute_long(
-                "var ok=studio.project.build();return {success:!!ok};"
+            r = await client.execute_long(
+                "var ok=studio.project.build();"
+                "return {built:!!ok,project:studio.project.filePath};"
             )
-        return await client.execute_long(
-            "var opts={};"
-            "if(p.banks!==null)opts.banks=p.banks;"
-            "if(p.platforms!==null)opts.platforms=p.platforms;"
-            "var ok=studio.project.build(opts);return {success:!!ok};",
-            banks=banks,
-            platforms=platforms,
-        )
+        else:
+            r = await client.execute_long(
+                "var opts={};"
+                "if(p.banks!==null)opts.banks=p.banks;"
+                "if(p.platforms!==null)opts.platforms=p.platforms;"
+                "var ok=studio.project.build(opts);"
+                "return {built:!!ok,project:studio.project.filePath};",
+                banks=banks,
+                platforms=platforms,
+            )
+        res = r.get("result") or {}
+        project = res.get("project")
+        res["outputs"] = build_outputs(os.path.dirname(project), started) if project else []
+        res["problems"] = studio_log_problems(started)
+        # Kept for callers of the pre-report version of this tool.
+        res["success"] = res.get("built")
+        return {"success": True, "result": res}
 
     @mcp.tool()
     async def project_get_modified() -> dict:
