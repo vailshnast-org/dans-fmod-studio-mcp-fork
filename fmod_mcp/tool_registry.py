@@ -22,8 +22,10 @@ PROFILES: dict[str, set[str] | None] = {
         "project_tools",
         "event_tools",
         "sound_tools",
+        "asset_tools",
         "parameter_tools",
         "automation_tools",
+        "modulator_tools",
         "audition_tools",
         "marker_tools",
         "folder_tools",
@@ -35,6 +37,7 @@ PROFILES: dict[str, set[str] | None] = {
         "mixer_tools",
         "snapshot_tools",
         "automation_tools",
+        "modulator_tools",
         "audition_tools",
         "marker_tools",
         "folder_tools",
@@ -45,6 +48,7 @@ PROFILES: dict[str, set[str] | None] = {
     "banks": {
         "project_tools",
         "bank_tools",
+        "asset_tools",
         "folder_tools",
         "workspace_tools",
         "utility_tools",
@@ -64,6 +68,7 @@ PROFILES: dict[str, set[str] | None] = {
 # quietly booting with fewer tools than intended.
 _EXPECTED_MODULES = frozenset(
     {
+        "asset_tools",
         "audition_tools",
         "automation_tools",
         "bank_tools",
@@ -71,6 +76,7 @@ _EXPECTED_MODULES = frozenset(
         "folder_tools",
         "marker_tools",
         "mixer_tools",
+        "modulator_tools",
         "parameter_tools",
         "project_tools",
         "snapshot_tools",
