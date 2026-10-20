@@ -1,13 +1,30 @@
+import re
+
 from mcp.server.fastmcp import FastMCP
+
+from fmod_mcp.safety import ensure_backup
+from fmod_mcp.tools._common import IDENTIFIER_RE, JS_SET_PROPS, check_property_values
 
 from fmod_mcp_shared.constants import MAX_AUTOMATION_POINTS
 from fmod_mcp_shared.error_codes import FmodMCPError, ErrorCode
 
-# Properties the scripting API exposes to addAutomator(). Confirmed against
-# the official reference: mixer groups/buses/VCAs automate `volume`; events
-# automate `volume`/`pitch`; mixer effects automate their control params
-# (e.g. GainEffect automates `gain`).
+# Properties confirmed against the official reference / live use: mixer
+# groups/buses/VCAs automate `volume`; events automate `volume`/`pitch`;
+# GainEffect automates `gain`. Any other automatable property (a lowpass
+# `cutoff`, a reverb's wet level, an instrument's pitch, ...) is also
+# accepted, but must be a plain identifier and is checked to exist on the
+# live target before an automator is created — see _JS_CHECK_PROPERTY.
 ALLOWED_AUTOMATOR_PROPERTIES = ("volume", "pitch", "gain")
+
+# For a property outside the confirmed list, refuse unless the target's
+# ManagedPropertyMap actually has it — addAutomator() on a misspelled name
+# would otherwise create an automator bound to nothing.
+_JS_CHECK_PROPERTY = (
+    "if(p.property!=='volume'&&p.property!=='pitch'&&p.property!=='gain'){"
+    "var __mp=null;try{__mp=t.properties?t.properties[p.property]:null;}catch(__e){}"
+    "if(!__mp)throw new Error('target (entity '+t.entity+') has no property \\''+"
+    "p.property+'\\' to automate - call utility_dump on it for real names');}"
+)
 
 # curve.addAutomationPoint(position, value): `position` must fall within the
 # driving parameter's range (parameter-driven) or the event timeline's range
@@ -42,11 +59,11 @@ _FIND_OR_CREATE_CURVE_JS = (
 
 
 def _check_property(prop: str) -> None:
-    if prop not in ALLOWED_AUTOMATOR_PROPERTIES:
+    if not isinstance(prop, str) or not re.match(IDENTIFIER_RE, prop):
         raise FmodMCPError(
             ErrorCode.INVALID_TYPE,
-            f"invalid automatable property {prop!r}; use one of "
-            f"{', '.join(ALLOWED_AUTOMATOR_PROPERTIES)}",
+            f"invalid automatable property {prop!r}; use a property name such as "
+            f"{', '.join(ALLOWED_AUTOMATOR_PROPERTIES)} or one from utility_dump",
         )
 
 
@@ -96,7 +113,8 @@ def register(mcp: FastMCP):
         Args:
             target: Mixer group/bus/VCA/event mixer group {guid} — NOT a
                     track guid (use mixerGroupGuid, not trackGuid).
-            property: 'volume' | 'pitch' | 'gain'.
+            property: 'volume' | 'pitch' | 'gain', or any automatable
+                      property of the target (e.g. an effect's 'cutoff').
             driver: 'parameter:/Name' (parameter-driven) or 'event:/...'
                     (timeline-driven).
             driver_type: 'parameter' | 'timeline'.
@@ -140,7 +158,8 @@ def register(mcp: FastMCP):
         )
         body = (
             "var t=L(p.target);"
-            "var automator=t.addAutomator?t.addAutomator(p.property):null;"
+            + _JS_CHECK_PROPERTY
+            + "var automator=t.addAutomator?t.addAutomator(p.property):null;"
             "if(!automator)throw new Error('target has no addAutomator() for property: '+p.property);"
             + resolve
             + _FIND_OR_CREATE_CURVE_JS
@@ -172,7 +191,8 @@ def register(mcp: FastMCP):
 
         Args:
             target: Mixer group/bus/VCA/event mixer group {guid}.
-            property: 'volume' | 'pitch' | 'gain'.
+            property: 'volume' | 'pitch' | 'gain', or any automatable
+                      property of the target (e.g. an effect's 'cutoff').
             driver: 'parameter:/Name' or 'event:/...'.
             driver_type: 'parameter' | 'timeline'.
             position: Parameter value or timeline seconds.
@@ -198,7 +218,8 @@ def register(mcp: FastMCP):
             )
         body = (
             "var t=L(p.target);"
-            "var automator=t.addAutomator?t.addAutomator(p.property):null;"
+            + _JS_CHECK_PROPERTY
+            + "var automator=t.addAutomator?t.addAutomator(p.property):null;"
             "if(!automator)throw new Error('target has no addAutomator() for property: '+p.property);"
             + resolve
             + _FIND_OR_CREATE_CURVE_JS
@@ -220,7 +241,9 @@ def register(mcp: FastMCP):
     async def automation_list(target: str, property: str = "volume") -> dict:
         """List the real automation curves + points on a target's automator
         for a given property — every curve's guid, the driver parameter it's
-        bound to, and its actual [position, value] points.
+        bound to, its sorted [position, value] points, and `pointDetails`
+        (each point's guid, curveShape, isSCurve) for automation_set_point /
+        automation_remove_point.
 
         Args:
             target: The automated object (mixer group, bus, VCA, event).
@@ -242,11 +265,136 @@ def register(mcp: FastMCP):
             "var pobj=(pdest&&pdest[0])?pdest[0]:null;"
             "var ptrel=curves[i].relationships&&curves[i].relationships.automationPoints;"
             "var pts=(ptrel&&ptrel.destinations)?ptrel.destinations:[];"
-            "var ptOut=[];"
-            "for(var j=0;j<pts.length;j++){ptOut.push([pts[j].position,pts[j].value]);}"
+            "var ptOut=[],detail=[];"
+            "for(var j=0;j<pts.length;j++){ptOut.push([pts[j].position,pts[j].value]);"
+            "detail.push({guid:G(pts[j]),position:pts[j].position,value:pts[j].value,"
+            "curveShape:pts[j].curveShape,isSCurve:pts[j].isSCurve});}"
             "ptOut.sort(function(a,b){return a[0]-b[0];});"
-            "out.push({guid:G(curves[i]),driverGuid:pobj?G(pobj):null,points:ptOut});}"
+            "detail.sort(function(a,b){return a.position-b.position;});"
+            "out.push({guid:G(curves[i]),driverGuid:pobj?G(pobj):null,points:ptOut,"
+            "pointDetails:detail});}"
             "return {target:p.target,property:p.property,available:true,curves:out};",
+            target=target,
+            property=property,
+        )
+
+    @mcp.tool()
+    async def automation_set_point(
+        point: str,
+        position: float | None = None,
+        value: float | None = None,
+        curve_shape: float | None = None,
+        s_curve: bool | None = None,
+    ) -> dict:
+        """Edit one automation point — move it, change its value, or shape
+        the curve segment after it (curve_shape: 0 = linear, +/- bends it;
+        s_curve: S-shaped). Point guids come from automation_list.
+
+        Args:
+            point: Automation point {guid}.
+            position: New position (parameter value / seconds).
+            value: New value.
+            curve_shape: Segment curvature.
+            s_curve: Use an S-curve segment.
+        """
+        props = {}
+        for key, val in (
+            ("position", position),
+            ("value", value),
+            ("curveShape", curve_shape),
+            ("isSCurve", s_curve),
+        ):
+            if val is not None:
+                props[key] = val
+        props = check_property_values(props)
+        return await client.execute(
+            JS_SET_PROPS
+            + "var pt=L(p.point);"
+            "if(!pt.isOfType('AutomationPoint'))throw new Error(p.point+' is not an automation point');"
+            "var r=__setProps(pt,p.props);"
+            "return {guid:G(pt),applied:r.applied,clamped:r.clamped};",
+            point=point,
+            props=props,
+        )
+
+    @mcp.tool()
+    async def automation_remove_point(
+        curve: str, position: float, tolerance: float = 1e-4
+    ) -> dict:
+        """Remove the automation point at a position from a curve.
+
+        Args:
+            curve: Automation curve {guid} from automation_list.
+            position: Position of the point to remove.
+            tolerance: How close counts as the same position.
+        """
+        if tolerance < 0:
+            raise FmodMCPError(ErrorCode.VALUE_OUT_OF_RANGE, "tolerance must be >= 0")
+        return await client.execute(
+            "var c=L(p.curve);"
+            "if(!c.isOfType('AutomationCurve'))throw new Error(p.curve+' is not an automation curve');"
+            "var pts=c.relationships.automationPoints.destinations||[];var hit=null;"
+            "for(var i=0;i<pts.length;i++){if(Math.abs(pts[i].position-p.position)<=p.tolerance){hit=pts[i];break;}}"
+            "if(!hit)throw new Error('no point at position '+p.position+' on this curve');"
+            "studio.project.deleteObject(hit);"
+            "return {curve:G(c),removedPosition:p.position,"
+            "remaining:c.relationships.automationPoints.destinations.length};",
+            curve=curve,
+            position=position,
+            tolerance=tolerance,
+        )
+
+    @mcp.tool()
+    async def automation_delete_curve(curve: str) -> dict:
+        """Delete a whole automation curve (all its points).
+
+        Args:
+            curve: Automation curve {guid} from automation_list.
+        """
+        await ensure_backup(client)
+        return await client.execute(
+            "var c=L(p.curve);"
+            "if(!c.isOfType('AutomationCurve'))throw new Error(p.curve+' is not an automation curve');"
+            "studio.project.deleteObject(c);return {deleted:p.curve};",
+            curve=curve,
+        )
+
+    @mcp.tool()
+    async def automation_show_track(
+        event_target: str, target: str, property: str = "volume"
+    ) -> dict:
+        """Show a property's automation as a lane under its track in the
+        event editor (AudioTrack.addAutomationTrack). Curves made by
+        automation_add_curve work without it, but stay hidden in Studio's
+        UI until a lane exists.
+
+        Args:
+            event_target: event:/ path or {guid} owning the object.
+            target: The automated object — a track's mixerGroupGuid, an
+                    instrument, or an effect on a track.
+            property: Automated property (default "volume").
+        """
+        _check_property(property)
+        return await client.execute(
+            "var e=L(p.event_target);var o=L(p.target);"
+            "function trackFor(){try{if(o.audioTrack)return o.audioTrack;}catch(__e){}"
+            "var ts=[];var gt=e.relationships.groupTracks.destinations||[];"
+            "var rt=e.relationships.returnTracks.destinations||[];"
+            "ts=ts.concat(gt,rt);if(e.masterTrack)ts.push(e.masterTrack);"
+            "for(var i=0;i<ts.length;i++){var mg=ts[i].mixerGroup||ts[i].mixerReturn;if(!mg)continue;"
+            "if(G(mg)===G(o))return ts[i];"
+            "var fx=(mg.effectChain&&mg.effectChain.relationships.effects)?"
+            "mg.effectChain.relationships.effects.destinations:[];"
+            "for(var j=0;j<fx.length;j++){if(G(fx[j])===G(o))return ts[i];}}return null;}"
+            "var tr=trackFor();"
+            "if(!tr)throw new Error('target is not a track mixer group, instrument or effect of this event');"
+            "var auto=o.addAutomator(p.property);"
+            "var existing=auto.relationships.automationTracks.destinations||[];"
+            "if(existing.length)return {automationTrackGuid:G(existing[0]),trackGuid:G(tr),reused:true};"
+            "var at=tr.addAutomationTrack(o,p.property);"
+            "if(!at)throw new Error('addAutomationTrack returned nothing');"
+            "return {automationTrackGuid:G(at),trackGuid:G(tr),reused:false};",
+            event_target=event_target,
             target=target,
             property=property,
         )
