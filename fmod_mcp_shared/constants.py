@@ -91,6 +91,14 @@ MAX_NAME_LENGTH = 200  # FMOD shouldn't accept unbounded names either
 # batch small enough not to pin Studio's main thread.
 MAX_AUTOMATION_POINTS = 100
 
+# Generic property setter: a single call sets a handful of fields on one
+# object (an effect's parameters, an instrument's volume/pitch/looping).
+MAX_PROPERTIES_PER_CALL = 50
+
+# One-shot "build a whole event from audio files" calls import every file in
+# a single request — keep the batch small enough not to stall Studio.
+MAX_AUDIO_FILES_PER_EVENT = 50
+
 # A wrong type name alerts immediately rather than creating a broken object.
 ALLOWED_CREATE_TYPES = frozenset(
     {

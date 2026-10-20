@@ -150,3 +150,30 @@ def test_full_wrapper_roundtrips_params(body, params):
     js = format_command(body, **params)
     assert _extract_params(js) == params
     _balance(js)
+
+
+# Raw replies captured from a live FMOD Studio 2.03.15 Script Server.
+_LIVE_ABORT = (
+    "log(): Connected to FMOD Studio on 127.0.0.1:3663.\r\n\x00error(): Error: "
+    "Relationship 'parameter' expects a destination of entity type 'Parameter'.\r\n\r\n\x00"
+)
+_LIVE_OK = (
+    "log(): Connected to FMOD Studio on 127.0.0.1:3663.\r\n\x00out(): "
+    '{"success":true,"result":["ok"]}\r\n\r\n\x00'
+)
+
+
+def test_native_abort_surfaces_studio_error_message():
+    r = parse_response(_LIVE_ABORT)
+    assert r["success"] is False
+    assert "expects a destination of entity type 'Parameter'" in r["error"]
+    assert "Invalid JSON" not in r["error"]
+
+
+def test_envelope_wins_over_an_incidental_error_line():
+    raw = "error(): something a script logged\r\n\x00" + _LIVE_OK
+    assert parse_response(raw) == {"success": True, "result": ["ok"]}
+
+
+def test_live_success_reply_parses():
+    assert parse_response(_LIVE_OK) == {"success": True, "result": ["ok"]}

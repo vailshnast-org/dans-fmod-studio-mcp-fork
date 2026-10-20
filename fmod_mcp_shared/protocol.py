@@ -21,12 +21,22 @@ _DANGEROUS_CHARS = re.compile(r"[\x00\u2028\u2029]")
 #   L(t)  -> studio.project.lookup(t) with a null/throw-check; raises a
 #            message we can surface as a typed error, instead of letting the
 #            model guess at a ReferenceError deep in Studio.
+#
+#   Audio assets (AudioFile) have neither `.name` nor getPath() — confirmed
+#   live against 2.03.15. Their identity is the `assetPath` property
+#   ("light/L.neonLight.flac"), and `asset:/<assetPath>` is a valid
+#   studio.project.lookup() path. N()/P() fall back to those, so every tool
+#   that reports an asset (audio_import, sound_info, ...) returns a real
+#   name/path instead of null.
 _JS_HELPERS = (
     "var G=function(o){return o&&o.id?String(o.id):null};"
-    "var N=function(o){return o&&o.name?String(o.name):null};"
+    "var N=function(o){return o&&o.name?String(o.name):"
+    "(o&&o.assetPath?String(o.assetPath):null)};"
     "var P=function(o){var pp=null;"
     "try{pp=(o&&o.getPath)?o.getPath():null;}catch(__e){}"
-    "return pp?String(pp):(o&&o.name?String(o.name):null)};"
+    "if(pp)return String(pp);"
+    "if(o&&o.assetPath)return 'asset:/'+String(o.assetPath);"
+    "return o&&o.name?String(o.name):null};"
     "var L=function(t){if(!t)throw new Error('target is required');"
     "var o=studio.project.lookup(t);"
     "if(!o)throw new Error('lookup failed for: '+t);return o;};"
@@ -91,6 +101,10 @@ def format_command(command: str, **params) -> str:
 
 
 _RESPONSE_RE = re.compile(r"\{.*\}", re.DOTALL)
+
+# Studio's console prefixes each printed line with its channel: `log(): `,
+# `out(): `, `error(): `, separated by NUL bytes.
+_ABORT_RE = re.compile(r"error\(\):\s*([^\r\n\x00]+)")
 
 
 def _iter_json_objects(text: str):
@@ -163,6 +177,19 @@ def parse_response(raw: str) -> dict:
             continue
         if isinstance(data, dict) and "success" in data:
             return data
+
+    # Some native Studio errors (e.g. assigning a relationship destination of
+    # the wrong entity type) abort the whole evaluation instead of throwing
+    # a catchable JS exception, so the wrapper's catch never runs and no
+    # envelope is printed — only an `error(): <message>` console line.
+    # Confirmed live on 2.03.15. Surface that message rather than an opaque
+    # "Invalid JSON response".
+    aborted = _ABORT_RE.search(raw)
+    if aborted:
+        return {
+            "success": False,
+            "error": f"FMOD Studio aborted the script: {aborted.group(1).strip()}",
+        }
 
     match = _RESPONSE_RE.search(raw)
     if match:
