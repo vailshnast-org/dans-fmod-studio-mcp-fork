@@ -1,7 +1,7 @@
 from mcp.server.fastmcp import FastMCP
 
 from fmod_mcp.safety import ensure_backup
-from fmod_mcp.tools._common import js_list
+from fmod_mcp.tools._common import JS_FOLDER_CHAIN, js_list
 from fmod_mcp_shared.constants import MAX_NAME_LENGTH, MAX_OBJECTS_READ
 from fmod_mcp_shared.error_codes import FmodMCPError, ErrorCode
 
@@ -19,17 +19,44 @@ def register(mcp: FastMCP):
     from fmod_mcp.main import client
 
     @mcp.tool()
-    async def bank_create(name: str) -> dict:
-        """Create a bank to hold events and sounds.
+    async def bank_create(name: str, folder: str | None = None) -> dict:
+        """Create a bank to hold events and sounds, optionally inside a bank
+        folder (created if missing).
 
         Args:
             name: Bank name. Note: the "Master" bank always exists already.
+            folder: Optional bank folder path, e.g. "Levels/Forest".
         """
         _check_name(name)
         return await client.execute(
-            "var b=studio.project.create('Bank');b.name=p.name;"
+            JS_FOLDER_CHAIN
+            + "var b=studio.project.create('Bank');b.name=p.name;"
+            "if(p.folder){b.folder=__folderChain('BankFolder',p.folder);}"
             "return {guid:G(b),name:N(b),path:P(b)};",
             name=name,
+            folder=folder,
+        )
+
+    @mcp.tool()
+    async def bank_set_folder(target: str, folder: str) -> dict:
+        """Move a bank into a bank folder (created if missing). Use "" to
+        move it back to the root. The bank's path changes accordingly
+        (bank:/Levels/Forest/<name>), which is what the game loads by.
+
+        Args:
+            target: bank:/ path or {guid}.
+            folder: Bank folder path, e.g. "Levels/Forest", or "" for root.
+        """
+        return await client.execute(
+            JS_FOLDER_CHAIN
+            + "var b=L(p.target);"
+            "if(!b.isOfType('Bank'))throw new Error(p.target+' is not a bank');"
+            "if(b.isMasterBank)throw new Error('refusing to move the master bank');"
+            "b.folder=p.folder?__folderChain('BankFolder',p.folder):"
+            "studio.project.workspace.masterBankFolder;"
+            "return {guid:G(b),path:P(b)};",
+            target=target,
+            folder=folder,
         )
 
     @mcp.tool()
