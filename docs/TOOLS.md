@@ -8,6 +8,27 @@ Every tool in FmodStudioMCP, grouped by module. All tools run in the **live** pr
 - **`execute_long`** operations (bank build, audio import) wait up to 600 s.
 - **All list tools are capped** (see `constants.py`).
 
+## Studio control & headless builds (`studio_tools.py`)
+
+Run on the MCP host, so they work while Studio is closed. Executables come from `FMOD_STUDIO_EXE` / `FMOD_STUDIO_CL` or the usual install folders, never from arguments; the default project is `FMOD_STUDIO_PROJECT`.
+
+| Tool | Signature | What it does |
+|------|-----------|--------------|
+| `studio_status` | `()` | Install found, process running, Script Server reachable, open project, unsaved changes, Script Server preference, default project. |
+| `studio_launch` | `(project_path?, wait_seconds?, enable_script_server?)` | Start Studio on a project and wait for its Script Server. Turns on the Script Server preference (only while Studio is closed). Refuses if another project is open. |
+| `studio_quit` | `(save?)` | Save (default) and close Studio; refuses to quit with unsaved changes when `save=false`. |
+| `headless_build` | `(project_path?, banks?, platforms?, export_guids?)` | **long** — build with `fmodstudiocl` (no GUI): success, warning/error lines, every bank/GUIDs file written. Refuses if Studio has the project open. |
+| `headless_validate` | `(project_path?)` | **long** — FMOD's own project diagnostic (dangling objects, cyclical references). |
+
+## Analysis (`analysis_tools.py`) — measuring instead of listening
+
+Needs nothing for PCM WAV; with `ffmpeg` on PATH (or `FFMPEG_PATH`) handles every format and adds EBU R128 loudness.
+
+| Tool | Signature | What it does |
+|------|-----------|--------------|
+| `audio_analyze` | `(file_paths)` | Duration, rate, channels, peak/RMS dBFS, clipped samples, DC offset, leading/trailing silence, integrated LUFS, loudness range, true peak; `flags` per file and a loudness-spread warning across files. |
+| `event_audio_report` | `(event_target)` | The same for every file an event plays (playlist entries included), plus instruments without audio. |
+
 ## Project (`project_tools.py`)
 
 | Tool | Signature | What it does |
@@ -15,7 +36,7 @@ Every tool in FmodStudioMCP, grouped by module. All tools run in the **live** pr
 | `project_get_info` | `()` | Open project's `.fspro` file path + display name. |
 | `project_save` | `()` | Save the project. |
 | `project_save_all` | `()` | Save project + every edited file (assets, banks, plugins). |
-| `project_build` | `(banks?, platforms?)` | **long** — build banks for the selected platform(s); optionally scope to specific bank name(s)/platform name(s). |
+| `project_build` | `(banks?, platforms?)` | **long** — build inside Studio, optionally scoped; returns a report: `built`, every bank/GUIDs file written (size) and warning/error lines Studio logged during the build. |
 | `project_get_modified` | `()` | Whether the project has unsaved changes. |
 | `project_undo` | `(steps?)` | Studio's Edit > Undo (1–20 steps), via `studio.window.triggerAction`. |
 | `project_redo` | `(steps?)` | Studio's Edit > Redo (1–20 steps). |
@@ -31,6 +52,11 @@ Every tool in FmodStudioMCP, grouped by module. All tools run in the **live** pr
 | `event_create` | `(name, folder?, spatializer?)` | Create an event (optionally under an `event:/…` folder); `spatializer=True/False` picks 3D/2D via `workspace.addEvent`. |
 | `event_delete` | `(target)` | Delete an event. |
 | `event_info` | `(target)` | guid/name/path, maxVoices, is3D, isOneShot, assigned banks. |
+| `event_set_settings` | `(target, max_instances?, voice_stealing?, priority?, cooldown_s?, persistent?, min_distance?, max_distance?, doppler?, doppler_scale?)` | Event macros in one call (stealing: oldest/furthest/quietest/virtualize/none). |
+| `event_get_settings` | `(target)` | Read the event macros. |
+| `event_lint` | `(target)` | Static "will it make sound?" check: errors (no instruments, no audio, zero length, empty playlist, broken nested event) and warnings (-80 dB, 0 % trigger, sustain point without loop+async, no bank, default name). |
+| `tag_add` / `tag_remove` | `(target, tag)` | Tag/untag an event (tag created on first use). |
+| `tag_list` | `(tag?)` | Tags with counts, or every object with one tag. |
 | `event_describe` | `(target)` | One-call overview: tracks (with instruments), parameters, marker tracks + markers, banks. |
 | `event_list` | `()` | List every event (capped). |
 | `event_lookup` | `(target)` | Resolve to canonical path + guid. |
@@ -68,6 +94,7 @@ Every tool in FmodStudioMCP, grouped by module. All tools run in the **live** pr
 | `marker_set_position` | `(target, position)` | Move a point-type marker. |
 | `marker_set_region` | `(target, position, length)` | Move/resize a region-type marker. |
 | `marker_delete` | `(target)` | Delete a marker/region (**destructive**, backed up). |
+| `marker_add_tempo` | `(track_target, position, bpm, beats_per_bar?, beat_unit?)` | Tempo marker — the bars/beats quantized transitions and instruments snap to. |
 | `marker_add_transition_timeline` | `(transition_target, audio_track_target, crossfade_length?)` | Add a crossfaded transition timeline (source+destination sound pair) to a transition marker/region/loop/magnet region — FMOD's "Add Transition Timeline" feature, the professional seamless-loop technique instead of a hard cut. Structurally verified; audition the actual blend in Studio. |
 
 ## Sounds (`sound_tools.py`)
@@ -76,13 +103,14 @@ Every tool in FmodStudioMCP, grouped by module. All tools run in the **live** pr
 |------|-----------|--------------|
 | `audio_import` | `(file_path)` | **long** — import a .wav/.aiff/.flac/.mp3/.ogg as an asset; returns `{guid}`. |
 | `audio_assets` | `(folder?, unused_only?)` | List audio assets (capped): asset path, length, channels, sample rate, streaming, instrument count. Filter by Assets subfolder or to unused assets. |
-| `sound_add_to_track` | `(event_target, track_target, sound_type, start, length?, name?, parameter?)` | Place a Single/Multi/Programmer/Scatterer/Event instrument on a track — on the timeline, or on a parameter sheet with `parameter`. |
+| `sound_add_to_track` | `(event_target, track_target, sound_type, start, length?, name?, parameter?, audio?)` | Place an instrument on a track — on the timeline, or on a parameter sheet with `parameter`. Needs `length` > 0, or `audio` to assign a file and size the region to it. |
+| `sound_add_nested_event` | `(event_target, track_target, referenced_event, start?, length?, parameter?)` | Event instrument that plays another event/snapshot. |
 | `sound_create` | `(sound_type, name?)` | Stand-alone instrument (e.g. for a Multi's playlist). |
 | `sound_set_audio_file` | `(target, audio)` | Assign an imported asset to an instrument. |
-| `sound_set_owner` | `(target, owner)` | Nest instruments (SingleSound into a Multi, …). |
+| `sound_set_owner` | `(target, owner)` | Nest instruments (SingleSound into a Multi or a Scatterer's playlist). |
 | `sound_set_name` | `(target, name)` | Rename an instrument. |
 | `sound_info` | `(target)` | Instrument guid/name/path + hasAudioFile/audioFileName. |
-| `sound_set_properties` | `(target, volume?, pitch?, looping?, extra?)` | Set instrument playback properties (validated + read back). |
+| `sound_set_properties` | `(target, volume?, pitch?, looping?, is_async?, start?, length?, extra?)` | Instrument playback properties and trigger-region position/size (validated + read back). |
 | `sound_set_fade` | `(target, fade_in?, fade_out?, curve?)` | Instrument fade-in/out (`setFadeInCurve`/`setFadeOutCurve`). |
 | `event_list_sounds` | `(event_target)` | Every instrument in an event: type, start/length, audio file, owner. |
 | `audio_import_batch` | `(file_paths)` | **long** — import up to 100 files; all validated before any import. |
@@ -102,6 +130,9 @@ Asset "folders" are subdirectories of each asset's `assetPath` (2.03 has no asse
 |------|-----------|--------------|
 | `audio_asset_info` | `(target)` | Asset path, absolute file path, length, channels, sample rate, streaming, instruments using it. |
 | `audio_asset_move` | `(target, new_path)` | Move/rename an asset inside Assets — **moves the file on disk**; refuses to change the extension or overwrite. |
+| `encoding_get` | `(targets?, folder?, platform?)` | Platform default compression and, per asset, override + effective setting. |
+| `encoding_set` | `(format?, quality?, sample_rate_mode?, sample_rate?, streaming?, targets?, folder?, platform?)` | Set the platform default, or per-asset overrides for given assets / an Assets folder. Formats: pcm, fadpcm, xma, vorbis, at9, opus; rate modes: fixed, optimize, preserve. |
+| `encoding_clear` | `(targets?, folder?, platform?)` | Remove per-asset overrides. |
 
 ## Parameters (`parameter_tools.py`)
 
@@ -138,7 +169,7 @@ Asset "folders" are subdirectories of each asset's `assetPath` (2.03 has no asse
 | `mixer_group_info` | `(target)` | guid/name/path/volume. |
 | `mixer_group_rename` | `(target, name)` | Rename. |
 | `mixer_group_delete` | `(target)` | Delete a group. |
-| `mixer_group_route` | `(target, output_target)` | Set a group's output bus/group. |
+| `mixer_group_route` | `(target, output_target)` | Set a group's output bus/group; with an event as the target, routes the whole event (its MixerInput). Verified. |
 | `mixer_group_volume` | `(target, db)` | Volume in dB (-80…+10). |
 | `mixer_effect_add` | `(target, effect, settings?)` | Add an effect (e.g. `CompressorEffect`, `LimiterEffect`), optionally configuring it in the same call. |
 | `mixer_effect_add_plugin` | `(target, plugin, settings?)` | Add a plug-in effect (Steam Audio, Resonance, …) from `project_list_plugins`. |

@@ -9,7 +9,7 @@
   <a href="https://www.python.org/"><img src="https://img.shields.io/badge/python-3.10+-blue.svg" alt="Python 3.10+" /></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache%202.0-green.svg" alt="License" /></a>
   <a href="https://modelcontextprotocol.io"><img src="https://img.shields.io/badge/MCP-compatible-purple.svg" alt="MCP Compatible" /></a>
-  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/version-0.4.0-orange.svg" alt="v0.4.0" /></a>
+  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/version-0.5.0-orange.svg" alt="v0.5.0" /></a>
   <a href="https://github.com/xDarkzx/Dans_Fmod_Studio_MCP/actions/workflows/ci.yml"><img src="https://github.com/xDarkzx/Dans_Fmod_Studio_MCP/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
   <a href="https://www.fmod.com/"><img src="https://img.shields.io/badge/FMOD%20Studio-2.02%2B-red.svg" alt="FMOD Studio 2.02+" /></a>
   <a href="https://github.com/sponsors/xDarkzx"><img src="https://img.shields.io/badge/Sponsor-30363D?logo=githubsponsors&logoColor=EA4AAA" alt="Sponsor" /></a>
@@ -76,6 +76,35 @@ The scripting terminal is **disabled by default**, and opening the console with 
 
 `fmod-studio-mcp` reads `FMOD_STUDIO_HOST` / `FMOD_STUDIO_PORT` (defaults `127.0.0.1:3663`) if your setup differs.
 
+To run this fork (instead of the PyPI release) straight from GitHub with `uv`:
+
+```json
+{
+  "mcpServers": {
+    "fmod-studio": {
+      "command": "uvx",
+      "args": ["--from", "git+https://github.com/vailshnast-org/dans-fmod-studio-mcp-fork@v0.5.0", "fmod-studio-mcp"],
+      "env": { "FMOD_STUDIO_PROJECT": "FMODProject/game.fspro" }
+    }
+  }
+}
+```
+
+Check a machine before (or instead of) wiring up a client:
+
+```powershell
+uvx --from git+https://github.com/vailshnast-org/dans-fmod-studio-mcp-fork@v0.5.0 fmod-studio-mcp --doctor
+```
+
+#### Environment for unattended agents
+
+| Variable | Used for |
+|----------|----------|
+| `FMOD_STUDIO_PROJECT` | Default `.fspro` for `studio_launch` / `headless_build` / `headless_validate`. May be relative to the repo (`FMODProject/game.fspro`) so one committed config fits every machine |
+| `FMOD_STUDIO_EXE`, `FMOD_STUDIO_CL` | Studio GUI / `fmodstudiocl` paths, if not in a standard install folder |
+| `FFMPEG_PATH` | ffmpeg for `audio_analyze` (any format + LUFS); otherwise found on PATH, or PCM WAV only |
+| `FMOD_STUDIO_MCP_PROFILE` | Trim the tool list (see below) |
+
 ### 4. Start authoring
 
 ```
@@ -85,7 +114,7 @@ The scripting terminal is **disabled by default**, and opening the console with 
 "Assign it to the Master bank and build the project"
 ```
 
-> **FMOD Studio must be running with a project open.** The bridge cannot launch Studio for you, and the Script Server only binds once a project is open.
+> **Studio must be running with a project open for authoring tools.** An agent can do that itself: `studio_status` → `studio_launch` (opens `FMOD_STUDIO_PROJECT`, turns on the Script Server preference, waits for it) → … → `studio_quit`. Builds also work without the GUI via `headless_build`.
 
 ---
 
@@ -93,16 +122,18 @@ The scripting terminal is **disabled by default**, and opening the console with 
 
 ### Curated tool surface (not generated)
 
-Unlike auto-generated "one tool per API member" servers, every tool here is hand-shaped around the real authoring workflow. 135+ tools in 15 modules —
+Unlike auto-generated "one tool per API member" servers, every tool here is hand-shaped around the real authoring workflow. 150+ tools in 17 modules —
 
 | Module | Tools | Highlights |
 |--------|------:|------------|
+| **Studio control** | 5 | Status, launch (enables the Script Server, waits for it), quit, **headless build/validate** via `fmodstudiocl` |
+| **Analysis** | 2 | Loudness (LUFS), true peak, clipping, silence, DC offset of source files and of everything an event plays |
 | **Project** | 11 | Info, save, build (scoped), modified-check, **undo/redo**, safe menu actions, GUID export, plug-in list, version |
-| **Events** | 12 | Create (2D/3D)/delete/list/lookup, rename, folders, group tracks, maxVoices, timeline scrub, one-call `event_describe` |
+| **Events** | 18 | Create (2D/3D)/delete/list/lookup, rename, folders, tracks, **event macros** (instances, stealing, cooldown, distances), `event_describe`, **`event_lint`** (will it make sound?), tags |
 | **Audition** | 7 | Play/stop/pause/keyoff, return-to-start, playback status, 3D listener position — hear the result, don't just read the tree |
-| **Markers** | 12 | Marker tracks, named markers, loop regions, sustain points, transition markers/regions/timelines, list/rename/reposition/delete |
-| **Sounds** | 19 | Import (single/batch), place instruments (incl. plug-in instruments) on the timeline or a parameter sheet, playback properties, fades, **MultiSound playlist editing + weights**, asset listing, **build an event from audio files in one call** |
-| **Assets** | 2 | Asset details, move/rename assets into folders |
+| **Markers** | 13 | Marker tracks, named markers, loop regions, sustain points, transition markers/regions/timelines, list/rename/reposition/delete |
+| **Sounds** | 20 | Import (single/batch), place instruments (incl. plug-in and nested-event instruments) on the timeline or a parameter sheet, playback properties, fades, **MultiSound playlist editing + weights**, asset listing, **build an event from audio files in one call** |
+| **Assets** | 5 | Asset details, move/rename into folders, **per-platform compression** (format, quality, sample rate, streaming) |
 | **Parameters** | 7 | All 11 parameter types, labels, **global parameters**, initial values, **live parameter values while auditioning**, **trigger conditions** |
 | **Banks** | 9 | Create (into bank folders)/rename/delete/move, assign/remove events, list membership |
 | **Automation** | 7 | Parameter/timeline-driven curves on any automatable property, point editing/shapes, automation lanes — the heart of evolving/interactive music |
@@ -126,7 +157,7 @@ Smaller/cheaper models truncate tool lists. Set `FMOD_STUDIO_MCP_PROFILE` in you
 
 | Profile | For |
 |---------|-----|
-| `full` *(default)* | All 15 modules |
+| `full` *(default)* | All 17 modules |
 | `events` | Building/editing events, sounds, parameters, modulators, audition, markers |
 | `mixer` | Mixer structure, routing, effects, modulators, audition, markers |
 | `banks` | Bank management + build plumbing |

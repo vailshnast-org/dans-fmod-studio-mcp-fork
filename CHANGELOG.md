@@ -2,15 +2,44 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [0.5.0] - 2026-10-20
 
 > **Verification status.** Everything in this release was run against a
 > live FMOD Studio 2.03.15 instance with a real game project open:
-> `tests/test_live_fmod.py` (23 tests) covers every tool added here, and the
-> full suite (110 tests) passes. Schemas the tools depend on (relationship
+> `tests/test_live_fmod.py` (33 tests, 3 of them opt-in because they restart
+> Studio, rebuild committed banks, or need a disposable project copy) covers
+> every tool added here. The full suite is 174 tests: 170 run by default, and
+> the 3 opt-in live tests plus 1 POSIX-only test are skipped unless enabled.
+> All of them pass. Schemas the tools depend on (relationship
 > and property names the manual doesn't document) were read off the live
 > project before the tools were written. Where the 2.03 manual and the
 > running Studio disagree, the code follows Studio and says so in a comment.
+
+### Added — unattended automation
+
+- **Studio control** (`studio_tools.py`, new module, runs on the MCP host so it works with Studio closed):
+  - `studio_status`: install, process, Script Server, open project, unsaved changes, preference.
+  - `studio_launch`: starts Studio on `FMOD_STUDIO_PROJECT`, turns on the "Enable Script Server" preference (`scriptServerEnabled` in Studio's settings file, only while Studio is closed), and waits until the server answers with that project open. It refuses if a different project is open.
+  - `studio_quit`: saves, then exits. It refuses to quit with unsaved changes when `save=false`, because the save dialog would block an unattended session.
+- **Headless builds** through `fmodstudiocl`: `headless_build` (exit code, warning/error lines, every bank/GUIDs file written) and `headless_validate` (FMOD's own diagnostic). Both refuse a project that Studio has open. Verified on a copy of a real project: a build writes only `Build/`, and a failure is exit code 1 with a parseable `... Error:` line.
+- `project_build` now returns a build report: banks written with their sizes, plus warning/error lines from Studio's log during the build.
+- **Audio analysis** (`analysis_tools.py`, new module):
+  - `audio_analyze` reports peak/RMS dBFS, clipped samples, DC offset, leading/trailing silence and, with ffmpeg, EBU R128 integrated LUFS, LRA and true peak. Each file gets `flags`, and a loudness-spread warning covers variations of one sound.
+  - `event_audio_report` measures every file an event plays.
+  - There's no live metering to use instead: Studio's LoudnessMeter effect exposes only its settings to scripts.
+  - Short one-shots (under 400 ms) report LUFS as unavailable rather than the -70 LUFS gate value.
+- **Event macros**: `event_set_settings` and `event_get_settings` cover max instances, voice stealing, priority, cooldown, persistence, 3D distances and doppler.
+- **Static check**: `event_lint` asks "will it make sound?" (no audio, zero length, empty playlist, -80 dB, a sustain point without loop+async, no bank, ...). `utility_validate` also lists events still called "New Event"/"Nested Event".
+- **Compression**: `encoding_get`, `encoding_set` (platform default, or per-asset/per-folder overrides, plus streaming) and `encoding_clear`. Format and sample-rate-mode values were identified by building banks and reading the codec id and sample rates from their FSB5 headers: 0 PCM, 1 FADPCM, 2 XMA, 3 Vorbis, 4 AT9, 5 Opus; rate modes 0 fixed, 1 optimize, 2 preserve.
+- `sound_add_nested_event`, `marker_add_tempo`, and `tag_add`/`tag_remove`/`tag_list`.
+- **Team setup**: `fmod-studio-mcp --doctor` (or `--doctor --json`) checks a machine without starting the server. It covers Studio and `fmodstudiocl` (with version), the project path and its format version against Studio's (it warns before a newer Studio would upgrade a shared project), the Script Server preference and reachability, and ffmpeg. It exits non-zero on a hard failure. `--version` prints the package version. `FMOD_STUDIO_PROJECT` may be relative (e.g. `FMODProject/game.fspro`), resolved against `CLAUDE_PROJECT_DIR`, then the working directory and its parents, so one committed config works on every machine. The console script now starts at `fmod_mcp.cli`, which handles these flags before the server is built.
+- `sound_add_to_track(audio=...)` assigns a file and sizes the region to it. `sound_set_properties` gains `is_async`, `start` and `length`.
+
+### Fixed — reported in a game project's FMOD pipeline notes
+
+- `mixer_group_route` with an event as the target reported success and changed nothing. Assigning `event.output` only created an unused JS field. Events now route through their `MixerInput`, verified by read-back.
+- `sound_add_to_track` accepted `length: 0`, which produced a silent instrument that couldn't be resized. A length of 0 is now rejected (pass `audio=` to size to the file), and `sound_set_properties(length=...)` can resize.
+- `sound_set_owner` onto a Scatterer was silently ignored. A Scatterer's playlist is its inner MultiSound (`scatterer.sound`), which is what is now used.
 
 ### Added
 

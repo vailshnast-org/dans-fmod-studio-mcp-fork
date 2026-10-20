@@ -4,6 +4,25 @@ You are driving **FMOD Studio** through its JS scripting terminal — creating,
 editing, and building game audio content (events, sounds, parameters, mixer,
 banks). Studio applies and persists your changes to the live project.
 
+## Unattended session (no person at the keyboard)
+
+1. `studio_status` — is Studio running, is the Script Server up, which
+   project is open, unsaved changes?
+2. Not running → `studio_launch()` (opens `FMOD_STUDIO_PROJECT`, enables the
+   Script Server preference, waits until it answers). Another project open,
+   or Studio up without a Script Server → it refuses: stop and report, never
+   close someone else's session.
+3. Author (below). After each event: `event_lint` (will it make sound?) and
+   `event_audio_report` (loudness/clipping/silence of its files). Before
+   importing new sources: `audio_analyze`.
+4. `utility_validate` → `project_save` → `project_build`; read the build's
+   `problems` and `outputs` — `built: true` alone isn't proof.
+5. `studio_quit` when done (saves first). Without a GUI, or in CI:
+   `headless_validate` + `headless_build` (refuse if Studio has the project open).
+
+You can't hear the result. Analysis catches broken audio, not whether a sound
+fits — say what you built and what a person should listen to.
+
 ## How content is organized
 
 - **Events** (`event:/...`) are the playable units the game triggers. Each has
@@ -42,6 +61,12 @@ outputs return the same forms, chain a creation result into the next call.
    with `parameter_set_cursor`; position 3D events with
    `event_set_3d_attributes`.
 
+`sound_add_to_track` needs a `length` > 0, or `audio=` to size the region to
+the file (a zero-length instrument never plays). Event macros (max instances,
+stealing, cooldown, 3D distances): `event_set_settings`. Nested events:
+`sound_add_nested_event`. Compression: `encoding_set` (vorbis/fadpcm/opus/pcm,
+streaming for long music/ambience).
+
 **Shortcut for the common case:** `event_create_from_audio(name, files,
 folder?, bank?, spatializer?, looping?)` does steps 3–5 in one call (one file
 = SingleSound, several = MultiSound random playlist) and rolls back the event
@@ -76,7 +101,8 @@ GameState) are global parameters: `parameter_add_global`, referenced as
 
 **Horizontal (section transitions):** `event_add_marker_track`, then
 `marker_add_named`/`marker_add_region` for destinations,
-`marker_add_transition`/`marker_add_transition_region` for jump points. A
+`marker_add_transition`/`marker_add_transition_region` for jump points;
+`marker_add_tempo` first if anything should land on bars/beats. A
 `LoopRegion` already loops on its own (paired transition+destination marker
 built in) — do NOT also add an explicit `marker_add_transition` at its end
 point; that creates a conflicting logic point at the same position instead of
@@ -99,7 +125,7 @@ in banks.
 ## Mixer rules
 
 - A group's output routes to a bus/group (default Master) via
-  `mixer_group_route`. Routing to a *different event's* mixer crashes Studio —
+  `mixer_group_route`; pass an event as the target to route the whole event. Routing to a *different event's* mixer crashes Studio —
   stay within the same event/bank surface.
 - Volume is dB (-80..+10); -80 effectively silences.
 - `mixer_effect_add` adds built-in effects; `mixer_effect_add_plugin` adds
