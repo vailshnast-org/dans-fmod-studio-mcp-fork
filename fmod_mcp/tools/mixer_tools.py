@@ -161,16 +161,30 @@ def register(mcp: FastMCP):
 
     @mcp.tool()
     async def mixer_group_route(target: str, output_target: str) -> dict:
-        """Route a group's output to a bus or group. Keep routing inside the
-        same event/mixer surface — routing an event's master track into a
-        different event's mixer has been known to crash Studio.
+        """Route a group's — or a whole event's — output to a bus or group.
+        Passing an event routes the event into that group (its MixerInput).
+        Verified by reading the output back. Keep routing inside the same
+        mixer surface — routing an event's master track into a different
+        event's mixer has been known to crash Studio.
 
         Args:
-            target: Group path or {guid}.
+            target: Group path/{guid}, or an event:/ path/{guid}.
             output_target: Destination bus/group path or {guid}.
         """
+        # An Event has no `output`: assigning one just made a JS field Studio
+        # ignored (the "reports success, changes nothing" bug). An event
+        # enters the mixer through its MixerInput, whose `output` is the real
+        # routing (confirmed live on 2.03.15).
         return await client.execute(
-            "var g=L(p.target);g.output=L(p.output_target);return true;",
+            "var g=L(p.target);var d=L(p.output_target);var via=null;"
+            "if(g.isOfType('Event')){if(!g.mixerInput)throw new Error('event has no mixerInput');"
+            "g=g.mixerInput;via='mixerInput';}"
+            "if(!g.relationships||!g.relationships.output)throw new Error("
+            "'target (entity '+g.entity+') has no output to route');"
+            "g.output=d;"
+            "if(!g.output||G(g.output)!==G(d))throw new Error('routing did not take effect "
+            "(Studio rejected '+d.entity+' as an output of '+g.entity+')');"
+            "return {routed:G(g),output:G(d),outputPath:P(d),via:via};",
             target=target,
             output_target=output_target,
         )

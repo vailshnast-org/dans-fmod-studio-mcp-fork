@@ -193,9 +193,10 @@ def register(mcp: FastMCP):
         track_target: str,
         sound_type: str,
         start: float = 0.0,
-        length: float = 0.0,
+        length: float | None = None,
         name: str | None = None,
         parameter: str | None = None,
+        audio: str | None = None,
     ) -> dict:
         """Place an instrument on an event's track — on the timeline, or on a
         parameter sheet (`parameter`) so it plays across a parameter range
@@ -209,29 +210,51 @@ def register(mcp: FastMCP):
                         SoundScatterer | EventSound.
             start: Start position — seconds on the timeline, or a parameter
                    value on a parameter sheet.
-            length: Length in seconds / parameter units (0 = untrimmed).
+            length: Length in seconds / parameter units (> 0). Omit it when
+                    passing `audio` to size the region to the file.
             name: Optional instrument name.
             parameter: Optional parameter name (or "parameter:/Name") whose
                        sheet to place it on, instead of the timeline.
+            audio: Optional asset {guid}/asset:/ path to assign right away
+                   (SingleSound only).
         """
         if sound_type not in ALLOWED_SOUND_TYPES:
             raise FmodMCPError(
                 ErrorCode.INVALID_TYPE, f"invalid sound_type {sound_type!r}"
             )
-        if length < 0:
-            raise FmodMCPError(ErrorCode.VALUE_OUT_OF_RANGE, "length must be >= 0")
+        # length 0 used to be allowed ("untrimmed") but produced a silent,
+        # zero-length trigger region — a known bug in the game's pipeline doc.
+        if length is not None and length <= 0:
+            raise FmodMCPError(ErrorCode.VALUE_OUT_OF_RANGE, "length must be > 0")
+        if length is None and not audio:
+            raise FmodMCPError(
+                ErrorCode.MISSING_PARAMETER,
+                "pass length (> 0), or audio to size the instrument to the file",
+            )
+        if audio and sound_type != "SingleSound":
+            raise FmodMCPError(
+                ErrorCode.INVALID_PARAMETER, "audio only applies to sound_type='SingleSound'"
+            )
         body = (
             JS_PARAM
             + "var e=L(p.event_target);var t=L(p.track_target);"
             "var sheet=p.parameter?__sheet(e,p.parameter):e.timeline;"
-            "var inst=t.addSound(sheet,p.sound_type,p.start,p.length);"
+            "var a=p.audio?L(p.audio):null;var len=p.length;"
+            "if(len===null){len=a&&a.length>0?a.length:0;"
+            "if(!len)throw new Error('could not read the audio file length - pass length');}"
+            "var inst=t.addSound(sheet,p.sound_type,p.start,len);"
             "if(!inst)throw new Error('addSound returned nothing - '+p.sound_type+"
             "' may not be placeable this way, or start/length is outside the sheet range');"
         )
         if name:
             _check_instrument_name(name)
             body += "inst.name=p.name;"
-        body += "return {guid:G(inst),name:N(inst)};"
+        body += (
+            "if(a){inst.audioFile=a;if(!inst.audioFile)throw new Error("
+            "'audioFile assignment did not take effect');}"
+            "return {guid:G(inst),name:N(inst),start:inst.start,length:inst.length,"
+            "audioFile:a?N(a):null};"
+        )
         return await client.execute(
             body,
             event_target=event_target,
@@ -240,6 +263,50 @@ def register(mcp: FastMCP):
             start=start,
             length=length,
             name=name,
+            parameter=parameter,
+            audio=audio,
+        )
+
+    @mcp.tool()
+    async def sound_add_nested_event(
+        event_target: str,
+        track_target: str,
+        referenced_event: str,
+        start: float = 0.0,
+        length: float = 1.0,
+        parameter: str | None = None,
+    ) -> dict:
+        """Place an event instrument that plays another event (or a snapshot)
+        — nested/referenced events, e.g. a shared "Splash" event reused by
+        several bigger events.
+
+        Args:
+            event_target: event:/ path or {guid} to add the instrument to.
+            track_target: trackGuid from event_list_tracks.
+            referenced_event: event:/ or snapshot:/ path or {guid} to play.
+            start: Start position (seconds, or parameter value on a sheet).
+            length: Length (> 0).
+            parameter: Optional parameter sheet instead of the timeline.
+        """
+        if length <= 0:
+            raise FmodMCPError(ErrorCode.VALUE_OUT_OF_RANGE, "length must be > 0")
+        return await client.execute(
+            JS_PARAM
+            + "var e=L(p.event_target);var t=L(p.track_target);var r=L(p.referenced_event);"
+            "if(!r.isOfType('Event'))throw new Error(p.referenced_event+' is not an event or snapshot');"
+            "if(G(r)===G(e))throw new Error('an event cannot reference itself');"
+            "var sheet=p.parameter?__sheet(e,p.parameter):e.timeline;"
+            "var s=t.addSound(sheet,'EventSound',p.start,p.length);"
+            "if(!s)throw new Error('addSound returned nothing for EventSound');"
+            "s.event=r;"
+            "if(!s.event||G(s.event)!==G(r)){studio.project.deleteObject(s);"
+            "throw new Error('event reference did not take effect');}"
+            "return {guid:G(s),references:P(r),start:s.start,length:s.length};",
+            event_target=event_target,
+            track_target=track_target,
+            referenced_event=referenced_event,
+            start=start,
+            length=length,
             parameter=parameter,
         )
 
@@ -289,7 +356,8 @@ def register(mcp: FastMCP):
 
     @mcp.tool()
     async def sound_set_owner(target: str, owner: str) -> dict:
-        """Set a sound's owning instrument (e.g. a SingleSound into a MultiSound).
+        """Set a sound's owning instrument (e.g. a SingleSound into a MultiSound
+        or a Scatterer's playlist).
 
         Reads the assignment back before returning — see sound_set_audio_file.
 
@@ -297,8 +365,14 @@ def register(mcp: FastMCP):
             target: SingleSound {guid}.
             owner: Owner MultiSound/Scatterer {guid}.
         """
+        # A SoundScatterer keeps its playlist in an inner MultiSound
+        # (`scatterer.sound`); setting owner=scatterer is silently ignored
+        # (confirmed live), which is why this used to fail for Scatterers.
         return await client.execute(
-            "var s=L(p.target);var o=L(p.owner);s.owner=o;"
+            "var s=L(p.target);var o=L(p.owner);"
+            "if(o.isOfType&&o.isOfType('SoundScatterer')){"
+            "if(!o.sound)throw new Error('scatterer has no playlist MultiSound');o=o.sound;}"
+            "s.owner=o;"
             "var actual=s.owner;"
             "if(!actual||G(actual)!==G(o))throw new Error("
             "'owner assignment did not take effect on '+p.target+'.');"
@@ -348,6 +422,9 @@ def register(mcp: FastMCP):
         volume: float | None = None,
         pitch: float | None = None,
         looping: bool | None = None,
+        is_async: bool | None = None,
+        start: float | None = None,
+        length: float | None = None,
         extra: dict | None = None,
     ) -> dict:
         """Set an instrument's common playback properties — volume (dB),
@@ -360,10 +437,24 @@ def register(mcp: FastMCP):
             volume: Volume in dB.
             pitch: Pitch in semitones.
             looping: Loop the instrument.
+            is_async: Asynchronous (keeps playing once triggered, e.g. an
+                      instrument held at a sustain point needs looping AND
+                      is_async).
+            start: Move the trigger region (seconds / sheet units).
+            length: Resize the trigger region (> 0).
             extra: Other {"property": value} pairs.
         """
+        if length is not None and length <= 0:
+            raise FmodMCPError(ErrorCode.VALUE_OUT_OF_RANGE, "length must be > 0")
         props = dict(extra or {})
-        for key, val in (("volume", volume), ("pitch", pitch), ("looping", looping)):
+        for key, val in (
+            ("volume", volume),
+            ("pitch", pitch),
+            ("looping", looping),
+            ("isAsync", is_async),
+            ("start", start),
+            ("length", length),
+        ):
             if val is not None:
                 props[key] = val
         props = check_property_values(props)
