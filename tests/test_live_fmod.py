@@ -16,6 +16,7 @@ fmod_mcp_shared/protocol.py's _JS_HELPERS.
 """
 
 import asyncio
+import os
 import socket
 
 import pytest
@@ -977,5 +978,300 @@ def test_project_export_guids_writes_a_guid_file_and_is_undone():
                         fh.write(before[path])
                 else:
                     os.remove(path)
+
+    asyncio.run(run())
+
+
+# ---------------------------------------------------------------------------
+# Third round: unattended-automation tools. Writes are confined to throwaway
+# objects; nothing changes project-wide settings (e.g. the platform encoding
+# default is only read here). Process control and headless builds are
+# opt-in through environment variables because they close the Studio window
+# or need a disposable copy of a project.
+# ---------------------------------------------------------------------------
+
+
+def test_route_event_into_group_and_scatterer_playlist():
+    async def run():
+        client = FmodStudioClient()
+        tools = _live_tools("mixer_tools", "sound_tools", "event_tools")
+        g = (await tools["mixer_group_create"](name="__test_route_group"))["result"]
+        ev = (await tools["event_create"](name="__test_route_event"))["result"]
+        try:
+            r = (await tools["mixer_group_route"](target=ev["guid"], output_target=g["guid"]))["result"]
+            assert r["via"] == "mixerInput" and r["output"] == g["guid"]
+
+            tr = (await tools["event_add_track"](target=ev["guid"]))["result"]
+            sc = (await tools["sound_add_to_track"](
+                event_target=ev["guid"], track_target=tr["trackGuid"], sound_type="SoundScatterer",
+                start=0.0, length=2.0))["result"]
+            entry = (await tools["sound_create"](sound_type="SingleSound"))["result"]
+            own = (await tools["sound_set_owner"](target=entry["guid"], owner=sc["guid"]))["result"]
+            assert own["ownerGuid"] != sc["guid"]  # the scatterer's inner playlist
+            sounds = (await tools["event_list_sounds"](event_target=ev["guid"]))["result"]["sounds"]
+            assert entry["guid"] in [s["guid"] for s in sounds]
+        finally:
+            await _delete(client, ev["guid"])
+            await _delete(client, g["guid"])
+
+    asyncio.run(run())
+
+
+def test_instrument_sizing_nested_events_settings_tags_and_tempo(tmp_path):
+    from fmod_mcp_shared.error_codes import FmodMCPError
+
+    async def run():
+        client = FmodStudioClient()
+        tools = _live_tools("sound_tools", "event_tools", "marker_tools")
+        (f,) = _wavs(tmp_path, 1, "__test_sizing")
+        a = (await tools["audio_import"](file_path=f))["result"]
+        ev = (await tools["event_create"](name="__test_round3_event"))["result"]
+        child = (await tools["event_create"](name="__test_round3_child"))["result"]
+        try:
+            tr = (await tools["event_add_track"](target=ev["guid"]))["result"]
+            inst = (await tools["sound_add_to_track"](
+                event_target=ev["guid"], track_target=tr["trackGuid"], sound_type="SingleSound",
+                start=1.0, audio=a["guid"]))["result"]
+            assert inst["length"] == pytest.approx(0.5, abs=0.01) and inst["audioFile"] == a["name"]
+            with pytest.raises(FmodMCPError, match="length"):
+                await tools["sound_add_to_track"](
+                    event_target=ev["guid"], track_target=tr["trackGuid"], sound_type="SingleSound", length=0)
+
+            props = (await tools["sound_set_properties"](
+                target=inst["guid"], start=2.0, length=0.25, is_async=True, looping=True))["result"]
+            assert props["applied"] == {"looping": True, "isAsync": True, "start": 2.0, "length": 0.25}
+
+            nested = (await tools["sound_add_nested_event"](
+                event_target=ev["guid"], track_target=tr["trackGuid"], referenced_event=child["guid"],
+                start=3.0, length=1.0))["result"]
+            assert nested["references"] == "event:/__test_round3_child"
+            with pytest.raises(FmodMCPError, match="itself"):
+                await tools["sound_add_nested_event"](
+                    event_target=ev["guid"], track_target=tr["trackGuid"], referenced_event=ev["guid"])
+
+            st = (await tools["event_set_settings"](
+                target=ev["guid"], max_instances=3, voice_stealing="virtualize", cooldown_s=0.25,
+                persistent=True, min_distance=2.0, max_distance=40.0))["result"]
+            assert st["clamped"] == []
+            got = (await tools["event_get_settings"](target=ev["guid"]))["result"]
+            assert (got["maxInstances"], got["voiceStealing"], got["persistent"]) == (3, 3, True)
+            assert got["maxDistance"] == pytest.approx(40.0)
+
+            t1 = (await tools["tag_add"](target=ev["guid"], tag="__test_tag"))["result"]
+            t2 = (await tools["tag_add"](target=child["guid"], tag="__test_tag"))["result"]
+            assert t1["tagGuid"] == t2["tagGuid"] and t2["taggedCount"] == 2
+            listed = (await tools["tag_list"](tag="__test_tag"))["result"]["objects"]
+            assert {o["guid"] for o in listed} == {ev["guid"], child["guid"]}
+            await tools["tag_remove"](target=child["guid"], tag="__test_tag")
+            listed = (await tools["tag_list"](tag="__test_tag"))["result"]["objects"]
+            assert [o["guid"] for o in listed] == [ev["guid"]]
+
+            mt = (await tools["event_add_marker_track"](target=ev["guid"]))["result"]["guid"]
+            tempo = (await tools["marker_add_tempo"](track_target=mt, position=0.0, bpm=96, beats_per_bar=3))["result"]
+            assert tempo["timeSignature"] == "3/4" and tempo["bpm"] == pytest.approx(96)
+            markers = (await tools["marker_list"](track_target=mt))["result"]
+            assert any(m["markerType"] == "TempoMarker" for m in markers)
+        finally:
+            await _delete(client, ev["guid"])
+            await _delete(client, child["guid"])
+            await _delete(client, a["guid"])
+            await client.execute(
+                "var a=studio.project.model.Tag.findInstances()||[];"
+                "for(var i=0;i<a.length;i++){if(a[i].name==='__test_tag')studio.project.deleteObject(a[i]);}"
+                "return true;"
+            )
+
+    asyncio.run(run())
+
+
+def test_asset_encoding_overrides_and_streaming(tmp_path):
+    async def run():
+        client = FmodStudioClient()
+        tools = _live_tools("sound_tools", "asset_tools")
+        (f,) = _wavs(tmp_path, 1, "__test_encoding")
+        a = (await tools["audio_import"](file_path=f))["result"]
+        try:
+            before = (await tools["encoding_get"](targets=[a["guid"]]))["result"]
+            default = before["platformDefault"]
+            assert default["formatName"] in ("pcm", "fadpcm", "xma", "vorbis", "at9", "opus")
+            assert before["assets"][0]["override"] is None
+
+            s = (await tools["encoding_set"](
+                targets=[a["guid"]], format="fadpcm", sample_rate_mode="preserve", streaming=True))["result"]
+            assert s["overridesCreated"] == 1 and s["streaming"] is True
+            after = (await tools["encoding_get"](targets=[a["guid"]]))["result"]["assets"][0]
+            assert after["override"]["formatName"] == "fadpcm"
+            assert after["override"]["sampleRateModeName"] == "preserve"
+            assert after["streaming"] is True
+
+            again = (await tools["encoding_set"](targets=[a["guid"]], quality=80))["result"]
+            assert again["overridesUpdated"] == 1 and again["overridesCreated"] == 0
+
+            cl = (await tools["encoding_clear"](targets=[a["guid"]]))["result"]
+            assert cl["overridesRemoved"] == 1
+            final = (await tools["encoding_get"](targets=[a["guid"]]))["result"]
+            assert final["assets"][0]["override"] is None
+            # The platform default was never touched.
+            assert final["platformDefault"]["format"] == default["format"]
+        finally:
+            await _delete(client, a["guid"])
+
+    asyncio.run(run())
+
+
+def test_event_lint_finds_silent_setups(tmp_path):
+    async def run():
+        client = FmodStudioClient()
+        tools = _live_tools("event_tools", "sound_tools", "marker_tools", "mixer_tools", "utility_tools")
+        empty = (await tools["event_create"](name="New Event 77"))["result"]
+        ev = (await tools["event_create"](name="__test_lint_event"))["result"]
+        try:
+            lint = (await tools["event_lint"](target=empty["guid"]))["result"]
+            assert lint["ok"] is False
+            msgs = " | ".join(x["message"] for x in lint["errors"] + lint["warnings"])
+            assert "no instruments" in msgs and "default name" in msgs and "no bank" in msgs
+
+            tr = (await tools["event_add_track"](target=ev["guid"]))["result"]
+            await tools["sound_add_to_track"](
+                event_target=ev["guid"], track_target=tr["trackGuid"], sound_type="SingleSound",
+                start=0.0, length=4.0)
+            mt = (await tools["event_add_marker_track"](target=ev["guid"]))["result"]["guid"]
+            await tools["marker_add_sustain_point"](track_target=mt, position=2.0)
+            await tools["mixer_group_volume"](target=tr["mixerGroupGuid"], db=-80.0)
+            lint = (await tools["event_lint"](target=ev["guid"]))["result"]
+            errors = " | ".join(x["message"] for x in lint["errors"])
+            warnings = " | ".join(x["message"] for x in lint["warnings"])
+            assert "no audio file" in errors
+            assert "sustain point" in warnings and "track volume is -80" in warnings
+
+            audit = (await tools["utility_validate"]())["result"]
+            assert empty["guid"] in [x["guid"] for x in audit["eventsWithDefaultNames"]]
+        finally:
+            await _delete(client, empty["guid"])
+            await _delete(client, ev["guid"])
+
+    asyncio.run(run())
+
+
+def test_event_audio_report_measures_what_an_event_plays(tmp_path):
+    async def run():
+        client = FmodStudioClient()
+        tools = _live_tools("sound_tools", "analysis_tools")
+        files = _wavs(tmp_path, 2, "__test_report")
+        built = (await tools["event_create_from_audio"](name="__test_report_event", file_paths=files))["result"]
+        try:
+            rep = (await tools["event_audio_report"](event_target=built["guid"]))["result"]
+            assert rep["summary"]["files"] == 2
+            assert rep["instrumentsWithoutAudio"] == 0
+            assert all(f["error"] is None and f["durationS"] == pytest.approx(0.5, abs=0.01)
+                       for f in rep["files"])
+            assert {f["assetGuid"] for f in rep["files"]} == {x["guid"] for x in built["assets"]}
+        finally:
+            await _delete(client, built["guid"])
+            for x in built["assets"]:
+                await _delete(client, x["guid"])
+
+    asyncio.run(run())
+
+
+def test_studio_status_reports_the_open_project():
+    async def run():
+        tools = _live_tools("studio_tools")
+        st = (await tools["studio_status"]())["result"]
+        assert st["scriptServerReachable"] is True and st["processRunning"] is True
+        assert st["openProject"] and st["openProject"].endswith(".fspro")
+        assert st["scriptServerPreference"] is True
+        assert st["commandLineTool"]
+
+    asyncio.run(run())
+
+
+def test_headless_tools_refuse_the_project_open_in_studio():
+    from fmod_mcp_shared.error_codes import FmodMCPError
+
+    async def run():
+        tools = _live_tools("studio_tools")
+        open_project = (await tools["studio_status"]())["result"]["openProject"]
+        for name in ("headless_build", "headless_validate"):
+            with pytest.raises(FmodMCPError, match="open in FMOD Studio"):
+                await tools[name](project_path=open_project)
+
+    asyncio.run(run())
+
+
+@pytest.mark.skipif(
+    not os.environ.get("FMOD_TEST_HEADLESS_PROJECT"),
+    reason="set FMOD_TEST_HEADLESS_PROJECT to a DISPOSABLE copy of a project (.fspro) to test headless builds",
+)
+def test_headless_build_and_validate_on_a_disposable_copy():
+    async def run():
+        tools = _live_tools("studio_tools")
+        project = os.environ["FMOD_TEST_HEADLESS_PROJECT"]
+        v = (await tools["headless_validate"](project_path=project))["result"]
+        assert v["valid"] is True, v["problems"]
+        b = (await tools["headless_build"](project_path=project))["result"]
+        assert b["built"] is True, b["problems"]
+        rel = {o["relative"] for o in b["outputs"]}
+        assert any(r.endswith(".bank") for r in rel) and "Build/GUIDs.txt" in rel
+        bad = (await tools["headless_build"](project_path=project, banks="__NoSuchBank"))["result"]
+        assert bad["built"] is False and bad["exitCode"] != 0
+        assert any("NoSuchBank" in pr for pr in bad["problems"])
+
+    asyncio.run(run())
+
+
+@pytest.mark.skipif(
+    os.environ.get("FMOD_TEST_RESTART_STUDIO") != "1",
+    reason="set FMOD_TEST_RESTART_STUDIO=1 to let this test close and reopen FMOD Studio",
+)
+def test_studio_quit_and_launch_roundtrip():
+    async def run():
+        tools = _live_tools("studio_tools")
+        project = (await tools["studio_status"]())["result"]["openProject"]
+        q = (await tools["studio_quit"](save=True))["result"]
+        assert q["quit"] is True
+        st = (await tools["studio_status"]())["result"]
+        assert st["processRunning"] is False and st["scriptServerReachable"] is False
+        launched = (await tools["studio_launch"](project_path=project, wait_seconds=180))["result"]
+        assert launched["launched"] is True
+        again = (await tools["studio_launch"](project_path=project))["result"]
+        assert again["alreadyOpen"] is True
+
+    asyncio.run(run())
+
+
+@pytest.mark.skipif(
+    os.environ.get("FMOD_TEST_GUI_BUILD") != "1",
+    reason="set FMOD_TEST_GUI_BUILD=1 to build the open project's banks (they are restored from git after)",
+)
+def test_project_build_returns_a_build_report():
+    """Builds the open project inside Studio, checks the report, then puts
+    every bank/GUIDs file back exactly as it was (banks are often committed)."""
+
+    async def run():
+        client = FmodStudioClient()
+        tools = _live_tools("project_tools")
+        project = (await client.execute("return {f:studio.project.filePath};"))["result"]["f"]
+        root = os.path.dirname(project)
+        snapshot = {}
+        for d, _dirs, files in os.walk(os.path.join(root, "Build")):
+            for name in files:
+                path = os.path.join(d, name)
+                with open(path, "rb") as fh:
+                    snapshot[path] = fh.read()
+        try:
+            r = (await tools["project_build"]())["result"]
+            assert r["built"] is True
+            assert any(o["relative"].endswith(".bank") for o in r["outputs"])
+            assert isinstance(r["problems"], list)
+        finally:
+            for d, _dirs, files in os.walk(os.path.join(root, "Build")):
+                for name in files:
+                    path = os.path.join(d, name)
+                    if path not in snapshot:
+                        os.remove(path)
+            for path, data in snapshot.items():
+                with open(path, "wb") as fh:
+                    fh.write(data)
 
     asyncio.run(run())

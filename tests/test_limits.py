@@ -213,6 +213,7 @@ def test_marker_entity_types_cover_all_track_add_methods():
         "SustainPoint",
         "TransitionMarker",
         "TransitionRegion",
+        "TempoMarker",
     )
 
 

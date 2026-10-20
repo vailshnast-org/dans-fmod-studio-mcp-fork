@@ -94,6 +94,9 @@ _SAMPLES = {
     "entry": _A_GUID,
     "point": _A_GUID,
     "curve": _B_GUID,
+    "referenced_event": "event:/Test/Other",
+    "tag": "Ambience",
+    "bpm": 120.0,
 }
 
 
@@ -105,6 +108,23 @@ _EXTRA_ARGS = {
     "automation_set_point": {"value": -6.0},
     "multi_set_playlist": {"looping": True},
     "snapshot_set_settings": {"intensity": 50.0},
+    "sound_add_to_track": {"length": 1.0},
+    "event_set_settings": {"max_instances": 4, "voice_stealing": "virtualize"},
+    "encoding_set": {"format": "vorbis", "quality": 60},
+    "encoding_clear": {"targets": [_C_GUID]},
+}
+
+# Tools that act on the MCP host (start/stop Studio, run fmodstudiocl, read
+# audio files) rather than sending JS — invoking them here would launch real
+# processes. They have their own unit tests and live tests.
+_HOST_TOOLS = {
+    "studio_status",
+    "studio_launch",
+    "studio_quit",
+    "headless_build",
+    "headless_validate",
+    "audio_analyze",
+    "event_audio_report",
 }
 
 
@@ -193,6 +213,8 @@ def _run_every_tool():
         assert mcp.tools, f"{name} registered no tools"
         tool_names.update(mcp.tools)
         for tool_name, fn in mcp.tools.items():
+            if tool_name in _HOST_TOOLS:
+                continue
             args = _sample_args(fn)
             result = asyncio.run(fn(**args))
             assert result["success"] is True, f"{tool_name} failed: {result}"
