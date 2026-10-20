@@ -1,5 +1,7 @@
 from mcp.server.fastmcp import FastMCP
 
+from fmod_mcp_shared.error_codes import ErrorCode, FmodMCPError
+
 
 def register(mcp: FastMCP):
     from fmod_mcp.main import client
@@ -68,6 +70,42 @@ def register(mcp: FastMCP):
         """
         return await client.execute(
             "var o=L(p.target);o.returnToStart();return {guid:G(o)};", target=target
+        )
+
+    @mcp.tool()
+    async def event_set_3d_attributes(
+        target: str,
+        radial_distance: float,
+        azimuth: float = 0.0,
+        height: float = 0.0,
+        rotation: float = 0.0,
+    ) -> dict:
+        """Position an auditioned event relative to the listener (the 3D
+        preview in Studio's transport) to hear distance attenuation and
+        panning — e.g. play, then step radial_distance 1 -> 50.
+
+        Args:
+            target: event:// path or {guid} (a 3D event).
+            radial_distance: Distance from the listener (>= 0).
+            azimuth: Angle around the listener, degrees.
+            height: Vertical position.
+            rotation: Horizontal rotation of the event, degrees.
+        """
+        if radial_distance < 0:
+            raise FmodMCPError(
+                ErrorCode.VALUE_OUT_OF_RANGE, "radial_distance must be >= 0"
+            )
+        return await client.execute(
+            "var o=L(p.target);"
+            "o.set3DAttributes({radialDistance:p.radial_distance,azimuth:p.azimuth,"
+            "height:p.height,rotation:p.rotation});"
+            "var now=null;try{now=o.get3DAttributes();}catch(__e){}"
+            "return {guid:G(o),attributes:now};",
+            target=target,
+            radial_distance=radial_distance,
+            azimuth=azimuth,
+            height=height,
+            rotation=rotation,
         )
 
     @mcp.tool()
